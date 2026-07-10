@@ -1,0 +1,304 @@
+@import "tailwindcss";
+
+@theme {
+  --color-neo-yellow: #FFDE4D;
+  --color-neo-pink: #FF4E88;
+  --color-neo-orange: #FF8F00;
+  --color-neo-cyan: #00E5FF;
+  --color-neo-green: #39FF14;
+  --color-neo-purple: #A855F7;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-pulse-slow: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ═══════════════════════════════════════════════
+   THEME VARIABLES — Single Source of Truth
+   ═══════════════════════════════════════════════ */
+
+:root {
+  --c-bg: #FFFFFF;
+  --c-surface: #FFFFFF;
+  --c-surface-hover: #F3F4F6;
+  --c-text: #0C0C0E;
+  --c-text-muted: #6B7280;
+  --c-text-subtle: #9CA3AF;
+  --c-border: #000000;
+  --c-shadow: 0, 0, 0;
+  --c-tag-bg: #FFFFFF;
+  --c-input-bg: #FFFFFF;
+  --c-overlay-bg: rgba(0, 0, 0, 0.6);
+}
+
+.dark {
+  --c-bg: #121214;
+  --c-surface: #1C1C20;
+  --c-surface-hover: #26262B;
+  --c-text: #F5F4F0;
+  --c-text-muted: #9CA3AF;
+  --c-text-subtle: #6B7280;
+  --c-border: #FFFFFF;
+  --c-shadow: 255, 255, 255;
+  --c-tag-bg: #26262B;
+  --c-input-bg: #1E1E22;
+  --c-overlay-bg: rgba(0, 0, 0, 0.75);
+}
+
+/* ═══════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════ */
+
+html,
+body {
+  background: var(--c-bg);
+  color: var(--c-text);
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--c-bg);
+  border-left: 3px solid var(--c-border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FFDE4D;
+  border: 2px solid var(--c-border);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FF8F00;
+}
+
+/* ═══════════════════════════════════════════════
+   NEO-CARD — The core card primitive
+   Uses CSS vars so dark/light automatically work.
+   NO !important anywhere.
+   ═══════════════════════════════════════════════ */
+
+.neo-card {
+  background-color: var(--c-surface);
+  color: var(--c-text);
+  border: 4px solid var(--c-border);
+  box-shadow: 6px 6px 0px 0px rgba(var(--c-shadow), 1);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+@media (hover: hover) {
+  .neo-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px 0px rgba(var(--c-shadow), 1);
+  }
+
+  .neo-card:active {
+    transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0px 0px rgba(var(--c-shadow), 1);
+  }
+}
+
+/* Brand cards (Discord, GitHub, Instagram) keep their own bg.
+   They only inherit border/shadow from the theme. */
+.neo-card-brand {
+  border: 4px solid var(--c-border);
+  box-shadow: 6px 6px 0px 0px rgba(var(--c-shadow), 1);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    background-color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .neo-card-brand:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px 0px rgba(var(--c-shadow), 1);
+  }
+
+  .neo-card-brand:active {
+    transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0px 0px rgba(var(--c-shadow), 1);
+  }
+}
+
+/* Themed-surface cards: cards that use a vibrant bg (yellow, pink)
+   and should NOT get var(--c-surface) override. */
+.neo-card-themed {
+  border: 4px solid var(--c-border);
+  box-shadow: 6px 6px 0px 0px rgba(var(--c-shadow), 1);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@media (hover: hover) {
+  .neo-card-themed:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px 0px rgba(var(--c-shadow), 1);
+  }
+
+  .neo-card-themed:active {
+    transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0px 0px rgba(var(--c-shadow), 1);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   NEO-BTN
+   ═══════════════════════════════════════════════ */
+
+.neo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 3px solid var(--c-border);
+  color: var(--c-text);
+  box-shadow: 4px 4px 0px 0px rgba(var(--c-shadow), 1);
+  transition: transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+  user-select: none;
+}
+
+@media (hover: hover) {
+  .neo-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px rgba(var(--c-shadow), 1);
+  }
+
+  .neo-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px 0px rgba(var(--c-shadow), 1);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   THEME BUMP ANIMATION
+   ═══════════════════════════════════════════════ */
+
+@keyframes themeBump {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+
+  30% {
+    transform: scale(1.02) translateY(-4px);
+  }
+
+  65% {
+    transform: scale(0.99) translateY(1px);
+  }
+
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+.theme-bump {
+  animation: themeBump 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* ═══════════════════════════════════════════════
+   DIALOG / OVERLAY ANIMATIONS
+   ═══════════════════════════════════════════════ */
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+[data-state="open"] .neo-dialog-content {
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ═══════════════════════════════════════════════
+   TERMINAL GLOWING & CURSOR BLINKING
+   ═══════════════════════════════════════════════ */
+
+@keyframes terminalCursorBlink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 6px;
+  height: 12px;
+  background-color: #39FF14;
+  /* neon green */
+  animation: terminalCursorBlink 1s step-end infinite;
+  vertical-align: middle;
+}
+
+/* Custom scrollbar for terminal */
+.terminal-scrollbar::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
