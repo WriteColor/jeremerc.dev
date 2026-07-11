@@ -29,7 +29,6 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
 
   useEffect(() => {
     let script = document.getElementById("cloudflare-turnstile-script") as HTMLScriptElement;
-    
     if (!script) {
       script = document.createElement("script");
       script.id = "cloudflare-turnstile-script";
@@ -38,11 +37,18 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
       script.defer = true;
       document.body.appendChild(script);
     }
+  }, []);
 
-    (window as any).onloadTurnstileCallback = () => {
+  useEffect(() => {
+    if (status !== "idle") return;
+
+    let widgetId: string | null = null;
+
+    const renderWidget = () => {
       if (turnstileRef.current && (window as any).turnstile) {
         try {
-          (window as any).turnstile.render(turnstileRef.current, {
+          turnstileRef.current.innerHTML = "";
+          widgetId = (window as any).turnstile.render(turnstileRef.current, {
             sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "",
             callback: (token: string) => {
               setTurnstileToken(token);
@@ -60,14 +66,25 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
       }
     };
 
-    if ((window as any).turnstile && turnstileRef.current) {
-      (window as any).onloadTurnstileCallback();
+    (window as any).onloadTurnstileCallback = () => {
+      renderWidget();
+    };
+
+    if ((window as any).turnstile) {
+      renderWidget();
     }
 
     return () => {
+      if (widgetId && (window as any).turnstile) {
+        try {
+          (window as any).turnstile.remove(widgetId);
+        } catch (e) {
+          // Ignore
+        }
+      }
       delete (window as any).onloadTurnstileCallback;
     };
-  }, []);
+  }, [status]);
 
   const validate = () => {
     const tempErrors: { name?: string; email?: string; message?: string } = {};

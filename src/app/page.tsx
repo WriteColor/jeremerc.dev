@@ -48,6 +48,7 @@ import SpecsModal from "@/components/modals/SpecsModal";
 import SkillDetailModal from "@/components/modals/SkillDetailModal";
 import ReferencesModal, { REFERENCES_DB } from "@/components/modals/ReferencesModal";
 import DomainsModal from "@/components/modals/DomainsModal";
+import { DomainSearchBento } from "@/components/domains/DomainSearchBento";
 import CountUp from "@/components/ui/CountUp";
 
 // Define Project structure
@@ -1727,6 +1728,9 @@ export default function Home() {
               }
             />
           </motion.div>
+
+          {/* ═══ CELL 10: Domain Search Bento Grid Section ═══ */}
+          <DomainSearchBento />
 
         </motion.div>
       </LayoutGroup>
