@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 import { rateLimit } from "../../../utils/rateLimit";
 import { logContactMessage } from "../../../utils/db";
 
@@ -36,16 +35,37 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Validación anti-bot fallida" }, { status: 403 });
     }
 
-    // Configure SMTP Zoho transporter
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || "smtp.zoho.com",
-      port: Number(process.env.SMTP_PORT || "465"),
-      secure: true, // SSL
-      auth: {
-        user: process.env.SMTP_USER || "",
-        pass: process.env.SMTP_PASS || "",
-      },
-    });
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      return NextResponse.json({ error: "Resend API Key no configurada en el servidor." }, { status: 500 });
+    }
+
+    const contactEmail = process.env.CONTACT_EMAIL || "contacto@jeremerc.dev";
+    const senderEmail = process.env.SENDER_EMAIL || "no-reply@jeremerc.dev";
+
+    const sendEmailViaResend = async (payload: {
+      from: string;
+      to: string;
+      reply_to?: string;
+      subject: string;
+      html: string;
+    }) => {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${resendApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`Resend API error (${response.status}): ${errText}`);
+      }
+
+      return await response.json();
+    };
 
     const fontStack = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
 
@@ -56,9 +76,18 @@ export async function POST(request: Request) {
           
           <!-- Header Banner -->
           <div style="background-color: #00E5FF; border: 3px solid #000000; padding: 15px; margin-bottom: 25px; box-shadow: 4px 4px 0px 0px #000000;">
-            <h1 style="margin: 0; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; color: #000000;">
-              Nuevo Mensaje de Contacto
-            </h1>
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td width="55" valign="middle">
+                  <img src="https://jeremerc.dev/avatar.png" width="45" height="45" style="border: 2.5px solid #000000; box-shadow: 2px 2px 0px 0px #000000; display: block;" />
+                </td>
+                <td valign="middle" style="padding-left: 12px;">
+                  <h1 style="margin: 0; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; color: #000000; line-height: 1.1;">
+                    Nuevo Mensaje de Contacto
+                  </h1>
+                </td>
+              </tr>
+            </table>
           </div>
 
           <p style="font-size: 13px; font-weight: 700; color: #55555B; margin-bottom: 20px; text-transform: uppercase;">
@@ -85,7 +114,7 @@ export async function POST(request: Request) {
 
           <!-- Footer Accent -->
           <div style="border-top: 2px dashed #000000; padding-top: 15px; text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; color: #55555B;">
-            © 2026 Jeremerc. Enviado vía no-reply@write-color.cloud
+            © 2026 Jeremerc. Enviado vía ${senderEmail}
           </div>
 
         </div>
@@ -99,9 +128,18 @@ export async function POST(request: Request) {
           
           <!-- Header Banner -->
           <div style="background-color: #FF4E88; border: 3px solid #000000; padding: 15px; margin-bottom: 25px; box-shadow: 4px 4px 0px 0px #000000;">
-            <h1 style="margin: 0; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; color: #ffffff;">
-              ¡Hola ${name}!
-            </h1>
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td width="55" valign="middle">
+                  <img src="https://jeremerc.dev/avatar.png" width="45" height="45" style="border: 2.5px solid #000000; box-shadow: 2px 2px 0px 0px #000000; display: block;" />
+                </td>
+                <td valign="middle" style="padding-left: 12px;">
+                  <h1 style="margin: 0; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; color: #ffffff; line-height: 1.1;">
+                    ¡Hola ${name}!
+                  </h1>
+                </td>
+              </tr>
+            </table>
           </div>
 
           <p style="font-size: 13px; font-weight: 700; line-height: 1.5; color: #000000; margin-bottom: 20px;">
@@ -115,7 +153,7 @@ export async function POST(request: Request) {
           </div>
 
           <div style="background-color: #00E5FF; border: 3px solid #000000; padding: 12px; text-align: center; font-weight: 900; text-transform: uppercase; font-size: 10px; margin-bottom: 25px; box-shadow: 3px 3px 0px 0px #000000; color: #000000;">
-            Te responderé directamente desde ${process.env.CONTACT_EMAIL || "contacto@jeremerc.dev"}
+            Te responderé directamente desde ${contactEmail}
           </div>
 
           <!-- Footer Accent -->
@@ -127,21 +165,18 @@ export async function POST(request: Request) {
       </div>
     `;
 
-    const contactEmail = process.env.CONTACT_EMAIL || "contacto@jeremerc.dev";
-    const senderUser = process.env.SMTP_USER || "no-reply@write-color.cloud";
-
     // Send email copy to owner (contacto@jeremerc.dev)
-    await transporter.sendMail({
-      from: `"JereMerc.dev Portfolio" <${senderUser}>`,
+    await sendEmailViaResend({
+      from: `JereMerc.dev Portfolio <${senderEmail}>`,
       to: contactEmail,
-      replyTo: email,
+      reply_to: email,
       subject: `Nueva Consulta de ${name}`,
       html: ownerMailHtml,
     });
 
     // Send confirmation to the client
-    await transporter.sendMail({
-      from: `"JereMerc.dev Portfolio" <${senderUser}>`,
+    await sendEmailViaResend({
+      from: `JereMerc.dev Portfolio <${senderEmail}>`,
       to: email,
       subject: "He recibido tu mensaje - JereMerc.dev",
       html: userMailHtml,
@@ -157,7 +192,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
-    console.error("SMTP Mail error:", error);
+    console.error("Resend Mail error:", error);
     return NextResponse.json({ error: error.message || "Failed to send email" }, { status: 500 });
   }
 }
