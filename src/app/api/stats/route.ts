@@ -2,13 +2,6 @@ import { NextResponse } from "next/server";
 import { rateLimit } from "../../../utils/rateLimit";
 import { getKV, incrKV } from "../../../utils/db";
 
-// Simulated base stats in case no database is set up
-const mockStats = {
-  visits: 1482,
-  likes: 314,
-  dislikes: 8,
-};
-
 // Check if User-Agent matches bots, scrapers, crawlers or automated scrapers
 const isBot = (userAgent: string | null): boolean => {
   if (!userAgent) return false;
@@ -27,9 +20,9 @@ export async function GET(request: Request) {
   const isAgentBot = isBot(userAgent);
 
   try {
-    const visitsStr = await getKV("stats:visits", mockStats.visits.toString());
-    const likesStr = await getKV("stats:likes", mockStats.likes.toString());
-    const dislikesStr = await getKV("stats:dislikes", mockStats.dislikes.toString());
+    const visitsStr = await getKV("stats:visits", "0");
+    const likesStr = await getKV("stats:likes", "0");
+    const dislikesStr = await getKV("stats:dislikes", "0");
 
     return NextResponse.json({
       visits: parseInt(visitsStr, 10),
@@ -38,8 +31,13 @@ export async function GET(request: Request) {
       isBot: isAgentBot,
     });
   } catch (error) {
-    console.error("Error reading stats from Neon DB, using mock fallback:", error);
-    return NextResponse.json({ ...mockStats, isBot: isAgentBot });
+    console.error("Error reading stats from Neon DB:", error);
+    return NextResponse.json({
+      visits: null,
+      likes: null,
+      dislikes: null,
+      isBot: isAgentBot
+    });
   }
 }
 
@@ -59,20 +57,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Bots not counted" }, { status: 403 });
     }
 
-    let visits = mockStats.visits;
-    let likes = mockStats.likes;
-    let dislikes = mockStats.dislikes;
+    let visits = 0;
+    let likes = 0;
+    let dislikes = 0;
 
-    // Load current values from DB to use as base, or fall back to mock
+    // Load current values from DB to use as base, or fall back to 0
     try {
-      const v = await getKV("stats:visits", mockStats.visits.toString());
-      const l = await getKV("stats:likes", mockStats.likes.toString());
-      const d = await getKV("stats:dislikes", mockStats.dislikes.toString());
+      const v = await getKV("stats:visits", "0");
+      const l = await getKV("stats:likes", "0");
+      const d = await getKV("stats:dislikes", "0");
       visits = parseInt(v, 10);
       likes = parseInt(l, 10);
       dislikes = parseInt(d, 10);
     } catch (e) {
       console.error("Error reading current stats before increment:", e);
+      return NextResponse.json({
+        visits: null,
+        likes: null,
+        dislikes: null,
+        error: "Database connection failed"
+      }, { status: 500 });
     }
 
     if (action === "visit") {

@@ -422,6 +422,9 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
     setTerminalState(finalState);
     if (finalState === "error" || finalState === "warning") {
       setShakeActive(true);
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("play-error"));
+      }
       setTimeout(() => setShakeActive(false), 300);
     }
     // Return to idle state after glow effect duration

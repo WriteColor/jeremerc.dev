@@ -17,6 +17,9 @@ export const CardSwap: React.FC<CardSwapProps> = ({
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("play-click"));
+    }
   };
 
   return (

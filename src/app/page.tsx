@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   MessageSquare,
   Lock,
@@ -29,7 +29,11 @@ import {
   Laptop,
   ThumbsUp,
   ThumbsDown,
-  Eye
+  Eye,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX
 } from "lucide-react";
 import { motion, LayoutGroup, AnimatePresence } from "framer-motion";
 // import FerrofluidBackground from "@/components/backgrounds/FerrofluidBackground";
@@ -44,6 +48,7 @@ import SpecsModal from "@/components/modals/SpecsModal";
 import SkillDetailModal from "@/components/modals/SkillDetailModal";
 import ReferencesModal, { REFERENCES_DB } from "@/components/modals/ReferencesModal";
 import DomainsModal from "@/components/modals/DomainsModal";
+import CountUp from "@/components/ui/CountUp";
 
 // Define Project structure
 // Define Project structure
@@ -216,8 +221,8 @@ const PROJECTS: Project[] = [
     color: "bg-neo-yellow",
     stat: "Gráficos 3D",
     metric: "60 FPS WebGL",
-    githubUrl: "https://github.com/WriteColor",
-    liveUrl: "https://github.com/WriteColor",
+    githubUrl: "https://github.com/WriteColor/3D-Model-Viewer",
+    liveUrl: "https://3dviewer.write-color.cloud/",
     status: "En Desarrollo",
   },
   {
@@ -583,27 +588,104 @@ export default function Home() {
     }
   };
 
-  const [stats, setStats] = useState({ visits: 1482, likes: 314, dislikes: 8 });
+  const [stats, setStats] = useState<{ visits: number | null, likes: number | null, dislikes: number | null }>({
+    visits: null,
+    likes: null,
+    dislikes: null
+  });
   const [userVote, setUserVote] = useState<"like" | "dislike" | null>(null);
+  const [isMusicMuted, setIsMusicMuted] = useState(true);
+  const [isSFXMuted, setIsSFXMuted] = useState(false);
+
+  const [hasInteracted, setHasInteracted] = useState(false);
+
+  const musicRef = useRef<HTMLAudioElement | null>(null);
+  const clickRef = useRef<HTMLAudioElement | null>(null);
+  const swipeRef = useRef<HTMLAudioElement | null>(null);
+  const errorRef = useRef<HTMLAudioElement | null>(null);
+
+  // Initialize native audio volume on mount
+  useEffect(() => {
+    if (musicRef.current) {
+      musicRef.current.volume = 0.08;
+    }
+  }, []);
+
+  // Synchronize sound states and listen to first user gesture for bypass
+  useEffect(() => {
+    const handleGesture = () => {
+      const audio = musicRef.current;
+      if (audio && !hasInteracted) {
+        audio.muted = false;
+        audio.play()
+          .then(() => {
+            setHasInteracted(true);
+            setIsMusicMuted(false);
+            // Clean up event listeners after first trigger
+            const events = ["click", "touchstart", "scroll", "mousemove", "keydown", "wheel", "mousedown", "pointerdown"];
+            events.forEach(event => {
+              window.removeEventListener(event, handleGesture);
+            });
+          })
+          .catch(() => {
+            // Re-mute if browser blocks autoplay
+            audio.muted = true;
+          });
+      }
+    };
+
+    if (!hasInteracted) {
+      const events = ["click", "touchstart", "scroll", "mousemove", "keydown", "wheel", "mousedown", "pointerdown"];
+      events.forEach(event => {
+        window.addEventListener(event, handleGesture, { passive: true });
+      });
+    }
+
+    return () => {
+      const events = ["click", "touchstart", "scroll", "mousemove", "keydown", "wheel", "mousedown", "pointerdown"];
+      events.forEach(event => {
+        window.removeEventListener(event, handleGesture);
+      });
+    };
+  }, [hasInteracted]);
+
+  // Listen to custom window events for click, swipe and error sound clip playbacks
+  useEffect(() => {
+    const handlePlayClick = () => {
+      if (!isSFXMuted && clickRef.current) {
+        clickRef.current.currentTime = 0;
+        clickRef.current.play().catch(() => {});
+      }
+    };
+    const handlePlaySwipe = () => {
+      if (!isSFXMuted && swipeRef.current) {
+        swipeRef.current.currentTime = 0;
+        swipeRef.current.play().catch(() => {});
+      }
+    };
+    const handlePlayError = () => {
+      if (!isSFXMuted && errorRef.current) {
+        errorRef.current.currentTime = 0;
+        errorRef.current.play().catch(() => {});
+      }
+    };
+
+    window.addEventListener("play-click", handlePlayClick);
+    window.addEventListener("play-swipe", handlePlaySwipe);
+    window.addEventListener("play-error", handlePlayError);
+
+    return () => {
+      window.removeEventListener("play-click", handlePlayClick);
+      window.removeEventListener("play-swipe", handlePlaySwipe);
+      window.removeEventListener("play-error", handlePlayError);
+    };
+  }, [isSFXMuted]);
 
   useEffect(() => {
-    // Fetch stats
-    fetch("/api/stats")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.visits) {
-          setStats({
-            visits: data.visits,
-            likes: data.likes,
-            dislikes: data.dislikes,
-          });
-        }
-      })
-      .catch((err) => console.error("Error fetching stats:", err));
-
-    // Register unique visit
     const hasVisited = localStorage.getItem("visited_jeremerc_v2");
+
     if (!hasVisited) {
+      // Register unique visit (which also returns current stats)
       fetch("/api/stats", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -611,7 +693,7 @@ export default function Home() {
       })
         .then((res) => res.json())
         .then((data) => {
-          if (data.visits) {
+          if (data && data.visits !== undefined) {
             setStats({
               visits: data.visits,
               likes: data.likes,
@@ -620,7 +702,36 @@ export default function Home() {
             localStorage.setItem("visited_jeremerc_v2", "true");
           }
         })
-        .catch((err) => console.error("Error recording visit:", err));
+        .catch((err) => {
+          console.error("Error recording visit:", err);
+          // Fallback to GET if POST fails
+          fetch("/api/stats")
+            .then((res) => res.json())
+            .then((data) => {
+              if (data && data.visits !== undefined) {
+                setStats({
+                  visits: data.visits,
+                  likes: data.likes,
+                  dislikes: data.dislikes,
+                });
+              }
+            })
+            .catch((e) => console.error("Error fetching fallback stats:", e));
+        });
+    } else {
+      // Just fetch current stats
+      fetch("/api/stats")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.visits !== undefined) {
+            setStats({
+              visits: data.visits,
+              likes: data.likes,
+              dislikes: data.dislikes,
+            });
+          }
+        })
+        .catch((err) => console.error("Error fetching stats:", err));
     }
 
     // Read user vote
@@ -660,17 +771,48 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  // Central Scroll Lock manager when any modal is open
+  // Central Scroll Lock manager and modal swipe sound triggers
   const isAnyModalOpen = !!selectedSkillName || !!expandedCard || isSpecsModalOpen || isReferencesModalOpen || isDomainsModalOpen;
+  const wasAnyModalOpenRef = useRef(false);
 
   useEffect(() => {
+    // Play swipe sound when a modal opens/closes
+    if (isAnyModalOpen !== wasAnyModalOpenRef.current) {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("play-swipe"));
+      }
+    }
+    wasAnyModalOpenRef.current = isAnyModalOpen;
+
     if (isAnyModalOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
       document.body.style.overflow = "hidden";
+      document.body.dataset.scrollLockY = scrollY.toString();
     } else {
+      const scrollYStr = document.body.dataset.scrollLockY;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
       document.body.style.overflow = "";
+      if (scrollYStr) {
+        const scrollY = parseInt(scrollYStr, 10);
+        window.scrollTo(0, scrollY);
+        delete document.body.dataset.scrollLockY;
+      }
     }
     return () => {
-      document.body.style.overflow = "";
+      const scrollYStr = document.body.dataset.scrollLockY;
+      if (scrollYStr) {
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        document.body.style.overflow = "";
+        window.scrollTo(0, parseInt(scrollYStr, 10));
+        delete document.body.dataset.scrollLockY;
+      }
     };
   }, [isAnyModalOpen]);
 
@@ -726,6 +868,12 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen p-3 sm:p-4 md:p-8 flex items-center justify-center">
+      {/* Native HTML5 Audio nodes for script-blocker bypass */}
+      <audio ref={musicRef} src="/sounds/ambient.mp3" loop muted autoPlay />
+      <audio ref={clickRef} src="/sounds/click.wav" preload="auto" />
+      <audio ref={swipeRef} src="/sounds/swipe.wav" preload="auto" />
+      <audio ref={errorRef} src="/sounds/error.wav" preload="auto" />
+
       {/* Background ShapeGrid (High-Performance lightweight Canvas 2D) */}
       <div className="fixed inset-0 z-0 pointer-events-none select-none" style={{ pointerEvents: 'none' }}>
         <ShapeGridBackground paused={isAnyModalOpen} />
@@ -734,35 +882,93 @@ export default function Home() {
       {/* Grid Layout Container */}
       <div className="w-full max-w-7xl mx-auto flex flex-col gap-4 sm:gap-6 relative z-10">
 
-        {/* Theme Switcher and Header Widget */}
+        {/* Theme Switcher, Sound Controls and Header Widget */}
         <div className="flex justify-between items-center px-1 sm:px-2">
           <div className="flex items-center gap-1.5 font-mono text-[10px] sm:text-xs font-bold text-[var(--c-text-muted)]">
-            <Terminal size={14} /> status: production_build_active
+            <Terminal size={14} /> status: 200
           </div>
 
-          <button
-            onClick={toggleTheme}
-            className="neo-btn bg-[var(--c-surface)] px-3 py-1.5 text-xs font-bold uppercase flex items-center gap-1.5 cursor-pointer"
-          >
-            {theme === "light" ? (
-              <>
-                Modo Oscuro <Moon size={14} className="stroke-[2.5]" />
-              </>
-            ) : (
-              <>
-                Modo Claro <Sun size={14} className="stroke-[2.5]" />
-              </>
-            )}
-          </button>
+            <div className="flex items-center gap-2">
+            {/* Music Play/Pause Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                const audio = musicRef.current;
+                if (audio) {
+                  if (isMusicMuted) {
+                    audio.muted = false;
+                    audio.play()
+                      .then(() => {
+                        setIsMusicMuted(false);
+                        setHasInteracted(true);
+                      })
+                      .catch(() => {
+                        audio.muted = true;
+                      });
+                  } else {
+                    audio.pause();
+                    audio.muted = true;
+                    setIsMusicMuted(true);
+                  }
+                }
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("play-click"));
+                }
+              }}
+              className="neo-btn bg-[var(--c-surface)] w-[34px] h-[34px] cursor-pointer flex items-center justify-center animate-fadeIn"
+              title={isMusicMuted ? "Activar música de fondo" : "Silenciar música de fondo"}
+            >
+              {isMusicMuted ? <Play className="stroke-[2.5] text-[var(--c-text-muted)]" size={14} /> : <Pause className="stroke-[2.5] text-neo-pink fill-neo-pink/20" size={14} />}
+            </button>
+
+            {/* SFX Mute Button */}
+            <button
+              onClick={() => {
+                const newState = !isSFXMuted;
+                setIsSFXMuted(newState);
+                if (!newState && typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("play-click"));
+                }
+              }}
+              className="neo-btn bg-[var(--c-surface)] w-[34px] h-[34px] cursor-pointer flex items-center justify-center"
+              title={isSFXMuted ? "Activar efectos de sonido" : "Silenciar efectos de sonido"}
+            >
+              {isSFXMuted ? <VolumeX className="stroke-[2.5] text-[var(--c-text-muted)]" size={14} /> : <Volume2 className="stroke-[2.5] text-neo-cyan" size={14} />}
+            </button>
+
+            {/* Theme Switcher Button */}
+            <button
+              onClick={() => {
+                toggleTheme();
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("play-click"));
+                }
+              }}
+              className="neo-btn bg-[var(--c-surface)] w-[128px] h-[34px] text-xs font-bold uppercase flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              {theme === "light" ? (
+                <>
+                  Modo Oscuro <Moon size={14} className="stroke-[2.5]" />
+                </>
+              ) : (
+                <>
+                  Modo Claro <Sun size={14} className="stroke-[2.5]" />
+                </>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Bento Grid */}
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 auto-rows-[minmax(160px,auto)] sm:auto-rows-[minmax(180px,auto)]"
-        >
+        <LayoutGroup id="bento-grid">
+          <motion.div
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 auto-rows-[minmax(160px,auto)] sm:auto-rows-[minmax(180px,auto)]"
+          >
 
           {/* ═══ CELL 1: Interactive Profile Card (Who I Am) ═══ */}
-          <div
+          <motion.div
+            layout
             className={`sm:col-span-2 md:col-span-2 md:row-span-2 ${isThemeChanging ? "theme-bump" : ""}`}
           >
             <DecayCard maxTilt={10} className="w-full h-full">
@@ -790,25 +996,35 @@ export default function Home() {
                         </>
                       )}
                     </div>
-                    <div>
-                      <h1 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-[var(--c-text)]">
+                    <div className="flex flex-col">
+                      <h1 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-[var(--c-text)] leading-none">
                         Jeremyah
                       </h1>
-                      <div className="flex flex-wrap gap-2 items-center mt-0.5">
-                        <span className="font-mono text-[10px] sm:text-xs font-bold text-[var(--c-text-muted)] flex-shrink-0">
-                          @WriteColor
-                        </span>
+                      <span className="font-mono text-[10px] sm:text-xs font-bold text-[var(--c-text-muted)] mt-1">
+                        @WriteColor
+                      </span>
+                      <div className="flex flex-wrap gap-2 items-center mt-2.5">
                         <button
-                          onClick={() => setIsSpecsModalOpen(true)}
-                          className="font-mono text-[9px] font-bold text-neo-cyan cursor-pointer flex items-center gap-1 border-2 border-[var(--c-border)] px-1.5 py-0.5 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform flex-shrink-0 whitespace-nowrap"
+                          onClick={() => {
+                            setIsSpecsModalOpen(true);
+                            if (typeof window !== "undefined") {
+                              window.dispatchEvent(new CustomEvent("play-click"));
+                            }
+                          }}
+                          className="font-mono text-xs font-bold text-neo-cyan cursor-pointer flex items-center gap-1.5 border-2 border-[var(--c-border)] px-2.5 py-1 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform flex-shrink-0 whitespace-nowrap"
                         >
-                          <Laptop size={10} /> Specs +
+                          <Laptop size={13} /> Specs +
                         </button>
                         <button
-                          onClick={() => setIsDomainsModalOpen(true)}
-                          className="font-mono text-[9px] font-bold text-neo-yellow cursor-pointer flex items-center gap-1 border-2 border-[var(--c-border)] px-1.5 py-0.5 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform flex-shrink-0 whitespace-nowrap"
+                          onClick={() => {
+                            setIsDomainsModalOpen(true);
+                            if (typeof window !== "undefined") {
+                              window.dispatchEvent(new CustomEvent("play-click"));
+                            }
+                          }}
+                          className="font-mono text-xs font-bold text-neo-yellow cursor-pointer flex items-center gap-1.5 border-2 border-[var(--c-border)] px-2.5 py-1 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform flex-shrink-0 whitespace-nowrap"
                         >
-                          <Globe size={10} /> Dominios +
+                          <Globe size={13} /> Dominios +
                         </button>
                       </div>
                     </div>
@@ -863,10 +1079,11 @@ export default function Home() {
                 </div>
               </div>
             </DecayCard>
-          </div>
+          </motion.div>
 
           {/* ═══ CELL 2: Biography & Studies (CardSwap) ═══ */}
-          <div
+          <motion.div
+            layout
             className={`sm:col-span-2 md:col-span-2 md:row-span-1 ${isThemeChanging ? "theme-bump" : ""}`}
           >
             <CardSwap
@@ -881,8 +1098,11 @@ export default function Home() {
                       onClick={(e) => {
                         e.stopPropagation();
                         setExpandedCard("quien-soy");
+                        if (typeof window !== "undefined") {
+                          window.dispatchEvent(new CustomEvent("play-click"));
+                        }
                       }}
-                      className="font-mono text-[9px] sm:text-[10px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-2 py-0.5 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] cursor-pointer flex-shrink-0"
+                      className="font-mono text-xs sm:text-[13px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-3 py-1 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] cursor-pointer flex-shrink-0"
                     >
                       Expandir +
                     </button>
@@ -907,13 +1127,16 @@ export default function Home() {
                     <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-black text-white px-2 py-1">
                       Estudios & Foco
                     </span>
-                    <div className="flex gap-1.5">
+                    <div className="flex gap-2">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           setExpandedCard("estudios");
+                          if (typeof window !== "undefined") {
+                            window.dispatchEvent(new CustomEvent("play-click"));
+                          }
                         }}
-                        className="font-mono text-[9px] font-black uppercase text-black border-2 border-black px-1.5 py-0.5 shadow-[2px_2px_0px_0px_#000] bg-white cursor-pointer"
+                        className="font-mono text-xs font-black uppercase text-black border-2 border-black px-2.5 py-1 shadow-[2px_2px_0px_0px_#000] bg-white cursor-pointer"
                       >
                         Estudios +
                       </button>
@@ -921,8 +1144,11 @@ export default function Home() {
                         onClick={(e) => {
                           e.stopPropagation();
                           setExpandedCard("foco");
+                          if (typeof window !== "undefined") {
+                            window.dispatchEvent(new CustomEvent("play-click"));
+                          }
                         }}
-                        className="font-mono text-[9px] font-black uppercase text-black border-2 border-black px-1.5 py-0.5 shadow-[2px_2px_0px_0px_#000] bg-white cursor-pointer"
+                        className="font-mono text-xs font-black uppercase text-black border-2 border-black px-2.5 py-1 shadow-[2px_2px_0px_0px_#000] bg-white cursor-pointer"
                       >
                         Foco +
                       </button>
@@ -944,10 +1170,11 @@ export default function Home() {
                 </div>
               }
             />
-          </div>
+          </motion.div>
 
           {/* ═══ CELL 3: Discord Button ═══ */}
-          <div
+          <motion.div
+            layout
             className={`${isThemeChanging ? "theme-bump" : ""}`}
           >
             <a
@@ -971,10 +1198,11 @@ export default function Home() {
                 </div>
               </div>
             </a>
-          </div>
+          </motion.div>
 
           {/* ═══ CELL 4: GitHub Button ═══ */}
-          <div
+          <motion.div
+            layout
             className={`${isThemeChanging ? "theme-bump" : ""}`}
           >
             <a
@@ -998,10 +1226,11 @@ export default function Home() {
                 </div>
               </div>
             </a>
-          </div>
+          </motion.div>
 
           {/* ═══ CELL 5: Skills (Marquees) ═══ */}
-          <div
+          <motion.div
+            layout
             className={`sm:col-span-2 ${isThemeChanging ? "theme-bump" : ""}`}
           >
             <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between overflow-hidden min-h-[160px] sm:min-h-[180px]">
@@ -1010,8 +1239,13 @@ export default function Home() {
                   Skills & Stacks
                 </span>
                 <button
-                  onClick={() => setSelectedSkillName("all")}
-                  className="font-mono text-[8px] sm:text-[9px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-1.5 py-0.5 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform cursor-pointer"
+                  onClick={() => {
+                    setSelectedSkillName("all");
+                    if (typeof window !== "undefined") {
+                      window.dispatchEvent(new CustomEvent("play-click"));
+                    }
+                  }}
+                  className="font-mono text-[11px] sm:text-xs font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-2.5 py-1 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform cursor-pointer"
                 >
                   Pulse para detalle +
                 </button>
@@ -1026,10 +1260,11 @@ export default function Home() {
                 Interacciones fluidas & API Robustas
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* ═══ CELL 6: Collaboration Terms / Contact Form ═══ */}
-          <div
+          <motion.div
+            layout
             id="contacto-showcase"
             className={`sm:col-span-2 ${isThemeChanging ? "theme-bump" : ""}`}
           >
@@ -1040,60 +1275,82 @@ export default function Home() {
                     Colaborar Conmigo
                   </span>
                   <button
-                    onClick={() => setShowContactForm(!showContactForm)}
-                    className="font-mono text-[9px] sm:text-[10px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-2 py-0.5 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] cursor-pointer flex-shrink-0"
+                    onClick={() => {
+                      setShowContactForm(!showContactForm);
+                      if (typeof window !== "undefined") {
+                        window.dispatchEvent(new CustomEvent("play-click"));
+                      }
+                    }}
+                    className="font-mono text-xs sm:text-[13px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-3 py-1 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] cursor-pointer flex-shrink-0"
                   >
                     {showContactForm ? "Ver Info" : "Escríbeme +"}
                   </button>
                 </div>
 
-                {showContactForm ? (
-                  <div className="my-2 text-left">
-                    <ContactForm
-                      onClose={() => {
-                        setShowContactForm(false);
-                        setContactPrefill("");
-                      }}
-                      initialMessage={contactPrefill}
-                    />
-                  </div>
-                ) : (
-                  <>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 my-3">
-                      <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-1 text-neo-pink">
-                          <Clock size={16} className="stroke-[3]" />
-                          <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Tiempos</span>
+                <AnimatePresence mode="wait">
+                  {showContactForm ? (
+                    <motion.div
+                      key="contact-form-key"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="my-2 text-left w-full"
+                    >
+                      <ContactForm
+                        onClose={() => {
+                          setShowContactForm(false);
+                          setContactPrefill("");
+                        }}
+                        initialMessage={contactPrefill}
+                      />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="contact-info-key"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                      className="w-full flex flex-col justify-between flex-grow"
+                    >
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 my-3">
+                        <div className="flex flex-col gap-1">
+                          <div className="flex items-center gap-1 text-neo-pink">
+                            <Clock size={16} className="stroke-[3]" />
+                            <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Tiempos</span>
+                          </div>
+                          <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Flexibles & veloces</span>
                         </div>
-                        <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Flexibles & veloces</span>
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-1 text-neo-yellow">
-                          <CircleDollarSign size={16} className="stroke-[3]" />
-                          <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Presupuesto</span>
+                        <div className="flex flex-col gap-1">
+                          <div className="flex items-center gap-1 text-neo-yellow">
+                            <CircleDollarSign size={16} className="stroke-[3]" />
+                            <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Presupuesto</span>
+                          </div>
+                          <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Adaptable al producto</span>
                         </div>
-                        <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Adaptable al producto</span>
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-1 text-neo-cyan">
-                          <CheckCircle2 size={16} className="stroke-[3]" />
-                          <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Entrega</span>
+                        <div className="flex flex-col gap-1">
+                          <div className="flex items-center gap-1 text-neo-cyan">
+                            <CheckCircle2 size={16} className="stroke-[3]" />
+                            <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Entrega</span>
+                          </div>
+                          <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Calidad garantizada</span>
                         </div>
-                        <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Calidad garantizada</span>
                       </div>
-                    </div>
 
-                    <div className="font-sans text-[10px] sm:text-[11px] font-bold text-[var(--c-text)] leading-tight">
-                      Listo para desarrollar soluciones a medida. Sin rodeos comerciales agresivos, solo ingeniería sólida.
-                    </div>
-                  </>
-                )}
+                      <div className="font-sans text-[10px] sm:text-[11px] font-bold text-[var(--c-text)] leading-tight">
+                        Listo para desarrollar soluciones a medida. Sin rodeos comerciales agresivos, solo ingeniería sólida.
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </PixelCard>
-          </div>
+          </motion.div>
 
           {/* ═══ CELL 7: Projects Showcase ═══ */}
-          <div
+          <motion.div
+            layout
             id="proyectos-showcase"
             className={`sm:col-span-2 md:col-span-3 md:row-span-2 ${isThemeChanging ? "theme-bump" : ""}`}
           >
@@ -1110,7 +1367,12 @@ export default function Home() {
                   {(["All", "Freelance", "Frontend", "Fullstack"] as const).map((cat) => (
                     <button
                       key={cat}
-                      onClick={() => setActiveCategory(cat)}
+                      onClick={() => {
+                        setActiveCategory(cat);
+                        if (typeof window !== "undefined") {
+                          window.dispatchEvent(new CustomEvent("play-click"));
+                        }
+                      }}
                       className={`px-2.5 sm:px-3 py-1 border-2 border-[var(--c-border)] font-display font-bold text-[10px] sm:text-xs uppercase transition-all duration-150 cursor-pointer ${activeCategory === cat
                         ? "bg-[var(--c-text)] text-[var(--c-bg)] translate-x-[1px] translate-y-[1px] shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)]"
                         : "bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px]"
@@ -1221,7 +1483,12 @@ export default function Home() {
                               {pageProjects.map((project) => (
                                 <button
                                   key={project.id}
-                                  onClick={() => setExpandedCard(project)}
+                                  onClick={() => {
+                                    setExpandedCard(project);
+                                    if (typeof window !== "undefined") {
+                                      window.dispatchEvent(new CustomEvent("play-click"));
+                                    }
+                                  }}
                                   className="neo-card hover:bg-[var(--c-surface-hover)] p-3 sm:p-4 flex flex-col justify-between h-auto min-h-[120px] sm:min-h-[130px] relative group overflow-hidden cursor-pointer text-left w-full"
                                 >
                                   <div className="absolute top-0 right-0 h-5 sm:h-6 px-2.5 border-b-2 border-l-2 border-[var(--c-border)] font-display font-bold text-[8px] sm:text-[9px] uppercase bg-[var(--c-surface)] text-[var(--c-text)] flex items-center justify-center shadow-[-2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
@@ -1291,6 +1558,9 @@ export default function Home() {
                         onClick={(e) => {
                           e.stopPropagation();
                           setProjectPage(prev => Math.max(0, prev - 1));
+                          if (typeof window !== "undefined") {
+                            window.dispatchEvent(new CustomEvent("play-click"));
+                          }
                         }}
                         disabled={projectPage === 0}
                         className="p-1.5 sm:p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-100 flex items-center justify-center cursor-pointer"
@@ -1305,6 +1575,9 @@ export default function Home() {
                         onClick={(e) => {
                           e.stopPropagation();
                           setProjectPage(prev => Math.min(pageCount - 1, prev + 1));
+                          if (typeof window !== "undefined") {
+                            window.dispatchEvent(new CustomEvent("play-click"));
+                          }
                         }}
                         disabled={projectPage === pageCount - 1}
                         className="p-1.5 sm:p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-100 flex items-center justify-center cursor-pointer"
@@ -1322,10 +1595,11 @@ export default function Home() {
               </div>
 
             </div>
-          </div>
+          </motion.div>
 
           {/* ═══ CELL 8: Instagram Button ═══ */}
-          <div
+          <motion.div
+            layout
             className={`${isThemeChanging ? "theme-bump" : ""}`}
           >
             <a
@@ -1349,10 +1623,11 @@ export default function Home() {
                 </div>
               </div>
             </a>
-          </div>
+          </motion.div>
 
           {/* ═══ CELL 9: Testimonials / References (CardSwap) ═══ */}
-          <div
+          <motion.div
+            layout
             className={`${isThemeChanging ? "theme-bump" : ""}`}
           >
             <CardSwap
@@ -1391,8 +1666,11 @@ export default function Home() {
                           onClick={(e) => {
                             e.stopPropagation();
                             setIsReferencesModalOpen(true);
+                            if (typeof window !== "undefined") {
+                              window.dispatchEvent(new CustomEvent("play-click"));
+                            }
                           }}
-                          className="font-mono text-[8px] font-black text-neo-pink uppercase cursor-pointer border-2 border-[var(--c-border)] px-1.5 py-0.5 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] flex-shrink-0 hover:bg-[var(--c-surface-hover)]"
+                          className="font-mono text-[11px] sm:text-xs font-black text-neo-pink uppercase cursor-pointer border-2 border-[var(--c-border)] px-2.5 py-1 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] flex-shrink-0 hover:bg-[var(--c-surface-hover)]"
                         >
                           Ver Todas +
                         </button>
@@ -1417,6 +1695,9 @@ export default function Home() {
                           onClick={(e) => {
                             e.stopPropagation();
                             setRefIndex((prev) => (prev - 1 + REFERENCES_DB.length) % REFERENCES_DB.length);
+                            if (typeof window !== "undefined") {
+                              window.dispatchEvent(new CustomEvent("play-click"));
+                            }
                           }}
                           className="p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100 flex items-center justify-center cursor-pointer"
                           title="Opinión Anterior"
@@ -1427,6 +1708,9 @@ export default function Home() {
                           onClick={(e) => {
                             e.stopPropagation();
                             setRefIndex((prev) => (prev + 1) % REFERENCES_DB.length);
+                            if (typeof window !== "undefined") {
+                              window.dispatchEvent(new CustomEvent("play-click"));
+                            }
                           }}
                           className="p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100 flex items-center justify-center cursor-pointer"
                           title="Siguiente Opinión"
@@ -1442,9 +1726,10 @@ export default function Home() {
                 </div>
               }
             />
-          </div>
+          </motion.div>
 
-        </div>
+        </motion.div>
+      </LayoutGroup>
 
         {/* Footer Accent Decoration & Stats Metric Tracker */}
         <div className="neo-card p-4 md:p-5 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-5 text-center md:text-left bg-[var(--c-surface)]">
@@ -1452,7 +1737,16 @@ export default function Home() {
             {/* Visitors metric badge */}
             <div className="flex items-center gap-2 px-3 py-1.5 border-2 border-[var(--c-border)] bg-[var(--c-surface-hover)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] font-mono text-[10px] sm:text-xs font-bold text-[var(--c-text)]">
               <Eye size={12} className="text-neo-cyan animate-pulse" />
-              <span>Visitas únicas: <span className="font-black text-neo-cyan">{stats.visits.toLocaleString()}</span></span>
+              <span>
+                Visitas únicas:{" "}
+                <span className="font-black text-neo-cyan">
+                  {stats.visits !== null ? (
+                    <CountUp to={stats.visits} separator="," />
+                  ) : (
+                    "-"
+                  )}
+                </span>
+              </span>
             </div>
 
             {/* Voting Component */}
@@ -1471,7 +1765,13 @@ export default function Home() {
                   title={userVote ? "Ya has calificado" : "Me gusta"}
                 >
                   <ThumbsUp size={12} className={userVote === "like" ? "fill-black" : ""} />
-                  <span>{stats.likes}</span>
+                  <span>
+                    {stats.likes !== null ? (
+                      <CountUp to={stats.likes} separator="," />
+                    ) : (
+                      "-"
+                    )}
+                  </span>
                 </button>
 
                 <button
@@ -1486,7 +1786,13 @@ export default function Home() {
                   title={userVote ? "Ya has calificado" : "No me gusta"}
                 >
                   <ThumbsDown size={12} className={userVote === "dislike" ? "fill-black" : ""} />
-                  <span>{stats.dislikes}</span>
+                  <span>
+                    {stats.dislikes !== null ? (
+                      <CountUp to={stats.dislikes} separator="," />
+                    ) : (
+                      "-"
+                    )}
+                  </span>
                 </button>
               </div>
             </div>
@@ -1559,7 +1865,12 @@ export default function Home() {
 
                 {/* Unified Close Button */}
                 <button
-                  onClick={() => setExpandedCard(null)}
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.dispatchEvent(new CustomEvent("play-click"));
+                    }
+                    setExpandedCard(null);
+                  }}
                   aria-label="Cerrar modal"
                   className="p-1.5 border-2 border-[var(--c-border)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
                 >

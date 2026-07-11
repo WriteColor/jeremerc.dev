@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { X, Heart, Calendar, Award, CheckCircle2, ArrowLeft } from "lucide-react";
 import { SkillIcon } from "@/components/ui/SkillIcons";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface SkillDetail {
   name: string;
@@ -329,25 +330,60 @@ interface SkillDetailModalProps {
 }
 
 export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, onClose, onOpenProject }) => {
-  const [prevSkillName, setPrevSkillName] = React.useState<string | null>(skillName);
-  const [activeSkill, setActiveSkill] = React.useState<string | null>(skillName);
-  const [hasHistory, setHasHistory] = React.useState(false);
+  const [prevSkillName, setPrevSkillName] = useState<string | null>(skillName);
+  const [activeSkill, setActiveSkill] = useState<string | null>(skillName);
+  const [hasHistory, setHasHistory] = useState(false);
+  const [scrollPositions, setScrollPositions] = useState<Record<string, number>>({});
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   if (skillName !== prevSkillName) {
     setPrevSkillName(skillName);
-    setActiveSkill(skillName);
-    setHasHistory(false);
+    if (skillName !== null) {
+      setActiveSkill(skillName);
+      setHasHistory(false);
+    } else {
+      // Clear positions cache on close
+      setScrollPositions({});
+    }
   }
 
-  React.useEffect(() => {
+  const navigateTo = (nextSkill: string | null) => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("play-click"));
+    }
+    if (containerRef.current && activeSkill) {
+      const scrollPos = containerRef.current.scrollTop;
+      setScrollPositions(prev => ({
+        ...prev,
+        [activeSkill]: scrollPos
+      }));
+    }
+    setActiveSkill(nextSkill);
+    if (nextSkill !== "all") {
+      setHasHistory(true);
+    }
+  };
+
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && activeSkill) {
+      if (e.key === "Escape" && skillName) {
         onClose();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeSkill, onClose]);
+  }, [skillName, onClose]);
+
+  const isOpen = skillName !== null;
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const key = activeSkill || "none";
+      const savedScroll = scrollPositions[key] || 0;
+      containerRef.current.scrollTop = savedScroll;
+    }
+  }, [activeSkill, scrollPositions]);
 
   if (!activeSkill) return null;
 
@@ -386,11 +422,24 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
     const backSkills = ["Node.js", "Laravel (PHP)", "Python", "C++", "Java (Swing)", "Cargo.js", "Supabase", "Neon DB", "PostgreSQL", "Docker", "Cloudflare Workers", "Git"];
 
     return (
-      <div onClick={onClose} className="fixed inset-0 bg-[var(--c-overlay-bg)] backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
-        <div 
-          className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] text-[var(--c-text)]"
-          onClick={(e) => e.stopPropagation()}
-        >
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose} 
+            className="fixed inset-0 bg-[var(--c-overlay-bg)] backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
+          >
+            <motion.div 
+              ref={containerRef}
+              initial={{ scale: 0.9, y: 30 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 30 }}
+              transition={{ type: "spring", damping: 25, stiffness: 220 }}
+              className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] text-[var(--c-text)]"
+              onClick={(e) => e.stopPropagation()}
+            >
           {/* Header */}
           <div className="flex items-center justify-between border-b-2 border-[var(--c-border)] pb-4 mb-4">
             <div className="flex items-center gap-2">
@@ -400,7 +449,12 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
               </h3>
             </div>
             <button 
-              onClick={onClose}
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("play-click"));
+                }
+                onClose();
+              }}
               aria-label="Cerrar modal"
               className="p-1.5 border-2 border-[var(--c-border)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
             >
@@ -422,10 +476,7 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
                 {frontSkills.map((tech) => (
                   <button
                     key={tech}
-                    onClick={() => {
-                      setActiveSkill(tech);
-                      setHasHistory(true);
-                    }}
+                    onClick={() => navigateTo(tech)}
                     className="p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface-hover)] hover:bg-neo-cyan hover:text-black font-mono text-[10px] sm:text-xs font-black uppercase text-left transition-colors duration-150 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),0.15)] hover:shadow-[3px_3px_0px_0px_rgba(var(--c-shadow),1)] cursor-pointer"
                   >
                     {tech} →
@@ -443,10 +494,7 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
                 {backSkills.map((tech) => (
                   <button
                     key={tech}
-                    onClick={() => {
-                      setActiveSkill(tech);
-                      setHasHistory(true);
-                    }}
+                    onClick={() => navigateTo(tech)}
                     className="p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface-hover)] hover:bg-neo-pink hover:text-black font-mono text-[10px] sm:text-xs font-black uppercase text-left transition-colors duration-150 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),0.15)] hover:shadow-[3px_3px_0px_0px_rgba(var(--c-shadow),1)] cursor-pointer"
                   >
                     {tech} →
@@ -458,29 +506,41 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
             {/* Hidden Option / Architecture map */}
             <div className="pt-4 border-t border-[var(--c-border)]/15">
               <button
-                onClick={() => {
-                  setActiveSkill("architecture");
-                  setHasHistory(true);
-                }}
+                onClick={() => navigateTo("architecture")}
                 className="w-full text-center py-2.5 border-2 border-dashed border-[var(--c-border)] hover:border-neo-yellow text-xs font-mono font-black text-[var(--c-text-muted)] hover:text-[var(--c-text)] bg-[var(--c-surface-hover)] hover:bg-neo-yellow/10 cursor-pointer transition-all duration-200"
               >
                 $ ./ejecutar planos_arquitectura.sh 🛠️
               </button>
             </div>
           </div>
-        </div>
-      </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     );
   }
 
   // 2. RENDER ARCHITECTURE VIEW (EASTER EGG)
   if (activeSkill === "architecture") {
     return (
-      <div onClick={onClose} className="fixed inset-0 bg-[var(--c-overlay-bg)] backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
-        <div 
-          className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] text-[var(--c-text)]"
-          onClick={(e) => e.stopPropagation()}
-        >
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose} 
+            className="fixed inset-0 bg-[var(--c-overlay-bg)] backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
+          >
+            <motion.div 
+              ref={containerRef}
+              initial={{ scale: 0.9, y: 30 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 30 }}
+              transition={{ type: "spring", damping: 25, stiffness: 220 }}
+              className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] text-[var(--c-text)]"
+              onClick={(e) => e.stopPropagation()}
+            >
           {/* Header */}
           <div className="flex items-center justify-between border-b-2 border-[var(--c-border)] pb-4 mb-4">
             <div className="flex items-center gap-2">
@@ -497,7 +557,12 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
               </h3>
             </div>
             <button 
-              onClick={onClose}
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("play-click"));
+                }
+                onClose();
+              }}
               aria-label="Cerrar modal"
               className="p-1.5 border-2 border-[var(--c-border)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
             >
@@ -550,14 +615,16 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
 
             {/* Back Button */}
             <button
-              onClick={() => setActiveSkill("all")}
+              onClick={() => navigateTo("all")}
               className="w-full py-2 bg-neo-pink text-black border-2 border-black font-mono text-xs font-black uppercase shadow-[3px_3px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_0px_#000] cursor-pointer transition-all duration-100"
             >
               Volver al Catálogo
             </button>
           </div>
-        </div>
-      </div>
+            </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
     );
   }
 
@@ -576,17 +643,30 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
   };
 
   return (
-    <div onClick={onClose} className="fixed inset-0 bg-[var(--c-overlay-bg)] backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
-      <div 
-        className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] text-[var(--c-text)]"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose} 
+          className="fixed inset-0 bg-[var(--c-overlay-bg)] backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
+        >
+          <motion.div 
+            ref={containerRef}
+            initial={{ scale: 0.9, y: 30 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.9, y: 30 }}
+            transition={{ type: "spring", damping: 25, stiffness: 220 }}
+            className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] text-[var(--c-text)]"
+            onClick={(e) => e.stopPropagation()}
+          >
         {/* Header Bar */}
         <div className="flex items-center justify-between border-b-2 border-[var(--c-border)] pb-4 mb-4">
           <div className="flex items-center gap-2.5">
             {hasHistory && (
               <button 
-                onClick={() => setActiveSkill("all")}
+                onClick={() => navigateTo("all")}
                 className="mr-1.5 p-1 border-2 border-[var(--c-border)] shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] hover:bg-[var(--c-surface-hover)] cursor-pointer"
                 title="Volver al catálogo"
               >
@@ -599,7 +679,12 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
             </h3>
           </div>
           <button 
-            onClick={onClose}
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("play-click"));
+              }
+              onClose();
+            }}
             aria-label="Cerrar modal"
             className="p-1.5 border-2 border-[var(--c-border)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
           >
@@ -692,8 +777,10 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
           </div>
 
         </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 

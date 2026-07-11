@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import { X, Award, Quote, Check } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Reference {
   author: string;
@@ -58,14 +59,25 @@ export const ReferencesModal: React.FC<ReferencesModalProps> = ({ isOpen, onClos
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
 
   return (
-    <div onClick={onClose} className="fixed inset-0 bg-[var(--c-overlay-bg)] backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
-      <div 
-        className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] text-[var(--c-text)]"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose} 
+          className="fixed inset-0 bg-[var(--c-overlay-bg)] backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
+        >
+          <motion.div 
+            initial={{ scale: 0.9, y: 30 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.9, y: 30 }}
+            transition={{ type: "spring", damping: 25, stiffness: 220 }}
+            className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] text-[var(--c-text)]"
+            onClick={(e) => e.stopPropagation()}
+          >
         {/* Header Bar */}
         <div className="flex items-center justify-between border-b-2 border-[var(--c-border)] pb-4 mb-4">
           <div className="flex items-center gap-2">
@@ -75,7 +87,12 @@ export const ReferencesModal: React.FC<ReferencesModalProps> = ({ isOpen, onClos
             </h3>
           </div>
           <button 
-            onClick={onClose}
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("play-click"));
+              }
+              onClose();
+            }}
             aria-label="Cerrar modal"
             className="p-1.5 border-2 border-[var(--c-border)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
           >
@@ -124,8 +141,10 @@ export const ReferencesModal: React.FC<ReferencesModalProps> = ({ isOpen, onClos
             </div>
           ))}
         </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 

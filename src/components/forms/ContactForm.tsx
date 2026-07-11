@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface ContactFormProps {
   onClose?: () => void;
@@ -128,14 +129,22 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
   return (
     <div className="text-[var(--c-text)] w-full">
       {status === "error" && (
-        <div className="mb-3 p-3 border-4 border-black bg-neo-pink text-black font-display font-black text-[10px] uppercase flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#000]">
+        <motion.div 
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-3 p-3 border-4 border-black bg-neo-pink text-black font-display font-black text-[10px] uppercase flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#000]"
+        >
           <AlertCircle size={14} className="stroke-[3]" />
           Fallo de envío SMTP. Intente más tarde o contácteme directo a contacto@jeremerc.dev.
-        </div>
+        </motion.div>
       )}
 
       {status === "success" ? (
-        <div className="flex flex-col items-center justify-center py-4 text-center border-4 border-[var(--c-border)] bg-neo-green p-4 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] text-black">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex flex-col items-center justify-center py-4 text-center border-4 border-[var(--c-border)] bg-neo-green p-4 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] text-black"
+        >
           <CheckCircle2 size={32} className="stroke-[2.5] mb-1 animate-bounce" />
           <h4 className="font-display font-black text-sm uppercase">¡Mensaje Enviado!</h4>
           <p className="font-sans text-[10px] font-semibold mt-0.5">
@@ -143,16 +152,31 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
           </p>
           <button
             type="button"
-            onClick={() => setStatus("idle")}
-            className="mt-2 px-3 py-1 border-2 border-black font-display font-bold text-[9px] uppercase bg-white text-black hover:bg-gray-50 active:translate-x-[1px] active:translate-y-[1px] cursor-pointer"
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("play-click"));
+              }
+              setStatus("idle");
+            }}
+            className="mt-2 px-4 py-1.5 border-2 border-black font-display font-bold text-xs uppercase bg-white text-black hover:bg-gray-50 active:translate-x-[1px] active:translate-y-[1px] cursor-pointer"
           >
             Enviar otro
           </button>
-        </div>
+        </motion.div>
       ) : (
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-2 py-0.5">
+        <motion.form 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          onSubmit={handleSubmit} 
+          className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-2 py-0.5"
+        >
           {/* Left Column: Name & Email inputs */}
-          <div className="flex flex-col gap-2 justify-between">
+          <motion.div 
+            initial={{ x: -10, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.05 }}
+            className="flex flex-col gap-2 justify-between"
+          >
             {/* Name */}
             <div className="flex flex-col gap-0.5">
               <label className="font-display font-black text-[9px] uppercase text-[var(--c-text)]">Tu Nombre</label>
@@ -188,10 +212,15 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
                 </span>
               )}
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: Message input */}
-          <div className="flex flex-col gap-0.5 h-full">
+          <motion.div 
+            initial={{ x: 10, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            className="flex flex-col gap-0.5 h-full"
+          >
             <label className="font-display font-black text-[9px] uppercase text-[var(--c-text)]">Mensaje</label>
             <textarea
               value={message}
@@ -205,45 +234,65 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
                 <AlertCircle size={9} /> {errors.message}
               </span>
             )}
-          </div>
+          </motion.div>
 
           {/* Turnstile Security Verification */}
-          <div className="col-span-1 sm:col-span-2 flex justify-center my-1">
+          <motion.div 
+            initial={{ y: 5, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.15 }}
+            className="col-span-1 sm:col-span-2 flex justify-center my-1"
+          >
             <div 
               ref={turnstileRef} 
               className="border-2 border-[var(--c-border)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] p-0.5 bg-[var(--c-surface)] inline-block overflow-hidden max-w-full"
             ></div>
-          </div>
+          </motion.div>
 
           {/* Bottom Action buttons row */}
-          <div className="col-span-1 sm:col-span-2 flex gap-2 justify-end mt-1 border-t border-[var(--c-border)]/15 pt-2">
+          <motion.div 
+            initial={{ y: 5, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="col-span-1 sm:col-span-2 flex gap-2 justify-end mt-1 border-t border-[var(--c-border)]/15 pt-2"
+          >
             {onClose && (
               <button
                 type="button"
-                onClick={onClose}
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("play-click"));
+                  }
+                  onClose();
+                }}
                 disabled={status === "loading"}
-                className="px-2.5 py-1 border-2 border-[var(--c-border)] font-display font-black text-[9px] uppercase bg-[var(--c-surface)] text-[var(--c-text)] shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] cursor-pointer"
+                className="px-3.5 py-1.5 border-2 border-[var(--c-border)] font-display font-black text-xs uppercase bg-[var(--c-surface)] text-[var(--c-text)] shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] cursor-pointer"
               >
                 Cancelar
               </button>
             )}
             <button
               type="submit"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("play-click"));
+                }
+              }}
               disabled={status === "loading"}
-              className="px-3.5 py-1 border-2 border-[var(--c-border)] bg-neo-yellow text-black font-display font-black text-[9px] uppercase shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] inline-flex items-center gap-1 cursor-pointer"
+              className="px-5 py-1.5 border-2 border-[var(--c-border)] bg-neo-yellow text-black font-display font-black text-xs uppercase shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] inline-flex items-center gap-1.5 cursor-pointer"
             >
               {status === "loading" ? (
                 <>
-                  Enviando <Loader2 size={10} className="animate-spin" />
+                  Enviando <Loader2 size={13} className="animate-spin" />
                 </>
               ) : (
                 <>
-                  Enviar <Send size={10} />
+                  Enviar <Send size={13} />
                 </>
               )}
             </button>
-          </div>
-        </form>
+          </motion.div>
+        </motion.form>
       )}
     </div>
   );
