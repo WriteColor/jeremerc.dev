@@ -5,17 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 interface DomainSolicitationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedDomain: string;
-  selectedExtension: string;
-  priceEstimate: number;
+  selectedDomains: { fqdn: string; price: number }[];
 }
 
 export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = ({
   isOpen,
   onClose,
-  selectedDomain,
-  selectedExtension,
-  priceEstimate,
+  selectedDomains,
 }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -28,20 +24,26 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
   const turnstileRef = useRef<HTMLDivElement>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
-  // Set initial pre-filled message
+  // Set initial pre-filled message with multiple domains
   useEffect(() => {
     if (isOpen) {
       setName("");
       setEmail("");
       setDiscord("");
+      
+      const totalPrice = selectedDomains.reduce((sum, d) => sum + d.price, 0);
+      const domainListText = selectedDomains
+        .map(d => `- ${d.fqdn} ($${d.price} USD/1er año)`)
+        .join("\n");
+        
       setMessage(
-        `Hola, me gustaría solicitar la disponibilidad del dominio "${selectedDomain}" (${selectedExtension}) por el precio estimado de ${priceEstimate} € el primer año.`
+        `Hola, me gustaría solicitar la disponibilidad del registro de los siguientes dominios:\n${domainListText}\n\nPrecio total estimado: $${totalPrice} USD el primer año.`
       );
       setStatus("idle");
       setTurnstileToken(null);
       setErrors({});
     }
-  }, [isOpen, selectedDomain, selectedExtension, priceEstimate]);
+  }, [isOpen, selectedDomains]);
 
   // Load Cloudflare Turnstile Script
   useEffect(() => {
@@ -162,6 +164,8 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
 
   const inputBase = "w-full border-3 border-black p-2 font-mono text-xs focus:outline-none focus:bg-[var(--c-surface-hover)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.15)]";
 
+  const domainNamesText = selectedDomains.map(d => d.fqdn).join(", ");
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -175,7 +179,7 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
             {/* Header */}
             <div className="flex items-center justify-between border-b-3 border-black pb-3 mb-4">
               <span className="font-display font-black text-xs uppercase bg-neo-pink text-black px-2 py-1 shadow-[2px_2px_0px_0px_#000]">
-                Solicitud de Dominio
+                Solicitud de Dominio(s)
               </span>
               <button
                 onClick={() => {
@@ -197,7 +201,7 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
                 </div>
                 <h3 className="font-display font-black text-sm uppercase">¡Solicitud Enviada!</h3>
                 <p className="font-sans text-xs text-[var(--c-text-muted)] leading-relaxed">
-                  He recibido los detalles de tu dominio <strong>{selectedDomain}</strong>. Te escribiré a la brevedad por Discord o correo para coordinar los métodos de pago y la entrega.
+                  He recibido los detalles de tus dominios: <strong className="font-mono text-xs">{domainNamesText}</strong>. Te escribiré a la brevedad por Discord o correo para coordinar los métodos de pago y la entrega.
                 </p>
                 <button
                   onClick={() => {
@@ -266,12 +270,12 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
                 </div>
 
                 <div>
-                  <label className="font-display font-black text-[10px] uppercase text-[var(--c-text)] block mb-1">Mensaje</label>
+                  <label className="font-display font-black text-[10px] uppercase text-[var(--c-text)] block mb-1">Mensaje de Solicitud</label>
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     disabled={status === "loading"}
-                    className={`${inputBase} h-20 resize-none`}
+                    className={`${inputBase} h-28 resize-none`}
                   />
                 </div>
 

@@ -1,9 +1,18 @@
 export interface DomainExtensionInfo {
   extension: string;
-  firstYearPrice: number; // in EUR
-  renewalPrice: number; // in EUR
+  firstYearPrice: number; // in USD
+  renewalPrice: number; // in USD
   observations: string;
   category: "populares" | "economicos" | "tecnicos" | "locales" | "creativos";
+  isBestValue?: boolean;
+}
+
+export interface DomainResult {
+  extension: string;
+  isAvailable: boolean | "error";
+  firstYearPrice: number;
+  renewalPrice: number;
+  observations: string;
   isBestValue?: boolean;
 }
 

@@ -1,25 +1,17 @@
 import React from "react";
 import { Check, X, AlertCircle } from "lucide-react";
-
-export type DomainResult = {
-  extension: string;
-  isAvailable: boolean | "error";
-  firstYearPrice: number;
-  renewalPrice: number;
-  observations: string;
-  isBestValue?: boolean;
-};
+import { DomainResult } from "./DomainData";
 
 export interface DomainResultsTableProps {
   results: DomainResult[];
   onSelect: (result: DomainResult) => void;
-  selectedResult: DomainResult | null;
+  selectedResults: DomainResult[];
 }
 
 export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
   results,
   onSelect,
-  selectedResult,
+  selectedResults,
 }) => {
   // Filter and sort available ones cheapest-first, then unavailable ones, then errors
   const sortedResults = [...results].sort((a, b) => {
@@ -56,7 +48,7 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
         </thead>
         <tbody>
           {sortedResults.map((res, idx) => {
-            const isSelected = selectedResult?.extension === res.extension;
+            const isSelected = selectedResults.some(r => r.extension === res.extension);
             const isBestValue = res.isBestValue && res.isAvailable === true;
 
             return (
@@ -96,13 +88,13 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
                 </td>
 
                 {/* First year price */}
-                <td className="p-3 font-mono font-bold text-xs text-[var(--c-text)] border-r-2 border-black/10 whitespace-nowrap">
-                  {res.isAvailable === true ? `${res.firstYearPrice} €` : "—"}
+                <td className="p-3 font-mono font-bold text-xs text-[var(--c-text)] border-r-2 border-black/10 whitespace-nowrap text-neo-green dark:text-emerald-400">
+                  {res.isAvailable === true ? `$${res.firstYearPrice}` : "—"}
                 </td>
 
                 {/* Renewal price */}
                 <td className="p-3 font-mono text-xs text-[var(--c-text-muted)] border-r-2 border-black/10 whitespace-nowrap">
-                  {res.isAvailable === true ? `${res.renewalPrice} €` : "—"}
+                  {res.isAvailable === true ? `$${res.renewalPrice}` : "—"}
                 </td>
 
                 {/* Observations */}
@@ -126,7 +118,7 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
                           : "bg-white text-black hover:bg-gray-50"
                       }`}
                     >
-                      {isSelected ? "Elegido" : "Elegir"}
+                      {isSelected ? "Elegido ✓" : "Elegir +"}
                     </button>
                   ) : (
                     <span className="font-mono text-[9px] text-[var(--c-text-subtle)] uppercase select-none">

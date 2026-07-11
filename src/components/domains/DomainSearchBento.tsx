@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Globe, ArrowRight, Laptop, Sparkles, ChevronRight, X, AlertTriangle, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { parseAndValidateDomain, ParsedDomain } from "./DomainValidator";
-import { DOMAIN_EXTENSIONS, DomainExtensionInfo } from "./DomainData";
-import { DomainResultsTable, DomainResult } from "./DomainResultsTable";
+import { DOMAIN_EXTENSIONS, DomainExtensionInfo, DomainResult } from "./DomainData";
+import { DomainResultsTable } from "./DomainResultsTable";
 import { DomainSearchTerminal } from "./DomainSearchTerminal";
 import { DomainSolicitationModal } from "./DomainSolicitationModal";
 
@@ -17,8 +17,10 @@ export const DomainSearchBento: React.FC = () => {
   const [searchCompleted, setSearchCompleted] = useState(false);
 
   const [results, setResults] = useState<DomainResult[]>([]);
-  const [selectedResult, setSelectedResult] = useState<DomainResult | null>(null);
+  const [selectedResults, setSelectedResults] = useState<DomainResult[]>([]);
   const [isSolicitationOpen, setIsSolicitationOpen] = useState(false);
+
+  const summaryPanelRef = useRef<HTMLDivElement>(null);
 
   // Validate on query change
   useEffect(() => {
@@ -30,6 +32,19 @@ export const DomainSearchBento: React.FC = () => {
     setValidation(res);
   }, [rawQuery]);
 
+  // Auto-scroll to solicitation panel when domains are selected
+  useEffect(() => {
+    if (selectedResults.length > 0) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById("solicitation-summary-panel");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedResults.length]);
+
   // Clean raw query on blur if valid
   const handleBlur = () => {
     if (validation?.isValid) {
@@ -37,15 +52,14 @@ export const DomainSearchBento: React.FC = () => {
     }
   };
 
-  // Perform DNS check via Cloudflare DNS JSON API (DoH)
+  // Perform DNS and RDAP check via our server-side API endpoint
   const checkDomainDns = async (base: string, ext: string): Promise<boolean | "error"> => {
     try {
       const fqdn = `${base}${ext}`;
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 4000); // 4 seconds timeout
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
 
-      const res = await fetch(`https://cloudflare-dns.com/dns-query?name=${fqdn}&type=SOA`, {
-        headers: { accept: "application/dns-json" },
+      const res = await fetch(`/api/domains/check?domain=${fqdn}`, {
         signal: controller.signal,
       });
       clearTimeout(timeoutId);
@@ -53,21 +67,14 @@ export const DomainSearchBento: React.FC = () => {
       if (!res.ok) return "error";
 
       const data = await res.json();
-      // Status 3 is NXDOMAIN (Domain does not exist / Available)
-      // Status 0 is NOERROR (Domain exists / Occupied)
-      if (data.Status === 3) {
-        return true; // Available
-      } else if (data.Status === 0) {
-        return false; // Registered / Occupied
-      }
-      return "error";
+      return data.isAvailable; // returns true (available), false (occupied), or "error"
     } catch (err) {
-      console.warn(`DNS check failed for ${base}${ext}:`, err);
+      console.warn(`Domain check failed for ${base}${ext}:`, err);
       return "error";
     }
   };
 
-  // Process DNS queries in small batches to respect rate limits and browser sockets
+  // Process queries in parallel batches
   const runParallelQueries = async (baseName: string) => {
     const list: DomainResult[] = [];
     const batchSize = 6;
@@ -101,9 +108,8 @@ export const DomainSearchBento: React.FC = () => {
     setIsSearching(true);
     setShowTerminal(true);
     setSearchCompleted(false);
-    setSelectedResult(null);
+    setSelectedResults([]);
 
-    // Run actual check in parallel background
     try {
       await runParallelQueries(validation.baseName);
     } catch (err) {
@@ -122,8 +128,21 @@ export const DomainSearchBento: React.FC = () => {
     setValidation(null);
     setSearchCompleted(false);
     setResults([]);
-    setSelectedResult(null);
+    setSelectedResults([]);
   };
+
+  const handleSelectResult = (res: DomainResult) => {
+    setSelectedResults((prev) => {
+      const alreadySelected = prev.some((item) => item.extension === res.extension);
+      if (alreadySelected) {
+        return prev.filter((item) => item.extension !== res.extension);
+      } else {
+        return [...prev, res];
+      }
+    });
+  };
+
+  const totalPrice = selectedResults.reduce((sum, item) => sum + item.firstYearPrice, 0);
 
   return (
     <motion.div
@@ -133,7 +152,7 @@ export const DomainSearchBento: React.FC = () => {
     >
       <div className="border-4 border-black bg-[var(--c-surface)] text-[var(--c-text)] shadow-[4px_4px_0px_0px_#000] p-5 sm:p-6 w-full relative select-none">
         
-        {/* Toggle Expansion header */}
+        {/* Header (Cerrar Buscador visible only when expanded) */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b-2 border-black/10 pb-3 mb-4">
           <div className="flex items-center gap-2">
             <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-neo-cyan text-black px-2 py-1 shadow-[2px_2px_0px_0px_#000] border-2 border-black">
@@ -144,18 +163,20 @@ export const DomainSearchBento: React.FC = () => {
             </h2>
           </div>
 
-          <button
-            onClick={() => {
-              if (typeof window !== "undefined") {
-                window.dispatchEvent(new CustomEvent("play-click"));
-              }
-              setIsExpanded(!isExpanded);
-              if (isExpanded) handleResetSearch();
-            }}
-            className="font-mono text-[10px] font-black uppercase text-black border-2 border-black px-3 py-1 shadow-[2.5px_2.5px_0px_0px_#000] bg-neo-pink cursor-pointer hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] transition-transform select-none"
-          >
-            {isExpanded ? "Cerrar Buscador" : "Abrir Buscador +"}
-          </button>
+          {isExpanded && (
+            <button
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("play-click"));
+                }
+                setIsExpanded(false);
+                handleResetSearch();
+              }}
+              className="font-mono text-[10px] font-black uppercase text-black border-2 border-black px-3 py-1 shadow-[2.5px_2.5px_0px_0px_#000] bg-neo-pink cursor-pointer hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] transition-transform select-none"
+            >
+              Cerrar Buscador
+            </button>
+          )}
         </div>
 
         {/* Compact View */}
@@ -188,10 +209,10 @@ export const DomainSearchBento: React.FC = () => {
               transition={{ duration: 0.25 }}
               className="overflow-hidden"
             >
-              {/* Informative Intro text */}
+              {/* Informative Intro text (Porkbun mention removed) */}
               <div className="border-3 border-black bg-[var(--c-surface-hover)] p-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.15)] mb-5 text-left text-xs sm:text-sm font-semibold text-[var(--c-text-muted)] leading-relaxed space-y-2">
                 <p>
-                  <strong>💡 ¿Cómo funciona este servicio?</strong> No soy un registrador oficial de dominios ni vendo dominios de forma automatizada. Como desarrollador Full Stack, trabajo diariamente con registradores compatibles (como Cloudflare Registrar, Porkbun, Namecheap) y tengo acceso a promociones de primer año altamente competitivas.
+                  <strong>💡 ¿Cómo funciona este servicio?</strong> No soy un registrador oficial de dominios ni vendo dominios de forma automatizada. Como desarrollador Full Stack, trabajo diariamente con registradores de confianza (como Cloudflare Registrar, Namecheap, entre otros) y tengo acceso a promociones de primer año altamente competitivas.
                 </p>
                 <p>
                   Busca tu dominio preferido abajo. Si está disponible, podrás solicitarlo y yo me encargaré de adquirirlo y transferirlo directamente a tu cuenta de Cloudflare (o tu proveedor elegido) sin recargos comerciales abusivos.
@@ -268,8 +289,8 @@ export const DomainSearchBento: React.FC = () => {
 
                   <DomainResultsTable 
                     results={results} 
-                    onSelect={(res) => setSelectedResult(res)} 
-                    selectedResult={selectedResult}
+                    onSelect={handleSelectResult} 
+                    selectedResults={selectedResults}
                   />
 
                   {/* Pricing disclaimer note */}
@@ -277,29 +298,38 @@ export const DomainSearchBento: React.FC = () => {
                     * Los precios y promociones del primer año mostrados son orientativos en base a las tarifas actuales de registradores colaboradores y quedan confirmados en el momento exacto del registro definitivo.
                   </div>
 
-                  {/* Solicitation Details Panel */}
-                  {selectedResult && (
+                  {/* Solicitation Details Panel (Multi-Select Summary) */}
+                  {selectedResults.length > 0 && (
                     <motion.div
+                      id="solicitation-summary-panel"
+                      ref={summaryPanelRef}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="border-3 border-black p-5 bg-[var(--c-surface-hover)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-left flex flex-col md:flex-row md:items-center justify-between gap-4"
+                      className="border-3 border-black p-5 bg-[var(--c-surface-hover)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-left flex flex-col md:flex-row md:items-center justify-between gap-4 scroll-mt-20"
                     >
-                      <div className="space-y-1.5 max-w-xl">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-sm font-black text-[var(--c-text)] bg-white border border-black px-2 py-0.5 shadow-[1.5px_1.5px_0px_0px_#000]">
-                            {validation?.baseName}{selectedResult.extension}
+                      <div className="space-y-2 max-w-xl">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="font-display font-black text-[9px] uppercase bg-neo-green text-black border border-black px-1.5 py-0.5 shadow-[1px_1px_0px_0px_#000]">
+                            Elegidos ({selectedResults.length})
                           </span>
-                          <span className="font-display font-black text-[8px] uppercase bg-neo-green text-black border border-black px-1.5 py-0.5 shadow-[1px_1px_0px_0px_#000]">
-                            Disponible
-                          </span>
+                          <div className="flex gap-1.5 flex-wrap">
+                            {selectedResults.map((item, idx) => (
+                              <span 
+                                key={idx}
+                                className="font-mono text-[11px] font-black text-[var(--c-text)] bg-white border border-black px-2 py-0.5 shadow-[1.5px_1.5px_0px_0px_#000]"
+                              >
+                                {validation?.baseName}{item.extension} (${item.firstYearPrice})
+                              </span>
+                            ))}
+                          </div>
                         </div>
                         
                         <p className="font-sans text-xs text-[var(--c-text-muted)] leading-relaxed">
-                          Has seleccionado registrar este dominio por un costo estimado de <strong>{selectedResult.firstYearPrice} €</strong> el primer año (renovación aprox. de {selectedResult.renewalPrice} €).
+                          Has seleccionado registrar <strong>{selectedResults.length} dominio(s)</strong> por un costo total estimado de <strong className="text-neo-green dark:text-emerald-400 font-bold">${totalPrice} USD</strong> el primer año.
                         </p>
                         
                         <div className="flex items-center gap-1.5 font-mono text-[9px] text-neo-pink font-bold">
-                          <ShieldCheck size={12} className="stroke-[2.5]" /> El precio final dependerá de la oferta activa del registrador al comprar.
+                          <ShieldCheck size={12} className="stroke-[2.5]" /> El precio final quedará confirmado al registrarse según la promoción del momento.
                         </div>
                       </div>
 
@@ -312,7 +342,7 @@ export const DomainSearchBento: React.FC = () => {
                         }}
                         className="border-3 border-black bg-neo-pink text-black font-display font-black text-xs uppercase px-5 py-3 shadow-[3px_3px_0px_0px_#000] hover:translate-y-0.5 active:translate-y-1 transition-transform flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap self-start md:self-center"
                       >
-                        Solicitar Dominio <ChevronRight size={14} className="stroke-[3]" />
+                        Solicitar registro <ChevronRight size={14} className="stroke-[3]" />
                       </button>
                     </motion.div>
                   )}
@@ -324,13 +354,14 @@ export const DomainSearchBento: React.FC = () => {
       </div>
 
       {/* Solicitation Form Modal */}
-      {selectedResult && (
+      {selectedResults.length > 0 && (
         <DomainSolicitationModal
           isOpen={isSolicitationOpen}
           onClose={() => setIsSolicitationOpen(false)}
-          selectedDomain={`${validation?.baseName}${selectedResult.extension}`}
-          selectedExtension={selectedResult.extension}
-          priceEstimate={selectedResult.firstYearPrice}
+          selectedDomains={selectedResults.map(r => ({
+            fqdn: `${validation?.baseName}${r.extension}`,
+            price: r.firstYearPrice
+          }))}
         />
       )}
     </motion.div>
