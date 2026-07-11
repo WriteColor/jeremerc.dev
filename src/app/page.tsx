@@ -448,6 +448,8 @@ export default function Home() {
   const [projectPage, setProjectPage] = useState(0);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
+  const [avatarError, setAvatarError] = useState(false);
+
   const swipeContainerRef = React.useRef<HTMLDivElement | null>(null);
   const pageRefs = React.useRef<Map<number, HTMLDivElement>>(new Map());
   const projTouchStartRef = React.useRef<number | null>(null);
@@ -754,696 +756,695 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Bento Grid wrapped in LayoutGroup for smooth physics transitions */}
-        <LayoutGroup>
-          <motion.div
-            layout="position"
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 auto-rows-[minmax(160px,auto)] sm:auto-rows-[minmax(180px,auto)]"
+        {/* Bento Grid */}
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 auto-rows-[minmax(160px,auto)] sm:auto-rows-[minmax(180px,auto)]"
+        >
+
+          {/* ═══ CELL 1: Interactive Profile Card (Who I Am) ═══ */}
+          <div
+            className={`sm:col-span-2 md:col-span-2 md:row-span-2 ${isThemeChanging ? "theme-bump" : ""}`}
           >
+            <DecayCard maxTilt={10} className="w-full h-full">
+              <div className="flex flex-col justify-between h-full min-h-[320px] sm:min-h-[380px]">
 
-            {/* ═══ CELL 1: Interactive Profile Card (Who I Am) ═══ */}
-            <motion.div
-              layout="position"
-              className={`sm:col-span-2 md:col-span-2 md:row-span-2 ${isThemeChanging ? "theme-bump" : ""}`}
-            >
-              <DecayCard maxTilt={10} className="w-full h-full">
-                <div className="flex flex-col justify-between h-full min-h-[320px] sm:min-h-[380px]">
-
-                  {/* Header Profile Info */}
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-center gap-3">
-                      {/* Stylized Avatar Placeholder (CSS Art) */}
-                      <div className="relative w-14 h-14 sm:w-16 sm:h-16 border-4 border-[var(--c-border)] bg-neo-yellow overflow-hidden shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] flex-shrink-0">
-                        <div className="absolute inset-0 bg-[radial-gradient(#000_20%,transparent_20%)] [background-size:8px_8px] opacity-20" />
-                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-10 rounded-t-full bg-black border-2 border-black" />
-                        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white border-2 border-black flex items-center justify-center">
-                          <div className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />
-                        </div>
-                      </div>
-                      <div>
-                        <h1 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-[var(--c-text)]">
-                          Jeremyah
-                        </h1>
-                        <div className="flex flex-wrap gap-2 items-center mt-0.5">
-                          <span className="font-mono text-[10px] sm:text-xs font-bold text-[var(--c-text-muted)] flex-shrink-0">
-                            @WriteColor
-                          </span>
-                          <button
-                            onClick={() => setIsSpecsModalOpen(true)}
-                            className="font-mono text-[9px] font-bold text-neo-cyan cursor-pointer flex items-center gap-1 border-2 border-[var(--c-border)] px-1.5 py-0.5 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform flex-shrink-0 whitespace-nowrap"
-                          >
-                            <Laptop size={10} /> Specs +
-                          </button>
-                          <button
-                            onClick={() => setIsDomainsModalOpen(true)}
-                            className="font-mono text-[9px] font-bold text-neo-yellow cursor-pointer flex items-center gap-1 border-2 border-[var(--c-border)] px-1.5 py-0.5 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform flex-shrink-0 whitespace-nowrap"
-                          >
-                            <Globe size={10} /> Dominios +
-                          </button>
-                        </div>
+                {/* Header Profile Info */}
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-3">
+                    {/* Profile Picture with graceful CSS Art fallback */}
+                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 border-4 border-[var(--c-border)] bg-neo-yellow overflow-hidden shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] flex-shrink-0">
+                      {!avatarError ? (
+                        <img 
+                          src="/avatar.png" 
+                          alt="Jeremyah Mercado" 
+                          className="w-full h-full object-cover" 
+                          onError={() => setAvatarError(true)}
+                        />
+                      ) : (
+                        <>
+                          <div className="absolute inset-0 bg-[radial-gradient(#000_20%,transparent_20%)] [background-size:8px_8px] opacity-20" />
+                          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-10 rounded-t-full bg-black border-2 border-black" />
+                          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white border-2 border-black flex items-center justify-center">
+                            <div className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <div>
+                      <h1 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-[var(--c-text)]">
+                        Jeremyah
+                      </h1>
+                      <div className="flex flex-wrap gap-2 items-center mt-0.5">
+                        <span className="font-mono text-[10px] sm:text-xs font-bold text-[var(--c-text-muted)] flex-shrink-0">
+                          @WriteColor
+                        </span>
+                        <button
+                          onClick={() => setIsSpecsModalOpen(true)}
+                          className="font-mono text-[9px] font-bold text-neo-cyan cursor-pointer flex items-center gap-1 border-2 border-[var(--c-border)] px-1.5 py-0.5 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform flex-shrink-0 whitespace-nowrap"
+                        >
+                          <Laptop size={10} /> Specs +
+                        </button>
+                        <button
+                          onClick={() => setIsDomainsModalOpen(true)}
+                          className="font-mono text-[9px] font-bold text-neo-yellow cursor-pointer flex items-center gap-1 border-2 border-[var(--c-border)] px-1.5 py-0.5 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform flex-shrink-0 whitespace-nowrap"
+                        >
+                          <Globe size={10} /> Dominios +
+                        </button>
                       </div>
                     </div>
+                  </div>
 
-                    {/* Pulsing Status Beacon - Redesigned to be premium neobrutalist */}
-                    <span className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 border-2 border-black bg-neo-green font-display font-black uppercase text-[8px] sm:text-[10px] tracking-wider text-black shadow-[2px_2px_0px_0px_#000] flex-shrink-0 select-none">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-45"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
-                      </span>
-                      Disponible
+                  {/* Pulsing Status Beacon - Redesigned to be premium neobrutalist */}
+                  <span className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 border-2 border-black bg-neo-green font-display font-black uppercase text-[8px] sm:text-[10px] tracking-wider text-black shadow-[2px_2px_0px_0px_#000] flex-shrink-0 select-none">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-45"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
                     </span>
-                  </div>
+                    Disponible
+                  </span>
+                </div>
 
-                  {/* Interactive Terminal Console */}
-                  <div className="my-3 sm:my-5">
-                    <InteractiveTerminal
-                      onScrollToProjects={() => document.getElementById("proyectos-showcase")?.scrollIntoView({ behavior: "smooth" })}
-                      onOpenContact={() => {
-                        setShowContactForm(true);
-                        setTimeout(() => document.getElementById("contacto-showcase")?.scrollIntoView({ behavior: "smooth" }), 200);
-                      }}
-                      onOpenSpecs={() => setIsSpecsModalOpen(true)}
-                      onOpenReferences={() => setIsReferencesModalOpen(true)}
-                      onToggleTheme={toggleTheme}
-                      onOpenSkill={(skillName) => setSelectedSkillName(skillName)}
-                      onOpenDomains={() => setIsDomainsModalOpen(true)}
-                    />
-                  </div>
+                {/* Interactive Terminal Console */}
+                <div className="my-3 sm:my-5">
+                  <InteractiveTerminal
+                    onScrollToProjects={() => document.getElementById("proyectos-showcase")?.scrollIntoView({ behavior: "smooth" })}
+                    onOpenContact={() => {
+                      setShowContactForm(true);
+                      setTimeout(() => document.getElementById("contacto-showcase")?.scrollIntoView({ behavior: "smooth" }), 200);
+                    }}
+                    onOpenSpecs={() => setIsSpecsModalOpen(true)}
+                    onOpenReferences={() => setIsReferencesModalOpen(true)}
+                    onToggleTheme={toggleTheme}
+                    onOpenSkill={(skillName) => setSelectedSkillName(skillName)}
+                    onOpenDomains={() => setIsDomainsModalOpen(true)}
+                  />
+                </div>
 
-                  {/* Profile statistics widgets */}
-                  <div className="grid grid-cols-2 gap-2 border-t-4 border-dashed border-[var(--c-border)]/20 pt-3 sm:pt-4 mb-2 sm:mb-3">
-                    <div className="flex flex-col">
-                      <span className="font-display font-black text-xl sm:text-2xl text-neo-pink leading-none">98%</span>
-                      <span className="font-mono text-[8px] sm:text-[9px] uppercase font-bold text-[var(--c-text-muted)]">Score de Optimización</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-display font-black text-xl sm:text-2xl text-neo-cyan leading-none">100%</span>
-                      <span className="font-mono text-[8px] sm:text-[9px] uppercase font-bold text-[var(--c-text-muted)]">Calidad de Código</span>
-                    </div>
+                {/* Profile statistics widgets */}
+                <div className="grid grid-cols-2 gap-2 border-t-4 border-dashed border-[var(--c-border)]/20 pt-3 sm:pt-4 mb-2 sm:mb-3">
+                  <div className="flex flex-col">
+                    <span className="font-display font-black text-xl sm:text-2xl text-neo-pink leading-none">98%</span>
+                    <span className="font-mono text-[8px] sm:text-[9px] uppercase font-bold text-[var(--c-text-muted)]">Score de Optimización</span>
                   </div>
-
-                  {/* Footer Bio summary */}
-                  <div>
-                    <h2 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tighter leading-none mb-1 text-[var(--c-text)]">
-                      Full Stack Developer
-                    </h2>
-                    <p className="font-sans text-xs sm:text-sm text-[var(--c-text-muted)] font-medium">
-                      Desarrollador web, asistentes de IA y arquitectura de software escalable.
-                    </p>
+                  <div className="flex flex-col">
+                    <span className="font-display font-black text-xl sm:text-2xl text-neo-cyan leading-none">100%</span>
+                    <span className="font-mono text-[8px] sm:text-[9px] uppercase font-bold text-[var(--c-text-muted)]">Calidad de Código</span>
                   </div>
                 </div>
-              </DecayCard>
-            </motion.div>
 
-            {/* ═══ CELL 2: Biography & Studies (CardSwap) ═══ */}
-            <motion.div
-              layout="position"
-              className={`sm:col-span-2 md:col-span-2 md:row-span-1 ${isThemeChanging ? "theme-bump" : ""}`}
+                {/* Footer Bio summary */}
+                <div>
+                  <h2 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tighter leading-none mb-1 text-[var(--c-text)]">
+                    Full Stack Developer
+                  </h2>
+                  <p className="font-sans text-xs sm:text-sm text-[var(--c-text-muted)] font-medium">
+                    Desarrollador web, asistentes de IA y arquitectura de software escalable.
+                  </p>
+                </div>
+              </div>
+            </DecayCard>
+          </div>
+
+          {/* ═══ CELL 2: Biography & Studies (CardSwap) ═══ */}
+          <div
+            className={`sm:col-span-2 md:col-span-2 md:row-span-1 ${isThemeChanging ? "theme-bump" : ""}`}
+          >
+            <CardSwap
+              className="w-full h-full min-h-[180px]"
+              front={
+                <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between hover:bg-[var(--c-surface-hover)] transition-colors relative">
+                  <div className="flex justify-between items-start gap-2">
+                    <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-1">
+                      Quién Soy
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandedCard("quien-soy");
+                      }}
+                      className="font-mono text-[9px] sm:text-[10px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-2 py-0.5 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] cursor-pointer flex-shrink-0"
+                    >
+                      Expandir +
+                    </button>
+                  </div>
+                  <p className="font-sans text-xs sm:text-sm font-semibold text-[var(--c-text)] my-3 leading-snug">
+                    Soy un desarrollador de software Full Stack apasionado por crear aplicaciones web modernas, robustas, escalables y visualmente atractivas.
+                  </p>
+                  <div className="font-display font-bold text-xs uppercase flex justify-between items-center text-[var(--c-text)]">
+                    <div className="flex gap-3 sm:gap-4">
+                      <span>📍 Remoto</span>
+                      <span>⚡ Rápido</span>
+                    </div>
+                    <span className="font-mono text-[9px] text-[var(--c-text-subtle)] flex items-center gap-1">
+                      Click para voltear <ChevronRight size={10} />
+                    </span>
+                  </div>
+                </div>
+              }
+              back={
+                <div className="neo-card-themed bg-neo-yellow text-black p-4 sm:p-6 h-full flex flex-col justify-between">
+                  <div className="flex justify-between items-start gap-2">
+                    <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-black text-white px-2 py-1">
+                      Estudios & Foco
+                    </span>
+                    <div className="flex gap-1.5">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setExpandedCard("estudios");
+                        }}
+                        className="font-mono text-[9px] font-black uppercase text-black border-2 border-black px-1.5 py-0.5 shadow-[2px_2px_0px_0px_#000] bg-white cursor-pointer"
+                      >
+                        Estudios +
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setExpandedCard("foco");
+                        }}
+                        className="font-mono text-[9px] font-black uppercase text-black border-2 border-black px-1.5 py-0.5 shadow-[2px_2px_0px_0px_#000] bg-white cursor-pointer"
+                      >
+                        Foco +
+                      </button>
+                    </div>
+                  </div>
+                  <div className="my-2">
+                    <p className="font-sans text-xs sm:text-sm font-bold text-black leading-snug">
+                      Estudiante de Ingeniería en Ciencia de Datos & IA, y desarrollador Full Stack especializado en Next.js, Node.js y ecosistemas de IA.
+                    </p>
+                  </div>
+                  <div className="flex justify-between uppercase items-center">
+                    <span className="font-mono text-[10px] font-black text-black">
+                      📖 Aprendizaje Activo
+                    </span>
+                    <span className="font-mono text-[9px] text-black/60 flex items-center gap-1">
+                      Click para volver <ChevronRight size={10} />
+                    </span>
+                  </div>
+                </div>
+              }
+            />
+          </div>
+
+          {/* ═══ CELL 3: Discord Button ═══ */}
+          <div
+            className={`${isThemeChanging ? "theme-bump" : ""}`}
+          >
+            <a
+              href="https://discord.com/users/668521031731773460"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block group h-full"
             >
-              <CardSwap
-                className="w-full h-full min-h-[180px]"
-                front={
-                  <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between hover:bg-[var(--c-surface-hover)] transition-colors relative">
-                    <div className="flex justify-between items-start gap-2">
-                      <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-1">
-                        Quién Soy
+              <div className="neo-card-brand bg-[#5865F2] hover:bg-[#4752C4] text-white p-4 sm:p-6 h-full flex flex-col justify-between transition-colors min-h-[140px] sm:min-h-[180px]">
+                <div className="flex justify-between items-start">
+                  <DiscordIcon className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
+                  <ExternalLink size={14} className="sm:w-4 sm:h-4" />
+                </div>
+                <div>
+                  <h3 className="font-display font-black text-lg sm:text-xl uppercase leading-none">
+                    Discord
+                  </h3>
+                  <p className="font-mono text-[9px] sm:text-[10px] uppercase font-bold text-white/80 mt-1">
+                    @WriteColor
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          {/* ═══ CELL 4: GitHub Button ═══ */}
+          <div
+            className={`${isThemeChanging ? "theme-bump" : ""}`}
+          >
+            <a
+              href="https://github.com/WriteColor"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block group h-full"
+            >
+              <div className="neo-card-brand bg-black text-white hover:bg-neutral-900 p-4 sm:p-6 h-full flex flex-col justify-between transition-colors min-h-[140px] sm:min-h-[180px]">
+                <div className="flex justify-between items-start">
+                  <GithubIcon className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
+                  <ExternalLink size={14} className="sm:w-4 sm:h-4" />
+                </div>
+                <div>
+                  <h3 className="font-display font-black text-lg sm:text-xl uppercase leading-none">
+                    GitHub
+                  </h3>
+                  <p className="font-mono text-[9px] sm:text-[10px] uppercase font-bold text-white/80 mt-1">
+                    @WriteColor
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          {/* ═══ CELL 5: Skills (Marquees) ═══ */}
+          <div
+            className={`sm:col-span-2 ${isThemeChanging ? "theme-bump" : ""}`}
+          >
+            <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between overflow-hidden min-h-[160px] sm:min-h-[180px]">
+              <div className="flex justify-between items-center self-stretch">
+                <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-1">
+                  Skills & Stacks
+                </span>
+                <button
+                  onClick={() => setSelectedSkillName("all")}
+                  className="font-mono text-[8px] sm:text-[9px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-1.5 py-0.5 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform cursor-pointer"
+                >
+                  Pulse para detalle +
+                </button>
+              </div>
+
+              <div className="my-3 flex flex-col gap-2">
+                <LogoLoop items={renderSkillTags(SKILLS_FRONT, "bg-neo-cyan")} speed="medium" direction="left" />
+                <LogoLoop items={renderSkillTags(SKILLS_BACK, "bg-neo-pink")} speed="medium" direction="right" />
+              </div>
+
+              <div className="font-mono text-[9px] sm:text-[10px] font-bold text-[var(--c-text-muted)] uppercase">
+                Interacciones fluidas & API Robustas
+              </div>
+            </div>
+          </div>
+
+          {/* ═══ CELL 6: Collaboration Terms / Contact Form ═══ */}
+          <div
+            id="contacto-showcase"
+            className={`sm:col-span-2 ${isThemeChanging ? "theme-bump" : ""}`}
+          >
+            <PixelCard pixelColor="#FF4E88" className="h-full">
+              <div className="p-4 sm:p-6 h-full flex flex-col justify-between min-h-[160px]">
+                <div className="flex justify-between items-center mb-1 gap-2">
+                  <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-1">
+                    Colaborar Conmigo
+                  </span>
+                  <button
+                    onClick={() => setShowContactForm(!showContactForm)}
+                    className="font-mono text-[9px] sm:text-[10px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-2 py-0.5 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] cursor-pointer flex-shrink-0"
+                  >
+                    {showContactForm ? "Ver Info" : "Escríbeme +"}
+                  </button>
+                </div>
+
+                {showContactForm ? (
+                  <div className="my-2 text-left">
+                    <ContactForm
+                      onClose={() => {
+                        setShowContactForm(false);
+                        setContactPrefill("");
+                      }}
+                      initialMessage={contactPrefill}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 my-3">
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-1 text-neo-pink">
+                          <Clock size={16} className="stroke-[3]" />
+                          <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Tiempos</span>
+                        </div>
+                        <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Flexibles & veloces</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-1 text-neo-yellow">
+                          <CircleDollarSign size={16} className="stroke-[3]" />
+                          <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Presupuesto</span>
+                        </div>
+                        <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Adaptable al producto</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-1 text-neo-cyan">
+                          <CheckCircle2 size={16} className="stroke-[3]" />
+                          <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Entrega</span>
+                        </div>
+                        <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Calidad garantizada</span>
+                      </div>
+                    </div>
+
+                    <div className="font-sans text-[10px] sm:text-[11px] font-bold text-[var(--c-text)] leading-tight">
+                      Listo para desarrollar soluciones a medida. Sin rodeos comerciales agresivos, solo ingeniería sólida.
+                    </div>
+                  </>
+                )}
+              </div>
+            </PixelCard>
+          </div>
+
+          {/* ═══ CELL 7: Projects Showcase ═══ */}
+          <div
+            id="proyectos-showcase"
+            className={`sm:col-span-2 md:col-span-3 md:row-span-2 ${isThemeChanging ? "theme-bump" : ""}`}
+          >
+            <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between">
+
+              {/* Header with Custom Category Filter buttons */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+                <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-1">
+                  Proyectos Freelance & Propios
+                </span>
+
+                {/* Filter tabs */}
+                <div className="flex flex-wrap gap-1.5">
+                  {(["All", "Freelance", "Frontend", "Fullstack"] as const).map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setActiveCategory(cat)}
+                      className={`px-2.5 sm:px-3 py-1 border-2 border-[var(--c-border)] font-display font-bold text-[10px] sm:text-xs uppercase transition-all duration-150 cursor-pointer ${activeCategory === cat
+                        ? "bg-[var(--c-text)] text-[var(--c-bg)] translate-x-[1px] translate-y-[1px] shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)]"
+                        : "bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px]"
+                        }`}
+                    >
+                      {cat === "All" ? "Todos" : cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Projects Grid List - Paginated with Mobile Swipe Support */}
+              <div
+                onTouchStart={isTouchDevice ? handleProjTouchStart : undefined}
+                onTouchMove={isTouchDevice ? handleProjTouchMove : undefined}
+                onTouchEnd={isTouchDevice ? handleProjTouchEnd : undefined}
+                className="w-full my-2 touch-pan-y overflow-hidden relative"
+              >
+                {pageCount > 0 ? (
+                  !isTouchDevice ? (
+                    /* Desktop View: Render current page static grid only, no horizontal wrapper, no sliding */
+                    <div className="grid grid-cols-1 gap-3 sm:gap-4 w-full">
+                      {filteredProjects
+                        .slice(
+                          projectPage * PROJECTS_PER_PAGE,
+                          (projectPage + 1) * PROJECTS_PER_PAGE
+                        )
+                        .map((project) => (
+                          <button
+                            key={project.id}
+                            onClick={() => setExpandedCard(project)}
+                            className="neo-card hover:bg-[var(--c-surface-hover)] p-3 sm:p-4 flex flex-col justify-between h-auto min-h-[120px] sm:min-h-[130px] relative group overflow-hidden cursor-pointer text-left w-full"
+                          >
+                            <div className="absolute top-0 right-0 h-5 sm:h-6 px-2.5 border-b-2 border-l-2 border-[var(--c-border)] font-display font-bold text-[8px] sm:text-[9px] uppercase bg-[var(--c-surface)] text-[var(--c-text)] flex items-center justify-center shadow-[-2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
+                              {project.type}
+                            </div>
+
+                            <div>
+                              <div className="flex flex-wrap gap-1.5 items-center">
+                                <span className={`px-2 py-0.5 border-2 border-[var(--c-border)] font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${project.color} text-black shadow-[1px_1px_0px_0px_#000]`}>
+                                  {project.stat}
+                                </span>
+                                <span className={`px-2 py-0.5 border-2 border-black font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${getProjectStatusColor(project.status)} shadow-[1px_1px_0px_0px_#000]`}>
+                                  {project.status}
+                                </span>
+                              </div>
+                              <h4 className="font-display font-black text-base sm:text-lg uppercase tracking-tight mt-2 leading-none text-[var(--c-text)]">
+                                {project.title}
+                              </h4>
+                              <p className="font-sans text-[10px] sm:text-xs font-semibold text-[var(--c-text-muted)] mt-1 line-clamp-2">
+                                {project.shortDesc}
+                              </p>
+                            </div>
+
+                            <div className="flex justify-between items-center mt-3 pt-2 border-t border-[var(--c-border)]/10">
+                              <div className="flex gap-2 items-center">
+                                <span className="font-mono text-[9px] sm:text-[10px] font-bold uppercase text-[var(--c-text)]">
+                                  {project.metric}
+                                </span>
+                                <span className="px-1.5 py-0.5 border border-[var(--c-border)] font-display font-black text-[7px] sm:text-[8px] uppercase bg-[var(--c-surface-hover)] text-[var(--c-text-muted)]">
+                                  {project.category}
+                                </span>
+                              </div>
+                              <span className="font-display font-bold text-[10px] sm:text-xs uppercase text-[var(--c-text)] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                Ver Más <ArrowRight size={12} />
+                              </span>
+                            </div>
+                          </button>
+                        ))}
+                    </div>
+                  ) : (
+                    /* Mobile View: Render swipeable container with horizontal layout */
+                    <div
+                      ref={swipeContainerRef}
+                      className="flex w-full will-change-transform"
+                      style={{
+                        transform: `translateX(-${projectPage * 100}%)`,
+                        transition: "transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+                      }}
+                    >
+                      {Array.from({ length: pageCount }).map((_, pageIdx) => {
+                        const pageProjects = filteredProjects.slice(
+                          pageIdx * PROJECTS_PER_PAGE,
+                          (pageIdx + 1) * PROJECTS_PER_PAGE
+                        );
+                        const distance = Math.abs(pageIdx - projectPage);
+                        const opacity = Math.max(0, 1 - distance);
+                        const blurVal = Math.min(4, distance * 4);
+
+                        return (
+                          <div
+                            key={pageIdx}
+                            ref={(el) => {
+                              if (el) {
+                                pageRefs.current.set(pageIdx, el);
+                              } else {
+                                pageRefs.current.delete(pageIdx);
+                              }
+                            }}
+                            className="w-full flex-shrink-0 px-1 will-change-[opacity,filter]"
+                            style={{
+                              opacity,
+                              filter: `blur(${blurVal}px)`,
+                              transition: "opacity 0.3s ease-out, filter 0.3s ease-out",
+                            }}
+                          >
+                            <div className="grid grid-cols-1 gap-3 sm:gap-4 w-full">
+                              {pageProjects.map((project) => (
+                                <button
+                                  key={project.id}
+                                  onClick={() => setExpandedCard(project)}
+                                  className="neo-card hover:bg-[var(--c-surface-hover)] p-3 sm:p-4 flex flex-col justify-between h-auto min-h-[120px] sm:min-h-[130px] relative group overflow-hidden cursor-pointer text-left w-full"
+                                >
+                                  <div className="absolute top-0 right-0 h-5 sm:h-6 px-2.5 border-b-2 border-l-2 border-[var(--c-border)] font-display font-bold text-[8px] sm:text-[9px] uppercase bg-[var(--c-surface)] text-[var(--c-text)] flex items-center justify-center shadow-[-2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
+                                    {project.type}
+                                  </div>
+
+                                  <div>
+                                    <div className="flex flex-wrap gap-1.5 items-center">
+                                      <span className={`px-2 py-0.5 border-2 border-[var(--c-border)] font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${project.color} text-black shadow-[1px_1px_0px_0px_#000]`}>
+                                        {project.stat}
+                                      </span>
+                                      <span className={`px-2 py-0.5 border-2 border-black font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${getProjectStatusColor(project.status)} shadow-[1px_1px_0px_0px_#000]`}>
+                                        {project.status}
+                                      </span>
+                                    </div>
+                                    <h4 className="font-display font-black text-base sm:text-lg uppercase tracking-tight mt-2 leading-none text-[var(--c-text)]">
+                                      {project.title}
+                                    </h4>
+                                    <p className="font-sans text-[10px] sm:text-xs font-semibold text-[var(--c-text-muted)] mt-1 line-clamp-2">
+                                      {project.shortDesc}
+                                    </p>
+                                  </div>
+
+                                  <div className="flex justify-between items-center mt-3 pt-2 border-t border-[var(--c-border)]/10">
+                                    <div className="flex gap-2 items-center">
+                                      <span className="font-mono text-[9px] sm:text-[10px] font-bold uppercase text-[var(--c-text)]">
+                                        {project.metric}
+                                      </span>
+                                      <span className="px-1.5 py-0.5 border border-[var(--c-border)] font-display font-black text-[7px] sm:text-[8px] uppercase bg-[var(--c-surface-hover)] text-[var(--c-text-muted)]">
+                                        {project.category}
+                                      </span>
+                                    </div>
+                                    <span className="font-display font-bold text-[10px] sm:text-xs uppercase text-[var(--c-text)] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                      Ver Más <ArrowRight size={12} />
+                                    </span>
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )
+                ) : (
+                  <div className="text-center font-mono text-xs text-[var(--c-text-muted)] py-8 border-2 border-dashed border-[var(--c-border)]/20">
+                    No se encontraron proyectos para esta categoría
+                  </div>
+                )}
+                {isTouchDevice && (
+                  <div className="block sm:hidden font-mono text-[7px] text-[var(--c-text-subtle)] uppercase text-center mt-2.5 animate-pulse select-none">
+                    ← Desliza hacia los lados para cambiar de página →
+                  </div>
+                )}
+              </div>
+
+              {/* Status and Pagination footer inside projects */}
+              <div className="border-t-2 border-[var(--c-border)] pt-3 mt-4 grid grid-cols-3 items-center text-[var(--c-text-muted)] font-mono text-[9px] sm:text-[10px] font-bold uppercase select-none w-full">
+                <div className="text-left truncate">
+                  Total: {filteredProjects.length} {filteredProjects.length === 1 ? "proyecto" : "proyectos"}
+                </div>
+                
+                <div className="flex justify-center w-full">
+                  {pageCount > 1 && (
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setProjectPage(prev => Math.max(0, prev - 1));
+                        }}
+                        disabled={projectPage === 0}
+                        className="p-1.5 sm:p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-100 flex items-center justify-center cursor-pointer"
+                        title="Página Anterior"
+                      >
+                        <ChevronLeft size={12} className="stroke-[3]" />
+                      </button>
+                      <span className="text-[9px] sm:text-xs font-black min-w-[55px] sm:min-w-[65px] text-center">
+                        Pág {projectPage + 1} / {pageCount}
                       </span>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          setExpandedCard("quien-soy");
+                          setProjectPage(prev => Math.min(pageCount - 1, prev + 1));
                         }}
-                        className="font-mono text-[9px] sm:text-[10px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-2 py-0.5 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] cursor-pointer flex-shrink-0"
+                        disabled={projectPage === pageCount - 1}
+                        className="p-1.5 sm:p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-100 flex items-center justify-center cursor-pointer"
+                        title="Siguiente Página"
                       >
-                        Expandir +
+                        <ChevronRight size={12} className="stroke-[3]" />
                       </button>
                     </div>
-                    <p className="font-sans text-xs sm:text-sm font-semibold text-[var(--c-text)] my-3 leading-snug">
-                      Soy un desarrollador de software Full Stack apasionado por crear aplicaciones web modernas, robustas, escalables y visualmente atractivas.
-                    </p>
-                    <div className="font-display font-bold text-xs uppercase flex justify-between items-center text-[var(--c-text)]">
-                      <div className="flex gap-3 sm:gap-4">
-                        <span>📍 Remoto</span>
-                        <span>⚡ Rápido</span>
-                      </div>
-                      <span className="font-mono text-[9px] text-[var(--c-text-subtle)] flex items-center gap-1">
-                        Click para voltear <ChevronRight size={10} />
-                      </span>
-                    </div>
-                  </div>
-                }
-                back={
-                  <div className="neo-card-themed bg-neo-yellow text-black p-4 sm:p-6 h-full flex flex-col justify-between">
-                    <div className="flex justify-between items-start gap-2">
-                      <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-black text-white px-2 py-1">
-                        Estudios & Foco
-                      </span>
-                      <div className="flex gap-1.5">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setExpandedCard("estudios");
-                          }}
-                          className="font-mono text-[9px] font-black uppercase text-black border-2 border-black px-1.5 py-0.5 shadow-[2px_2px_0px_0px_#000] bg-white cursor-pointer"
-                        >
-                          Estudios +
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setExpandedCard("foco");
-                          }}
-                          className="font-mono text-[9px] font-black uppercase text-black border-2 border-black px-1.5 py-0.5 shadow-[2px_2px_0px_0px_#000] bg-white cursor-pointer"
-                        >
-                          Foco +
-                        </button>
-                      </div>
-                    </div>
-                    <div className="my-2">
-                      <p className="font-sans text-xs sm:text-sm font-bold text-black leading-snug">
-                        Estudiante de Ingeniería en Ciencia de Datos & IA, y desarrollador Full Stack especializado en Next.js, Node.js y ecosistemas de IA.
-                      </p>
-                    </div>
-                    <div className="flex justify-between uppercase items-center">
-                      <span className="font-mono text-[10px] font-black text-black">
-                        📖 Aprendizaje Activo
-                      </span>
-                      <span className="font-mono text-[9px] text-black/60 flex items-center gap-1">
-                        Click para volver <ChevronRight size={10} />
-                      </span>
-                    </div>
-                  </div>
-                }
-              />
-            </motion.div>
-
-            {/* ═══ CELL 3: Discord Button ═══ */}
-            <motion.div
-              layout="position"
-              className={`${isThemeChanging ? "theme-bump" : ""}`}
-            >
-              <a
-                href="https://discord.com/users/668521031731773460"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block group h-full"
-              >
-                <div className="neo-card-brand bg-[#5865F2] hover:bg-[#4752C4] text-white p-4 sm:p-6 h-full flex flex-col justify-between transition-colors min-h-[140px] sm:min-h-[180px]">
-                  <div className="flex justify-between items-start">
-                    <DiscordIcon className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
-                    <ExternalLink size={14} className="sm:w-4 sm:h-4" />
-                  </div>
-                  <div>
-                    <h3 className="font-display font-black text-lg sm:text-xl uppercase leading-none">
-                      Discord
-                    </h3>
-                    <p className="font-mono text-[9px] sm:text-[10px] uppercase font-bold text-white/80 mt-1">
-                      @WriteColor
-                    </p>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-
-            {/* ═══ CELL 4: GitHub Button ═══ */}
-            <motion.div
-              layout="position"
-              className={`${isThemeChanging ? "theme-bump" : ""}`}
-            >
-              <a
-                href="https://github.com/WriteColor"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block group h-full"
-              >
-                <div className="neo-card-brand bg-black text-white hover:bg-neutral-900 p-4 sm:p-6 h-full flex flex-col justify-between transition-colors min-h-[140px] sm:min-h-[180px]">
-                  <div className="flex justify-between items-start">
-                    <GithubIcon className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
-                    <ExternalLink size={14} className="sm:w-4 sm:h-4" />
-                  </div>
-                  <div>
-                    <h3 className="font-display font-black text-lg sm:text-xl uppercase leading-none">
-                      GitHub
-                    </h3>
-                    <p className="font-mono text-[9px] sm:text-[10px] uppercase font-bold text-white/80 mt-1">
-                      @WriteColor
-                    </p>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-
-            {/* ═══ CELL 5: Skills (Marquees) ═══ */}
-            <motion.div
-              layout="position"
-              className={`sm:col-span-2 ${isThemeChanging ? "theme-bump" : ""}`}
-            >
-              <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between overflow-hidden min-h-[160px] sm:min-h-[180px]">
-                <div className="flex justify-between items-center self-stretch">
-                  <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-1">
-                    Skills & Stacks
-                  </span>
-                  <button
-                    onClick={() => setSelectedSkillName("all")}
-                    className="font-mono text-[8px] sm:text-[9px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-1.5 py-0.5 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform cursor-pointer"
-                  >
-                    Pulse para detalle +
-                  </button>
-                </div>
-
-                <div className="my-3 flex flex-col gap-2">
-                  <LogoLoop items={renderSkillTags(SKILLS_FRONT, "bg-neo-cyan")} speed="medium" direction="left" />
-                  <LogoLoop items={renderSkillTags(SKILLS_BACK, "bg-neo-pink")} speed="medium" direction="right" />
-                </div>
-
-                <div className="font-mono text-[9px] sm:text-[10px] font-bold text-[var(--c-text-muted)] uppercase">
-                  Interacciones fluidas & API Robustas
-                </div>
-              </div>
-            </motion.div>
-
-            {/* ═══ CELL 6: Collaboration Terms / Contact Form ═══ */}
-            <motion.div
-              layout="position"
-              id="contacto-showcase"
-              className={`sm:col-span-2 ${isThemeChanging ? "theme-bump" : ""}`}
-            >
-              <PixelCard pixelColor="#FF4E88" className="h-full">
-                <div className="p-4 sm:p-6 h-full flex flex-col justify-between min-h-[160px]">
-                  <div className="flex justify-between items-center mb-1 gap-2">
-                    <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-1">
-                      Colaborar Conmigo
-                    </span>
-                    <button
-                      onClick={() => setShowContactForm(!showContactForm)}
-                      className="font-mono text-[9px] sm:text-[10px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-2 py-0.5 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] cursor-pointer flex-shrink-0"
-                    >
-                      {showContactForm ? "Ver Info" : "Escríbeme +"}
-                    </button>
-                  </div>
-
-                  {showContactForm ? (
-                    <div className="my-2 text-left">
-                      <ContactForm
-                        onClose={() => {
-                          setShowContactForm(false);
-                          setContactPrefill("");
-                        }}
-                        initialMessage={contactPrefill}
-                      />
-                    </div>
-                  ) : (
-                    <>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 my-3">
-                        <div className="flex flex-col gap-1">
-                          <div className="flex items-center gap-1 text-neo-pink">
-                            <Clock size={16} className="stroke-[3]" />
-                            <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Tiempos</span>
-                          </div>
-                          <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Flexibles & veloces</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <div className="flex items-center gap-1 text-neo-yellow">
-                            <CircleDollarSign size={16} className="stroke-[3]" />
-                            <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Presupuesto</span>
-                          </div>
-                          <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Adaptable al producto</span>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <div className="flex items-center gap-1 text-neo-cyan">
-                            <CheckCircle2 size={16} className="stroke-[3]" />
-                            <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Entrega</span>
-                          </div>
-                          <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Calidad garantizada</span>
-                        </div>
-                      </div>
-
-                      <div className="font-sans text-[10px] sm:text-[11px] font-bold text-[var(--c-text)] leading-tight">
-                        Listo para desarrollar soluciones a medida. Sin rodeos comerciales agresivos, solo ingeniería sólida.
-                      </div>
-                    </>
                   )}
                 </div>
-              </PixelCard>
-            </motion.div>
+                
+                <div className="text-right text-[7px] sm:text-[9px] text-[var(--c-text-subtle)] truncate">
+                  JEREMERC.DEV
+                </div>
+              </div>
 
-            {/* ═══ CELL 7: Projects Showcase ═══ */}
-            <motion.div
-              layout="position"
-              id="proyectos-showcase"
-              className={`sm:col-span-2 md:col-span-3 md:row-span-2 ${isThemeChanging ? "theme-bump" : ""}`}
+            </div>
+          </div>
+
+          {/* ═══ CELL 8: Instagram Button ═══ */}
+          <div
+            className={`${isThemeChanging ? "theme-bump" : ""}`}
+          >
+            <a
+              href="https://www.instagram.com/m.jere_echev/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block group h-full"
             >
-              <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between">
+              <div className="neo-card-brand bg-[#E1306C] hover:bg-[#C13584] text-white p-4 sm:p-6 h-full flex flex-col justify-between transition-colors min-h-[160px] sm:min-h-[195px] md:min-h-[200px]">
+                <div className="flex justify-between items-start">
+                  <InstagramIcon className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
+                  <ExternalLink size={14} className="sm:w-4 sm:h-4" />
+                </div>
+                <div>
+                  <h3 className="font-display font-black text-lg sm:text-xl uppercase leading-none text-white">
+                    Instagram
+                  </h3>
+                  <p className="font-mono text-[9px] sm:text-[10px] uppercase font-bold text-white/80 mt-1">
+                    @m.jere_echev
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
 
-                {/* Header with Custom Category Filter buttons */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
-                  <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-1">
-                    Proyectos Freelance & Propios
-                  </span>
-
-                  {/* Filter tabs */}
-                  <div className="flex flex-wrap gap-1.5">
-                    {(["All", "Freelance", "Frontend", "Fullstack"] as const).map((cat) => (
-                      <button
-                        key={cat}
-                        onClick={() => setActiveCategory(cat)}
-                        className={`px-2.5 sm:px-3 py-1 border-2 border-[var(--c-border)] font-display font-bold text-[10px] sm:text-xs uppercase transition-all duration-150 cursor-pointer ${activeCategory === cat
-                          ? "bg-[var(--c-text)] text-[var(--c-bg)] translate-x-[1px] translate-y-[1px] shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)]"
-                          : "bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px]"
-                          }`}
-                      >
-                        {cat === "All" ? "Todos" : cat}
-                      </button>
-                    ))}
+          {/* ═══ CELL 9: Testimonials / References (CardSwap) ═══ */}
+          <div
+            className={`${isThemeChanging ? "theme-bump" : ""}`}
+          >
+            <CardSwap
+              className="w-full h-full min-h-[185px] sm:min-h-[195px] md:min-h-[200px]"
+              front={
+                <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between items-center text-center hover:bg-[var(--c-surface-hover)]">
+                  <div className="border-4 border-[var(--c-border)] bg-neo-yellow p-3 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
+                    <Lock size={24} className="stroke-[2.5] text-black sm:w-7 sm:h-7" />
+                  </div>
+                  <div>
+                    <h3 className="font-display font-black text-xs sm:text-sm uppercase leading-none mt-2 text-[var(--c-text)]">
+                      Referencias
+                    </h3>
+                    <p className="font-mono text-[8px] sm:text-[9px] uppercase font-bold text-[var(--c-text-muted)] mt-1">
+                      Haz click para desbloquear +
+                    </p>
                   </div>
                 </div>
-
-                {/* Projects Grid List - Paginated with Mobile Swipe Support */}
+              }
+              back={
                 <div
-                  onTouchStart={isTouchDevice ? handleProjTouchStart : undefined}
-                  onTouchMove={isTouchDevice ? handleProjTouchMove : undefined}
-                  onTouchEnd={isTouchDevice ? handleProjTouchEnd : undefined}
-                  className="w-full my-2 touch-pan-y overflow-hidden relative"
+                  onTouchStart={handleRefTouchStart}
+                  onTouchMove={handleRefTouchMove}
+                  onTouchEnd={handleRefTouchEnd}
+                  className="neo-card p-3 sm:p-4 h-full flex flex-col justify-between overflow-hidden relative group/carousel touch-pan-y"
                 >
-                  {pageCount > 0 ? (
-                    !isTouchDevice ? (
-                      /* Desktop View: Render current page static grid only, no horizontal wrapper, no sliding */
-                      <div className="grid grid-cols-1 gap-3 sm:gap-4 w-full">
-                        {filteredProjects
-                          .slice(
-                            projectPage * PROJECTS_PER_PAGE,
-                            (projectPage + 1) * PROJECTS_PER_PAGE
-                          )
-                          .map((project) => (
-                            <button
-                              key={project.id}
-                              onClick={() => setExpandedCard(project)}
-                              className="neo-card hover:bg-[var(--c-surface-hover)] p-3 sm:p-4 flex flex-col justify-between h-auto min-h-[120px] sm:min-h-[130px] relative group overflow-hidden cursor-pointer text-left w-full"
-                            >
-                              <div className="absolute top-0 right-0 h-5 sm:h-6 px-2.5 border-b-2 border-l-2 border-[var(--c-border)] font-display font-bold text-[8px] sm:text-[9px] uppercase bg-[var(--c-surface)] text-[var(--c-text)] flex items-center justify-center shadow-[-2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
-                                {project.type}
-                              </div>
+                  <div className="flex flex-col h-full gap-1.5 overflow-hidden">
 
-                              <div>
-                                <div className="flex flex-wrap gap-1.5 items-center">
-                                  <span className={`px-2 py-0.5 border-2 border-[var(--c-border)] font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${project.color} text-black shadow-[1px_1px_0px_0px_#000]`}>
-                                    {project.stat}
-                                  </span>
-                                  <span className={`px-2 py-0.5 border-2 border-black font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${getProjectStatusColor(project.status)} shadow-[1px_1px_0px_0px_#000]`}>
-                                    {project.status}
-                                  </span>
-                                </div>
-                                <h4 className="font-display font-black text-base sm:text-lg uppercase tracking-tight mt-2 leading-none text-[var(--c-text)]">
-                                  {project.title}
-                                </h4>
-                                <p className="font-sans text-[10px] sm:text-xs font-semibold text-[var(--c-text-muted)] mt-1 line-clamp-2">
-                                  {project.shortDesc}
-                                </p>
-                              </div>
-
-                              <div className="flex justify-between items-center mt-3 pt-2 border-t border-[var(--c-border)]/10">
-                                <div className="flex gap-2 items-center">
-                                  <span className="font-mono text-[9px] sm:text-[10px] font-bold uppercase text-[var(--c-text)]">
-                                    {project.metric}
-                                  </span>
-                                  <span className="px-1.5 py-0.5 border border-[var(--c-border)] font-display font-black text-[7px] sm:text-[8px] uppercase bg-[var(--c-surface-hover)] text-[var(--c-text-muted)]">
-                                    {project.category}
-                                  </span>
-                                </div>
-                                <span className="font-display font-bold text-[10px] sm:text-xs uppercase text-[var(--c-text)] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                                  Ver Más <ArrowRight size={12} />
-                                </span>
-                              </div>
-                            </button>
-                          ))}
-                      </div>
-                    ) : (
-                      /* Mobile View: Render swipeable container with horizontal layout */
-                      <div
-                        ref={swipeContainerRef}
-                        className="flex w-full will-change-transform"
-                        style={{
-                          transform: `translateX(-${projectPage * 100}%)`,
-                          transition: "transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
-                        }}
-                      >
-                        {Array.from({ length: pageCount }).map((_, pageIdx) => {
-                          const pageProjects = filteredProjects.slice(
-                            pageIdx * PROJECTS_PER_PAGE,
-                            (pageIdx + 1) * PROJECTS_PER_PAGE
-                          );
-                          const distance = Math.abs(pageIdx - projectPage);
-                          const opacity = Math.max(0, 1 - distance);
-                          const blurVal = Math.min(4, distance * 4);
-
-                          return (
-                            <div
-                              key={pageIdx}
-                              ref={(el) => {
-                                if (el) {
-                                  pageRefs.current.set(pageIdx, el);
-                                } else {
-                                  pageRefs.current.delete(pageIdx);
-                                }
-                              }}
-                              className="w-full flex-shrink-0 px-1 will-change-[opacity,filter]"
-                              style={{
-                                opacity,
-                                filter: `blur(${blurVal}px)`,
-                                transition: "opacity 0.3s ease-out, filter 0.3s ease-out",
-                              }}
-                            >
-                              <div className="grid grid-cols-1 gap-3 sm:gap-4 w-full">
-                                {pageProjects.map((project) => (
-                                  <button
-                                    key={project.id}
-                                    onClick={() => setExpandedCard(project)}
-                                    className="neo-card hover:bg-[var(--c-surface-hover)] p-3 sm:p-4 flex flex-col justify-between h-auto min-h-[120px] sm:min-h-[130px] relative group overflow-hidden cursor-pointer text-left w-full"
-                                  >
-                                    <div className="absolute top-0 right-0 h-5 sm:h-6 px-2.5 border-b-2 border-l-2 border-[var(--c-border)] font-display font-bold text-[8px] sm:text-[9px] uppercase bg-[var(--c-surface)] text-[var(--c-text)] flex items-center justify-center shadow-[-2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
-                                      {project.type}
-                                    </div>
-
-                                    <div>
-                                      <div className="flex flex-wrap gap-1.5 items-center">
-                                        <span className={`px-2 py-0.5 border-2 border-[var(--c-border)] font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${project.color} text-black shadow-[1px_1px_0px_0px_#000]`}>
-                                          {project.stat}
-                                        </span>
-                                        <span className={`px-2 py-0.5 border-2 border-black font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${getProjectStatusColor(project.status)} shadow-[1px_1px_0px_0px_#000]`}>
-                                          {project.status}
-                                        </span>
-                                      </div>
-                                      <h4 className="font-display font-black text-base sm:text-lg uppercase tracking-tight mt-2 leading-none text-[var(--c-text)]">
-                                        {project.title}
-                                      </h4>
-                                      <p className="font-sans text-[10px] sm:text-xs font-semibold text-[var(--c-text-muted)] mt-1 line-clamp-2">
-                                        {project.shortDesc}
-                                      </p>
-                                    </div>
-
-                                    <div className="flex justify-between items-center mt-3 pt-2 border-t border-[var(--c-border)]/10">
-                                      <div className="flex gap-2 items-center">
-                                        <span className="font-mono text-[9px] sm:text-[10px] font-bold uppercase text-[var(--c-text)]">
-                                          {project.metric}
-                                        </span>
-                                        <span className="px-1.5 py-0.5 border border-[var(--c-border)] font-display font-black text-[7px] sm:text-[8px] uppercase bg-[var(--c-surface-hover)] text-[var(--c-text-muted)]">
-                                          {project.category}
-                                        </span>
-                                      </div>
-                                      <span className="font-display font-bold text-[10px] sm:text-xs uppercase text-[var(--c-text)] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                                        Ver Más <ArrowRight size={12} />
-                                      </span>
-                                    </div>
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )
-                  ) : (
-                    <div className="text-center font-mono text-xs text-[var(--c-text-muted)] py-8 border-2 border-dashed border-[var(--c-border)]/20">
-                      No se encontraron proyectos para esta categoría
-                    </div>
-                  )}
-                  {isTouchDevice && (
-                    <div className="block sm:hidden font-mono text-[7px] text-[var(--c-text-subtle)] uppercase text-center mt-2.5 animate-pulse select-none">
-                      ← Desliza hacia los lados para cambiar de página →
-                    </div>
-                  )}
-                </div>
-
-                {/* Status and Pagination footer inside projects */}
-                <div className="border-t-2 border-[var(--c-border)] pt-3 mt-4 grid grid-cols-3 items-center text-[var(--c-text-muted)] font-mono text-[9px] sm:text-[10px] font-bold uppercase select-none w-full">
-                  <div className="text-left truncate">
-                    Total: {filteredProjects.length} {filteredProjects.length === 1 ? "proyecto" : "proyectos"}
-                  </div>
-                  
-                  <div className="flex justify-center w-full">
-                    {pageCount > 1 && (
-                      <div className="flex items-center gap-2">
+                    {/* Top Row: Info Tag & Action Button */}
+                    <div className="flex items-center justify-between gap-1.5 flex-shrink-0">
+                      <span className="font-display font-black text-[8px] sm:text-[9px] uppercase bg-neo-cyan text-black px-1.5 py-0.5 shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] border border-[var(--c-border)] select-none">
+                        Opinión {refIndex + 1}/{REFERENCES_DB.length}
+                      </span>
+                      <div className="flex gap-1 items-center">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setProjectPage(prev => Math.max(0, prev - 1));
+                            setIsReferencesModalOpen(true);
                           }}
-                          disabled={projectPage === 0}
-                          className="p-1.5 sm:p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-100 flex items-center justify-center cursor-pointer"
-                          title="Página Anterior"
+                          className="font-mono text-[8px] font-black text-neo-pink uppercase cursor-pointer border-2 border-[var(--c-border)] px-1.5 py-0.5 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] flex-shrink-0 hover:bg-[var(--c-surface-hover)]"
                         >
-                          <ChevronLeft size={12} className="stroke-[3]" />
+                          Ver Todas +
                         </button>
-                        <span className="text-[9px] sm:text-xs font-black min-w-[55px] sm:min-w-[65px] text-center">
-                          Pág {projectPage + 1} / {pageCount}
-                        </span>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setProjectPage(prev => Math.min(pageCount - 1, prev + 1));
-                          }}
-                          disabled={projectPage === pageCount - 1}
-                          className="p-1.5 sm:p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-100 flex items-center justify-center cursor-pointer"
-                          title="Siguiente Página"
-                        >
-                          <ChevronRight size={12} className="stroke-[3]" />
-                        </button>
+                        <Unlock size={10} className="text-neo-pink animate-pulse flex-shrink-0" />
                       </div>
-                    )}
-                  </div>
-                  
-                  <div className="text-right text-[7px] sm:text-[9px] text-[var(--c-text-subtle)] truncate">
-                    JEREMERC.DEV
-                  </div>
-                </div>
-
-              </div>
-            </motion.div>
-
-            {/* ═══ CELL 8: Instagram Button ═══ */}
-            <motion.div
-              layout="position"
-              className={`${isThemeChanging ? "theme-bump" : ""}`}
-            >
-              <a
-                href="https://www.instagram.com/m.jere_echev/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block group h-full"
-              >
-                <div className="neo-card-brand bg-[#E1306C] hover:bg-[#C13584] text-white p-4 sm:p-6 h-full flex flex-col justify-between transition-colors min-h-[140px] sm:min-h-[180px]">
-                  <div className="flex justify-between items-start">
-                    <InstagramIcon className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
-                    <ExternalLink size={14} className="sm:w-4 sm:h-4" />
-                  </div>
-                  <div>
-                    <h3 className="font-display font-black text-lg sm:text-xl uppercase leading-none text-white">
-                      Instagram
-                    </h3>
-                    <p className="font-mono text-[9px] sm:text-[10px] uppercase font-bold text-white/80 mt-1">
-                      @m.jere_echev
-                    </p>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-
-            {/* ═══ CELL 9: Testimonials / References (CardSwap) ═══ */}
-            <motion.div
-              layout="position"
-              className={`${isThemeChanging ? "theme-bump" : ""}`}
-            >
-              <CardSwap
-                className="w-full h-full min-h-[160px] sm:min-h-[180px]"
-                front={
-                  <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between items-center text-center hover:bg-[var(--c-surface-hover)]">
-                    <div className="border-4 border-[var(--c-border)] bg-neo-yellow p-3 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
-                      <Lock size={24} className="stroke-[2.5] text-black sm:w-7 sm:h-7" />
                     </div>
-                    <div>
-                      <h3 className="font-display font-black text-xs sm:text-sm uppercase leading-none mt-2 text-[var(--c-text)]">
-                        Referencias
-                      </h3>
-                      <p className="font-mono text-[8px] sm:text-[9px] uppercase font-bold text-[var(--c-text-muted)] mt-1">
-                        Haz click para desbloquear +
+
+                    {/* Content Area - Scrollable when height is compressed */}
+                    <div className="flex-grow overflow-y-auto flex flex-col justify-center min-h-[30px] pr-0.5 scrollbar-thin select-none">
+                      <p className="font-sans text-[9px] sm:text-[10px] md:text-[11px] font-semibold text-[var(--c-text)] italic leading-tight">
+                        &quot;{REFERENCES_DB[refIndex].text}&quot;
                       </p>
+                      <span className="font-mono text-[7px] sm:text-[8px] md:text-[9px] font-black uppercase text-[var(--c-text-muted)] block mt-1 text-right">
+                        — {REFERENCES_DB[refIndex].author} ({REFERENCES_DB[refIndex].role})
+                      </span>
+                    </div>
+
+                    {/* Manual Carousel Controls */}
+                    <div className="flex justify-between items-center border-t border-[var(--c-border)]/10 pt-2">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setRefIndex((prev) => (prev - 1 + REFERENCES_DB.length) % REFERENCES_DB.length);
+                          }}
+                          className="p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100 flex items-center justify-center cursor-pointer"
+                          title="Opinión Anterior"
+                        >
+                          <ChevronLeft size={14} className="stroke-[3]" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setRefIndex((prev) => (prev + 1) % REFERENCES_DB.length);
+                          }}
+                          className="p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100 flex items-center justify-center cursor-pointer"
+                          title="Siguiente Opinión"
+                        >
+                          <ChevronRight size={14} className="stroke-[3]" />
+                        </button>
+                      </div>
+                      <span className="font-mono text-[7px] sm:text-[8px] uppercase text-[var(--c-text-subtle)] select-none">
+                        Cierra clickeando de nuevo
+                      </span>
                     </div>
                   </div>
-                }
-                back={
-                  <div
-                    onTouchStart={handleRefTouchStart}
-                    onTouchMove={handleRefTouchMove}
-                    onTouchEnd={handleRefTouchEnd}
-                    className="neo-card p-3 sm:p-4 h-full flex flex-col justify-between overflow-hidden relative group/carousel touch-pan-y"
-                  >
-                    <div className="flex flex-col h-full gap-1.5 overflow-hidden">
+                </div>
+              }
+            />
+          </div>
 
-                      {/* Top Row: Info Tag & Action Button */}
-                      <div className="flex items-center justify-between gap-1.5 flex-shrink-0">
-                        <span className="font-display font-black text-[8px] sm:text-[9px] uppercase bg-neo-cyan text-black px-1.5 py-0.5 shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] border border-[var(--c-border)] select-none">
-                          Opinión {refIndex + 1}/{REFERENCES_DB.length}
-                        </span>
-                        <div className="flex gap-1 items-center">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setIsReferencesModalOpen(true);
-                            }}
-                            className="font-mono text-[8px] font-black text-neo-pink uppercase cursor-pointer border-2 border-[var(--c-border)] px-1.5 py-0.5 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform flex-shrink-0"
-                          >
-                            Ver Todas +
-                          </button>
-                          <Unlock size={10} className="text-neo-pink animate-pulse flex-shrink-0" />
-                        </div>
-                      </div>
-
-                      {/* Content Area - Scrollable when height is compressed */}
-                      <div className="flex-grow overflow-y-auto flex flex-col justify-center min-h-[30px] pr-0.5 scrollbar-thin select-none">
-                        <p className="font-sans text-[9px] sm:text-[10px] md:text-[11px] font-semibold text-[var(--c-text)] italic leading-tight">
-                          &quot;{REFERENCES_DB[refIndex].text}&quot;
-                        </p>
-                        <span className="font-mono text-[7px] sm:text-[8px] md:text-[9px] font-black uppercase text-[var(--c-text-muted)] block mt-1 text-right">
-                          — {REFERENCES_DB[refIndex].author} ({REFERENCES_DB[refIndex].role})
-                        </span>
-                      </div>
-
-                      {/* Manual Carousel Controls */}
-                      <div className="flex justify-between items-center border-t border-[var(--c-border)]/10 pt-2">
-                        <div className="flex gap-2">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setRefIndex((prev) => (prev - 1 + REFERENCES_DB.length) % REFERENCES_DB.length);
-                            }}
-                            className="p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100 flex items-center justify-center cursor-pointer"
-                            title="Opinión Anterior"
-                          >
-                            <ChevronLeft size={14} className="stroke-[3]" />
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setRefIndex((prev) => (prev + 1) % REFERENCES_DB.length);
-                            }}
-                            className="p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100 flex items-center justify-center cursor-pointer"
-                            title="Siguiente Opinión"
-                          >
-                            <ChevronRight size={14} className="stroke-[3]" />
-                          </button>
-                        </div>
-                        <span className="font-mono text-[7px] sm:text-[8px] uppercase text-[var(--c-text-subtle)] select-none">
-                          Cierra clickeando de nuevo
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                }
-              />
-            </motion.div>
-
-          </motion.div>
-        </LayoutGroup>
+        </div>
 
         {/* Footer Accent Decoration & Stats Metric Tracker */}
         <div className="neo-card p-4 md:p-5 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-5 text-center md:text-left bg-[var(--c-surface)]">

@@ -17,23 +17,39 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL("https://jeremerc.dev"),
   title: {
-    default: "Jeremerc | Creative Developer & Freelancer",
-    template: "%s | Jeremerc"
+    default: "Jeremerc.dev | Fullstack Developer, IA & Ciencia de Datos Freelancer",
+    template: "%s | Jeremerc.dev"
   },
-  description: "Portafolio interactivo de proyectos freelancer y desarrollo web premium. Diseñado bajo estilo neobrutalista limpio, con consola interactiva y alto rendimiento.",
+  description: "Portafolio interactivo de Jeremyh Mercado (WriteColor). Especialización en desarrollo de software Full Stack (Next.js, Node.js, Laravel), integraciones de Inteligencia Artificial, Ciencia de Datos, WebGL y despliegues en la nube. Explora proyectos premium de alto rendimiento con diseño neobrutalista.",
   keywords: [
+    "Jeremerc", 
+    "Jeremyh Mercado", 
+    "WriteColor", 
     "freelance developer", 
     "desarrollo web premium", 
     "neobrutalism UI", 
     "bento grid portfolio",
-    "React developer",
-    "Next.js portfolio",
-    "TypeScript engineer",
-    "diseño interactivo"
+    "React developer", 
+    "Next.js portfolio", 
+    "TypeScript engineer", 
+    "diseño interactivo",
+    "Inteligencia Artificial",
+    "Ciencia de Datos",
+    "Machine Learning",
+    "Python Developer",
+    "Node.js Backend",
+    "Laravel PHP",
+    "Neon PostgreSQL",
+    "Supabase Serverless",
+    "Docker Cloud Deploy",
+    "WebGL Shaders 3D",
+    "Framer Motion animations",
+    "Cloudflare Workers Edge",
+    "SaaS architecture"
   ],
-  authors: [{ name: "Jeremy C.", url: "https://jeremerc.dev" }],
-  creator: "Jeremy C.",
-  publisher: "Jeremy C.",
+  authors: [{ name: "Jeremyah Mercado", url: "https://jeremerc.dev" }],
+  creator: "Jeremyh Mercado",
+  publisher: "Jeremyah Mercado",
   robots: {
     index: true,
     follow: true,
@@ -49,24 +65,32 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_LA",
     url: "https://jeremerc.dev",
-    title: "Jeremerc | Creative Developer & Freelancer | Portafolio Interactivo",
-    description: "Desarrollo de software y diseño premium interactivo. Explora mis proyectos freelancer con presupuestos adaptables y tiempos flexibles.",
+    title: "Jeremerc.dev | Fullstack Developer, IA & Ciencia de Datos | Portafolio Interactivo",
+    description: "Desarrollo de software y diseño interactivo premium. Explora proyectos freelancer en Next.js, APIs de Inteligencia Artificial, Ciencia de Datos, shaders WebGL y servidores Docker, con presupuestos adaptables y tiempos flexibles.",
     siteName: "Jeremerc.dev",
     images: [
       {
         url: "https://jeremerc.dev/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Jeremerc.dev Portafolio Banner",
+        alt: "Jeremerc.dev - Fullstack Developer & IA Engineer Portfolio Banner",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jeremerc | Creative Developer & Freelancer",
-    description: "Portafolio interactivo de proyectos de desarrollo web premium y diseño neobrutalista.",
+    title: "Jeremerc.dev | Fullstack Developer, IA & Ciencia de Datos",
+    description: "Portafolio interactivo de proyectos de desarrollo web, IA, ciencia de datos y diseño neobrutalista premium con OGL 3D y BaseUI.",
     images: ["https://jeremerc.dev/og-image.png"],
-    creator: "@jeremerc",
+    creator: "@WriteColor",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "32x32" }
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
   },
 };
 
@@ -82,6 +106,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
         {/* Inline script to set theme class before paint to avoid flash */}
         <script dangerouslySetInnerHTML={{ __html: `
           (function() {
@@ -102,13 +127,16 @@ export default function RootLayout({
               "@type": "ProfilePage",
               "mainEntity": {
                 "@type": "Person",
-                "name": "Jeremy C.",
+                "name": "Jeremyh Mercado",
                 "alternateName": "WriteColor",
                 "url": "https://jeremerc.dev",
                 "image": "https://jeremerc.dev/og-image.png",
-                "jobTitle": "Full Stack Developer",
+                "jobTitle": "Full Stack & AI Developer",
                 "knowsAbout": [
-                  "Next.js", "React", "TypeScript", "JavaScript", "Tailwind CSS", "Node.js", "PostgreSQL", "Supabase", "WebGL", "Framer Motion", "Docker"
+                  "Next.js", "React", "TypeScript", "JavaScript", "Tailwind CSS", "Node.js", "Laravel", "PHP",
+                  "Python", "C++", "Java", "Supabase", "Neon DB", "PostgreSQL", "WebGL", "Three.js", "Framer Motion",
+                  "Docker", "Cloudflare Workers", "Git", "Inteligencia Artificial", "Ciencia de Datos", "Machine Learning",
+                  "SaaS Architecture", "Software Engineering"
                 ],
                 "sameAs": [
                   "https://github.com/WriteColor",

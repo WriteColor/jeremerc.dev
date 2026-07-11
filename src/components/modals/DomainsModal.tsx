@@ -82,7 +82,7 @@ export const DomainsModal: React.FC<DomainsModalProps> = ({ isOpen, onClose, onO
   );
 
   return (
-    <div className="fixed inset-0 bg-[var(--c-overlay-bg)] backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
+    <div onClick={onClose} className="fixed inset-0 bg-[var(--c-overlay-bg)] backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
       <div 
         className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] text-[var(--c-text)] flex flex-col"
         onClick={(e) => e.stopPropagation()}
