@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Globe, ArrowRight, Laptop, Sparkles, ChevronRight, X, AlertTriangle, ShieldCheck } from "lucide-react";
+import { Globe, ArrowRight, Laptop, Sparkles, ChevronRight, X, AlertTriangle, ShieldCheck, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { parseAndValidateDomain, ParsedDomain } from "./DomainValidator";
 import { DOMAIN_EXTENSIONS, DomainExtensionInfo, DomainResult } from "./DomainData";
@@ -254,7 +254,7 @@ export const DomainSearchBento: React.FC = () => {
                     <div className="mt-1 flex items-center gap-1.5 min-h-[16px]">
                       {validation.isValid ? (
                         <span className="font-mono text-[9px] uppercase font-bold text-neo-green flex items-center gap-0.5">
-                          ✓ Nombre válido: <span className="underline">{validation.baseName}</span> {validation.detectedExtension && `(Ext: ${validation.detectedExtension})`}
+                          ✓ Nombre válido: <span className="underline lowercase">{validation.baseName}</span><span className="lowercase">{validation.detectedExtension && ` (Ext: ${validation.detectedExtension})`}</span>
                         </span>
                       ) : (
                         <span className="font-mono text-[9px] uppercase font-bold text-neo-pink flex items-center gap-0.5">
@@ -273,6 +273,14 @@ export const DomainSearchBento: React.FC = () => {
                   Buscar disponibilidad <ArrowRight size={14} className="stroke-[3]" />
                 </button>
               </form>
+
+              {/* Neobrutalist Loading State Indicator */}
+              {isSearching && (
+                <div className="border-3 border-black bg-neo-cyan text-black px-4 py-3 shadow-[3px_3px_0px_0px_#000] my-4 flex items-center justify-center gap-2.5 font-display font-black text-xs uppercase animate-pulse select-none">
+                  <Loader2 className="animate-spin stroke-[3.5]" size={16} />
+                  <span>Realizando validaciones cruzadas de registros en tiempo real...</span>
+                </div>
+              )}
 
               {/* Simulation CLI Terminal */}
               {showTerminal && (

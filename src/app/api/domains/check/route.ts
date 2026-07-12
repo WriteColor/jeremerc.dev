@@ -67,7 +67,8 @@ function queryTcpWhois(domain: string, server: string): Promise<string> {
       reject(err);
     });
 
-    socket.setTimeout(2500, () => {
+    // Slow WHOIS servers like whois.nic.es require longer timeout limit
+    socket.setTimeout(4500, () => {
       socket.destroy();
       reject(new Error("Timeout"));
     });
@@ -83,12 +84,14 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Dominio no provisto" }, { status: 400 });
     }
 
+    const lowerDomain = domain.toLowerCase();
+
     // 1. Check if WhoisJSON API Key is provided (Highly accurate, Cloud-safe API check)
     const whoisJsonKey = process.env.WHOISJSON_API_KEY;
     if (whoisJsonKey) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3500);
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
         
         const apiRes = await fetch(`https://whoisjson.com/api/v1/whois?domain=${domain}&token=${whoisJsonKey}`, {
           signal: controller.signal
@@ -97,58 +100,76 @@ export async function GET(request: Request) {
         
         if (apiRes.ok) {
           const apiData = await apiRes.json();
-          // registered boolean indicates if domain is taken
           if (typeof apiData.registered === "boolean") {
             return NextResponse.json({ isAvailable: !apiData.registered, source: "whois-json-api" });
           }
         }
       } catch (apiErr) {
-        // Fall back to TCP WHOIS if API fails
+        // Fall back
       }
     }
 
-    // 2. Direct TCP WHOIS (No key, 100% accurate on localhost/dev and unblocked VPS environments)
+    // 2. Direct TCP WHOIS (No key, works on local development and unblocked VPS environments)
     const whoisServer = getWhoisServer(domain);
     if (whoisServer) {
       try {
         const text = await queryTcpWhois(domain, whoisServer);
-        const lower = text.toLowerCase();
+        const lowerText = text.toLowerCase();
 
-        // Standard WHOIS available phrases
         const availablePhrases = [
           "not found",
           "no match",
           "no matches",
           "no entries",
           "no data found",
-          "free",
-          "available",
           "not registered",
           "no se encuentra registrado",
           "objeto no existe"
         ];
 
-        // Authoritative checks for active registrations
-        if (lower.includes("registrar:") || lower.includes("registrant:") || lower.includes("creation date:") || lower.includes("titular:")) {
-          return NextResponse.json({ isAvailable: false, source: "tcp-whois-occupied" });
-        }
-
+        let matchesAvailable = false;
         for (const phrase of availablePhrases) {
-          if (lower.includes(phrase)) {
-            return NextResponse.json({ isAvailable: true, source: "tcp-whois-available" });
+          if (lowerText.includes(phrase)) {
+            matchesAvailable = true;
+            break;
           }
         }
 
-        // If response is long, it's highly likely to contain WHOIS registration details
-        if (text.length > 200) {
-          return NextResponse.json({ isAvailable: false, source: "tcp-whois-len" });
+        // Match "available" only if not preceded by negative phrase
+        if (lowerText.includes("available") && !lowerText.includes("not available")) {
+          matchesAvailable = true;
+        }
+
+        // Registry reserved keywords
+        const reservedPhrases = [
+          "reserved for",
+          "reserved name",
+          "reserved domain",
+          "registry reserved",
+          "restricted",
+          "forbidden",
+          "blocked"
+        ];
+        let matchesReserved = false;
+        for (const phrase of reservedPhrases) {
+          if (lowerText.includes(phrase)) {
+            matchesReserved = true;
+            break;
+          }
+        }
+
+        if (matchesAvailable && !matchesReserved) {
+          return NextResponse.json({ isAvailable: true, source: "tcp-whois-available" });
+        } else {
+          return NextResponse.json({ isAvailable: false, source: "tcp-whois-occupied" });
         }
       } catch (tcpErr) {
-        // Fall back to Cloudflare DNS DoH if port 43 is blocked (like in Vercel/sandboxes)
+        // Fall back to HTTP-based verifications
       }
     }
 
-    // 3. Fallback to Cloudflare DoH (HTTPS-based, resolves active domains without port 43 or CORS blocks)
+    // 3. Fallback to Cloudflare DoH (Resolves active domains via HTTPS)
+    let dohStatus: number | null = null;
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 3500);
@@ -161,44 +182,67 @@ export async function GET(request: Request) {
 
       if (dohRes.ok) {
         const dohData = await dohRes.json();
+        dohStatus = dohData.Status;
         
-        // Status 0 (NOERROR) means the domain resolves to nameservers -> definitely registered
-        if (dohData.Status === 0) {
+        // Status 0 (NOERROR) means the domain has active name servers -> definitely registered
+        if (dohStatus === 0) {
           return NextResponse.json({ isAvailable: false, source: "doh-noerror" });
-        }
-        
-        // Status 3 (NXDOMAIN) -> Domain has no active zone records. 
-        if (dohData.Status === 3) {
-          // If it is NOT a .es domain, we can query public RDAP as final check
-          if (!domain.endsWith(".es")) {
-            try {
-              const rdapController = new AbortController();
-              const rdapTimeout = setTimeout(() => rdapController.abort(), 3000);
-
-              const rdapRes = await fetch(`https://rdap.org/domain/${domain}`, {
-                method: "GET",
-                signal: rdapController.signal,
-                headers: { "Accept": "application/rdap+json, application/json" }
-              });
-              clearTimeout(rdapTimeout);
-
-              if (rdapRes.status === 200) {
-                return NextResponse.json({ isAvailable: false, source: "rdap-occupied" });
-              } else if (rdapRes.status === 404) {
-                return NextResponse.json({ isAvailable: true, source: "rdap-available" });
-              }
-            } catch (e) {
-              // Ignore and declare available
-            }
-          }
-          return NextResponse.json({ isAvailable: true, source: "doh-nxdomain" });
         }
       }
     } catch (dohErr) {
-      // Inconclusive fallback
+      // Inconclusive DoH
     }
 
-    return NextResponse.json({ isAvailable: "error" });
+    // 4. HTTP-based fallback (Only if DoH returned NXDOMAIN or failed, and TCP failed/blocked)
+    if (dohStatus === 3 || dohStatus === null) {
+      // For .es, since Spain has no RDAP and public WHOIS scraper lists are broken/gated,
+      // we must declare it inconclusive (error) to avoid false positives.
+      if (lowerDomain.endsWith(".es")) {
+        return NextResponse.json({ isAvailable: "error", source: "inconclusive-es" });
+      }
+
+      // For non-es domains, query rdap.org redirector
+      try {
+        const rdapController = new AbortController();
+        const rdapTimeout = setTimeout(() => rdapController.abort(), 3500);
+
+        const rdapRes = await fetch(`https://rdap.org/domain/${domain}`, {
+          method: "GET",
+          signal: rdapController.signal,
+          headers: { "Accept": "application/rdap+json, application/json" }
+        });
+        clearTimeout(rdapTimeout);
+
+        if (rdapRes.status === 200) {
+          return NextResponse.json({ isAvailable: false, source: "rdap-occupied" });
+        } else if (rdapRes.status === 404) {
+          return NextResponse.json({ isAvailable: true, source: "rdap-available" });
+        }
+      } catch (rdapErr) {
+        // Fall back to who-dat public API instance
+        try {
+          const whodatController = new AbortController();
+          const whodatTimeout = setTimeout(() => whodatController.abort(), 3500);
+
+          const whodatRes = await fetch(`https://who-dat.as93.net/${domain}`, {
+            signal: whodatController.signal
+          });
+          clearTimeout(whodatTimeout);
+
+          if (whodatRes.ok) {
+            const whodatData = await whodatRes.json();
+            if (typeof whodatData.isRegistered === "boolean") {
+              return NextResponse.json({ isAvailable: !whodatData.isRegistered, source: "whodat-api" });
+            }
+          }
+        } catch (whodatErr) {
+          // Ignore
+        }
+      }
+    }
+
+    // If all stages fail or are inconclusive, report error instead of returning false positives
+    return NextResponse.json({ isAvailable: "error", source: "failed-all-checks" });
   } catch (error: any) {
     console.error("Domain validation API route error:", error);
     return NextResponse.json({ error: error.message || "Failed to validate domain" }, { status: 500 });
