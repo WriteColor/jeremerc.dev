@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { parseAndValidateDomain, ParsedDomain } from "./DomainValidator";
 import { DOMAIN_EXTENSIONS, DomainExtensionInfo, DomainResult } from "./DomainData";
 import { DomainResultsTable } from "./DomainResultsTable";
-import { DomainSearchTerminal } from "./DomainSearchTerminal";
 import { DomainSolicitationModal } from "./DomainSolicitationModal";
 
 export const DomainSearchBento: React.FC = () => {
@@ -13,7 +12,6 @@ export const DomainSearchBento: React.FC = () => {
   const [validation, setValidation] = useState<ParsedDomain | null>(null);
   
   const [isSearching, setIsSearching] = useState(false);
-  const [showTerminal, setShowTerminal] = useState(false);
   const [searchCompleted, setSearchCompleted] = useState(false);
 
   const [results, setResults] = useState<DomainResult[]>([]);
@@ -78,7 +76,6 @@ export const DomainSearchBento: React.FC = () => {
 
   // Process queries in parallel batches
   const runParallelQueries = async (baseName: string) => {
-    const list: DomainResult[] = [];
     const batchSize = 6;
     const extensionsToQuery = [...DOMAIN_EXTENSIONS];
 
@@ -86,21 +83,21 @@ export const DomainSearchBento: React.FC = () => {
       const batch = extensionsToQuery.slice(i, i + batchSize);
       const promises = batch.map(async (extInfo) => {
         const isAvailable = await checkDomainDns(baseName, extInfo.extension);
-        return {
-          extension: extInfo.extension,
-          isAvailable,
-          firstYearPrice: extInfo.firstYearPrice,
-          renewalPrice: extInfo.renewalPrice,
-          observations: extInfo.observations,
-          isBestValue: extInfo.isBestValue,
-        };
+        
+        // Update results state dynamically in real-time
+        setResults((prev) =>
+          prev.map((r) =>
+            r.extension === extInfo.extension
+              ? { ...r, isAvailable }
+              : r
+          )
+        );
       });
 
-      const batchResults = await Promise.all(promises);
-      list.push(...batchResults);
+      await Promise.all(promises);
     }
-
-    setResults(list);
+    
+    setIsSearching(false);
   };
 
   const handleSearch = async (e: React.FormEvent) => {
@@ -108,22 +105,27 @@ export const DomainSearchBento: React.FC = () => {
     if (!validation?.isValid) return;
 
     setIsSearching(true);
-    setShowTerminal(true);
-    setSearchCompleted(false);
+    setSearchCompleted(true);
     setSelectedResults([]);
     setHasScrolledToSummary(false);
+
+    // Initialize all domain extensions with 'loading' status
+    const initialResults: DomainResult[] = DOMAIN_EXTENSIONS.map((extInfo) => ({
+      extension: extInfo.extension,
+      isAvailable: "loading",
+      firstYearPrice: extInfo.firstYearPrice,
+      renewalPrice: extInfo.renewalPrice,
+      observations: extInfo.observations,
+      isBestValue: extInfo.isBestValue,
+    }));
+    setResults(initialResults);
 
     try {
       await runParallelQueries(validation.baseName);
     } catch (err) {
       console.error("Batch search error:", err);
+      setIsSearching(false);
     }
-  };
-
-  const handleTerminalComplete = () => {
-    setShowTerminal(false);
-    setIsSearching(false);
-    setSearchCompleted(true);
   };
 
   const handleResetSearch = () => {
@@ -280,14 +282,6 @@ export const DomainSearchBento: React.FC = () => {
                   <Loader2 className="animate-spin stroke-[3.5]" size={16} />
                   <span>Realizando validaciones cruzadas de registros en tiempo real...</span>
                 </div>
-              )}
-
-              {/* Simulation CLI Terminal */}
-              {showTerminal && (
-                <DomainSearchTerminal 
-                  domainName={validation?.baseName || rawQuery} 
-                  onComplete={handleTerminalComplete} 
-                />
               )}
 
               {/* Search Results */}

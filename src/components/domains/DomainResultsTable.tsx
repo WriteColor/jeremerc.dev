@@ -1,5 +1,5 @@
 import React from "react";
-import { Check, X, AlertCircle } from "lucide-react";
+import { Check, X, AlertCircle, Loader2 } from "lucide-react";
 import { DomainResult } from "./DomainData";
 
 export interface DomainResultsTableProps {
@@ -15,8 +15,14 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
   selectedResults,
   baseName,
 }) => {
-  // Filter and sort available ones cheapest-first, then unavailable ones, then errors
+  // Check if any domain in results is currently loading
+  const isAnyLoading = results.some(r => r.isAvailable === "loading");
+
+  // Keep stable order if any domain is still loading.
+  // Otherwise, sort available ones cheapest-first, then unavailable ones, then errors.
   const sortedResults = [...results].sort((a, b) => {
+    if (isAnyLoading) return 0; // Stable order
+
     // 1. Available first
     const availA = a.isAvailable === true ? 1 : 0;
     const availB = b.isAvailable === true ? 1 : 0;
@@ -43,9 +49,9 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
             <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-24">Extensión</th>
             <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-32">Estado</th>
             <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-28">Precio (1er Año)</th>
-            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-24">Renovación</th>
+            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-28">Renovación</th>
             <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black">Observaciones</th>
-            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] w-28 text-center">Acción</th>
+            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] text-center w-24">Acción</th>
           </tr>
         </thead>
         <tbody>
@@ -75,7 +81,11 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
 
                 {/* Status */}
                 <td className="p-3 border-r-2 border-black/10">
-                  {res.isAvailable === true ? (
+                  {res.isAvailable === "loading" ? (
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-cyan/20 text-[var(--c-text)] font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000] animate-pulse">
+                      <Loader2 size={10} className="stroke-[3] animate-spin" /> Buscando
+                    </span>
+                  ) : res.isAvailable === true ? (
                     <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-green text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000]">
                       <Check size={10} className="stroke-[3]" /> Disponible
                     </span>
@@ -84,7 +94,7 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
                       <X size={10} className="stroke-[3]" /> Registrado
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-yellow text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000] animate-pulse">
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-yellow text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000]">
                       <AlertCircle size={10} className="stroke-[3]" /> Error API
                     </span>
                   )}
@@ -107,7 +117,11 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
 
                 {/* Action button */}
                 <td className="p-2 text-center whitespace-nowrap">
-                  {res.isAvailable === true ? (
+                  {res.isAvailable === "loading" ? (
+                    <span className="font-mono text-[9px] text-[var(--c-text-muted)] uppercase animate-pulse select-none">
+                      Cargando...
+                    </span>
+                  ) : res.isAvailable === true ? (
                     <button
                       onClick={() => {
                         if (typeof window !== "undefined") {

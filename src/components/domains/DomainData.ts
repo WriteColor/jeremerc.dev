@@ -9,7 +9,7 @@ export interface DomainExtensionInfo {
 
 export interface DomainResult {
   extension: string;
-  isAvailable: boolean | "error";
+  isAvailable: boolean | "error" | "loading";
   firstYearPrice: number;
   renewalPrice: number;
   observations: string;

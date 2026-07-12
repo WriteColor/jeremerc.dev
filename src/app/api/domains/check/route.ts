@@ -124,7 +124,8 @@ export async function GET(request: Request) {
           "no data found",
           "not registered",
           "no se encuentra registrado",
-          "objeto no existe"
+          "objeto no existe",
+          "does not exist"
         ];
 
         let matchesAvailable = false;
@@ -133,11 +134,6 @@ export async function GET(request: Request) {
             matchesAvailable = true;
             break;
           }
-        }
-
-        // Match "available" only if not preceded by negative phrase
-        if (lowerText.includes("available") && !lowerText.includes("not available")) {
-          matchesAvailable = true;
         }
 
         // Registry reserved keywords
