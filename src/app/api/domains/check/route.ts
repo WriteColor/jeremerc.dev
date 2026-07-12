@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import dns from "dns";
 
 export async function GET(request: Request) {
   try {
@@ -10,66 +9,75 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Dominio no provisto" }, { status: 400 });
     }
 
-    // 1. Fast DNS Check via native node dns
-    try {
-      const nsRecords = await dns.promises.resolveNs(domain);
-      if (nsRecords && nsRecords.length > 0) {
-        return NextResponse.json({ isAvailable: false, source: "dns-ns" });
-      }
-    } catch (dnsErr: any) {
-      // Continue if DNS resolve fails
-    }
-
-    try {
-      const soaRecord = await dns.promises.resolveSoa(domain);
-      if (soaRecord) {
-        return NextResponse.json({ isAvailable: false, source: "dns-soa" });
-      }
-    } catch (dnsErr: any) {
-      // Continue
-    }
-
-    // 2. Fallback to RDAP query (Official WHOIS successor, run on server to bypass CORS)
+    // 1. Query Cloudflare DoH (fast, secure, covers all TLDs without local sandbox DNS blocks)
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 3500);
+      const timeoutId = setTimeout(() => controller.abort(), 4000); // 4s timeout
 
-      const rdapRes = await fetch(`https://rdap.org/domain/${domain}`, {
-        method: "GET",
-        signal: controller.signal,
-        headers: {
-          "Accept": "application/rdap+json, application/json",
-        }
+      const dohRes = await fetch(`https://cloudflare-dns.com/dns-query?name=${domain}&type=SOA`, {
+        headers: { "Accept": "application/dns-json" },
+        signal: controller.signal
       });
       clearTimeout(timeoutId);
 
-      if (rdapRes.status === 200) {
-        return NextResponse.json({ isAvailable: false, source: "rdap-occupied" });
-      } else if (rdapRes.status === 404) {
-        return NextResponse.json({ isAvailable: true, source: "rdap-available" });
-      }
-    } catch (rdapErr) {
-      // Continue to next fallback
-    }
+      if (dohRes.ok) {
+        const dohData = await dohRes.json();
+        
+        // Status 0 means NOERROR -> DNS records exist, domain is occupied
+        if (dohData.Status === 0) {
+          return NextResponse.json({ isAvailable: false, source: "doh-noerror" });
+        }
+        
+        // Status 3 means NXDOMAIN -> Domain has no active SOA records
+        if (dohData.Status === 3) {
+          // If TLD is Spain (.es, .com.es, etc.), Red.es does not support standard RDAP at rdap.org
+          // and they block port 43 WHOIS queries from cloud servers.
+          // Since it's NXDOMAIN, and DNS is the only open check, we declare it available.
+          if (domain.endsWith(".es")) {
+            return NextResponse.json({ isAvailable: true, source: "doh-nxdomain-es" });
+          }
+          
+          // For other TLDs, query RDAP to verify if it is bought but parked without DNS
+          try {
+            const rdapController = new AbortController();
+            const rdapTimeout = setTimeout(() => rdapController.abort(), 3500);
 
-    // 3. Fallback to Cloudflare DNS-over-HTTPS JSON API
-    try {
-      const res = await fetch(`https://cloudflare-dns.com/dns-query?name=${domain}&type=SOA`, {
-        headers: { accept: "application/dns-json" },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.Status === 3) {
-          return NextResponse.json({ isAvailable: true, source: "doh-available" });
-        } else if (data.Status === 0) {
-          return NextResponse.json({ isAvailable: false, source: "doh-occupied" });
+            const rdapRes = await fetch(`https://rdap.org/domain/${domain}`, {
+              method: "GET",
+              signal: rdapController.signal,
+              headers: { "Accept": "application/rdap+json, application/json" }
+            });
+            clearTimeout(rdapTimeout);
+
+            if (rdapRes.status === 200) {
+              return NextResponse.json({ isAvailable: false, source: "rdap-occupied" });
+            } else if (rdapRes.status === 404) {
+              return NextResponse.json({ isAvailable: true, source: "rdap-available" });
+            }
+          } catch (rdapErr) {
+            // If RDAP lookup fails, fall back to available since DNS also reported NXDOMAIN
+            return NextResponse.json({ isAvailable: true, source: "doh-nxdomain-rdap-failed" });
+          }
         }
       }
     } catch (dohErr) {
-      // Ignore
+      // If DoH fails (network/timeout), try RDAP directly as primary fallback
+      try {
+        const rdapRes = await fetch(`https://rdap.org/domain/${domain}`, {
+          method: "GET",
+          headers: { "Accept": "application/rdap+json, application/json" }
+        });
+        if (rdapRes.status === 200) {
+          return NextResponse.json({ isAvailable: false, source: "rdap-fallback-occupied" });
+        } else if (rdapRes.status === 404 && !domain.endsWith(".es")) {
+          return NextResponse.json({ isAvailable: true, source: "rdap-fallback-available" });
+        }
+      } catch (e) {
+        // Fallback below
+      }
     }
 
-    // Return error if all methods fail or timeout
+    // Default error state if lookup is inconclusive
     return NextResponse.json({ isAvailable: "error" });
   } catch (error: any) {
     console.error("Domain validation API route error:", error);
