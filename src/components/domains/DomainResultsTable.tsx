@@ -94,7 +94,10 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
                       <X size={10} className="stroke-[3]" /> Registrado
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-yellow text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000]">
+                    <span 
+                      className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-yellow text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000] cursor-help"
+                      title="Inconclusivo: Consultas directas al puerto 43 (WHOIS) bloqueadas en esta red local/servidor. Para producción o desarrollo local restringido, añade WHOISJSON_API_KEY en tu .env"
+                    >
                       <AlertCircle size={10} className="stroke-[3]" /> Error API
                     </span>
                   )}
