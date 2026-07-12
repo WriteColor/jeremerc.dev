@@ -67,8 +67,8 @@ function queryTcpWhois(domain: string, server: string): Promise<string> {
       reject(err);
     });
 
-    // Slow WHOIS servers like whois.nic.es require longer timeout limit
-    socket.setTimeout(4500, () => {
+    // Slow WHOIS servers like whois.nic.es require timeout limit
+    socket.setTimeout(3000, () => {
       socket.destroy();
       reject(new Error("Timeout"));
     });
@@ -91,7 +91,7 @@ export async function GET(request: Request) {
     if (whoisJsonKey) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000);
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
         
         const apiRes = await fetch(`https://whoisjson.com/api/v1/whois?domain=${domain}&token=${whoisJsonKey}`, {
           signal: controller.signal
@@ -168,7 +168,7 @@ export async function GET(request: Request) {
     let dohStatus: number | null = null;
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 3500);
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
 
       const dohRes = await fetch(`https://cloudflare-dns.com/dns-query?name=${domain}&type=SOA`, {
         headers: { "Accept": "application/dns-json" },
@@ -200,7 +200,7 @@ export async function GET(request: Request) {
       // For non-es domains, query rdap.org redirector
       try {
         const rdapController = new AbortController();
-        const rdapTimeout = setTimeout(() => rdapController.abort(), 3500);
+        const rdapTimeout = setTimeout(() => rdapController.abort(), 2000);
 
         const rdapRes = await fetch(`https://rdap.org/domain/${domain}`, {
           method: "GET",
@@ -218,7 +218,7 @@ export async function GET(request: Request) {
         // Fall back to who-dat public API instance
         try {
           const whodatController = new AbortController();
-          const whodatTimeout = setTimeout(() => whodatController.abort(), 3500);
+          const whodatTimeout = setTimeout(() => whodatController.abort(), 2000);
 
           const whodatRes = await fetch(`https://who-dat.as93.net/${domain}`, {
             signal: whodatController.signal

@@ -56,13 +56,7 @@ export const DomainSearchBento: React.FC = () => {
   const checkDomainDns = async (base: string, ext: string): Promise<boolean | "error"> => {
     try {
       const fqdn = `${base}${ext}`;
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
-
-      const res = await fetch(`/api/domains/check?domain=${fqdn}`, {
-        signal: controller.signal,
-      });
-      clearTimeout(timeoutId);
+      const res = await fetch(`/api/domains/check?domain=${fqdn}`);
 
       if (!res.ok) return "error";
 
