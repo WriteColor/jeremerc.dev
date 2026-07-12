@@ -6,12 +6,14 @@ export interface DomainResultsTableProps {
   results: DomainResult[];
   onSelect: (result: DomainResult) => void;
   selectedResults: DomainResult[];
+  baseName: string;
 }
 
 export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
   results,
   onSelect,
   selectedResults,
+  baseName,
 }) => {
   // Filter and sort available ones cheapest-first, then unavailable ones, then errors
   const sortedResults = [...results].sort((a, b) => {
@@ -60,10 +62,11 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
               >
                 {/* Extension */}
                 <td className="p-3 font-mono font-bold text-xs text-[var(--c-text)] border-r-2 border-black/10 whitespace-nowrap">
-                  <div className="flex items-center gap-1.5">
-                    <span>{res.extension}</span>
+                  <div className="flex items-center gap-0.5">
+                    <span className="text-[var(--c-text-muted)] font-normal">{baseName}</span>
+                    <span className="text-[var(--c-text)] font-black">{res.extension}</span>
                     {isBestValue && (
-                      <span className="bg-neo-yellow text-black border border-black font-display font-black text-[7px] uppercase px-1 py-0.5 shadow-[1px_1px_0px_0px_#000] scale-90">
+                      <span className="bg-neo-yellow text-black border border-black font-display font-black text-[7px] uppercase px-1 py-0.5 shadow-[1px_1px_0px_0px_#000] scale-90 ml-1">
                         Top
                       </span>
                     )}

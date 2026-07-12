@@ -19,6 +19,7 @@ export const DomainSearchBento: React.FC = () => {
   const [results, setResults] = useState<DomainResult[]>([]);
   const [selectedResults, setSelectedResults] = useState<DomainResult[]>([]);
   const [isSolicitationOpen, setIsSolicitationOpen] = useState(false);
+  const [hasScrolledToSummary, setHasScrolledToSummary] = useState(false);
 
   const summaryPanelRef = useRef<HTMLDivElement>(null);
 
@@ -32,18 +33,19 @@ export const DomainSearchBento: React.FC = () => {
     setValidation(res);
   }, [rawQuery]);
 
-  // Auto-scroll to solicitation panel when domains are selected
+  // Auto-scroll to solicitation panel when the first domain is selected
   useEffect(() => {
-    if (selectedResults.length > 0) {
+    if (selectedResults.length === 1 && !hasScrolledToSummary) {
       const timer = setTimeout(() => {
         const el = document.getElementById("solicitation-summary-panel");
         if (el) {
           el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          setHasScrolledToSummary(true);
         }
       }, 150);
       return () => clearTimeout(timer);
     }
-  }, [selectedResults.length]);
+  }, [selectedResults.length, hasScrolledToSummary]);
 
   // Clean raw query on blur if valid
   const handleBlur = () => {
@@ -109,6 +111,7 @@ export const DomainSearchBento: React.FC = () => {
     setShowTerminal(true);
     setSearchCompleted(false);
     setSelectedResults([]);
+    setHasScrolledToSummary(false);
 
     try {
       await runParallelQueries(validation.baseName);
@@ -129,6 +132,7 @@ export const DomainSearchBento: React.FC = () => {
     setSearchCompleted(false);
     setResults([]);
     setSelectedResults([]);
+    setHasScrolledToSummary(false);
   };
 
   const handleSelectResult = (res: DomainResult) => {
@@ -291,11 +295,17 @@ export const DomainSearchBento: React.FC = () => {
                     results={results} 
                     onSelect={handleSelectResult} 
                     selectedResults={selectedResults}
+                    baseName={validation?.baseName || ""}
                   />
 
                   {/* Pricing disclaimer note */}
-                  <div className="text-left font-sans text-[10px] font-bold text-[var(--c-text-muted)] italic leading-tight border-l-3 border-neo-cyan pl-2">
-                    * Los precios y promociones del primer año mostrados son orientativos en base a las tarifas actuales de registradores colaboradores y quedan confirmados en el momento exacto del registro definitivo.
+                  <div className="text-left font-sans text-[10px] font-bold text-[var(--c-text-muted)] italic leading-relaxed border-l-3 border-neo-cyan pl-2 space-y-1.5">
+                    <div>
+                      * Los precios y promociones del primer año mostrados son orientativos en base a las tarifas actuales de registradores colaboradores y quedan confirmados en el momento exacto del registro definitivo.
+                    </div>
+                    <div className="text-neo-pink">
+                      ⚠️ IMPORTANTE: Ciertos nombres de dominio (por su brevedad, palabras clave comunes o categorización "Premium" por parte del registro) pueden no estar permitidos para registro estándar o tener un costo de adquisición sustancialmente mayor al listado habitual.
+                    </div>
                   </div>
 
                   {/* Solicitation Details Panel (Multi-Select Summary) */}

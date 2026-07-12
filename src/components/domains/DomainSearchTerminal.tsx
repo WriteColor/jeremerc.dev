@@ -57,27 +57,6 @@ export const DomainSearchTerminal: React.FC<DomainSearchTerminalProps> = ({ onCo
 
   return (
     <div className="border-4 border-black bg-black text-neo-green font-mono text-xs p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] w-full max-w-full my-4 rounded-none text-left">
-      {/* Header bar */}
-      <div className="flex items-center justify-between border-b-2 border-neo-green/30 pb-2 mb-3">
-        <span className="text-[10px] uppercase font-black tracking-wider text-neo-green flex items-center gap-1.5 animate-pulse">
-          <span className="w-2 h-2 bg-neo-green rounded-full inline-block"></span>
-          RESOLVER CORE TERMINAL CLI v1.1.2
-        </span>
-        <div className="flex gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-neo-pink border border-black inline-block"></span>
-          <span className="w-2.5 h-2.5 rounded-full bg-neo-yellow border border-black inline-block"></span>
-          <span className="w-2.5 h-2.5 rounded-full bg-neo-cyan border border-black inline-block"></span>
-        </div>
-      </div>
-      
-      {/* ASCII Art Intro */}
-      <div className="text-neo-green/40 text-[8px] leading-[1] mb-2 select-none font-bold">
-        {"   _                     ___                      _      \n" +
-         "  | |___ _ _ ___ ___ ___|   \\ ___ _ __  ___ _ _  (_)___  \n" +
-         "  | / -_) '_/ -_)   / -_) |) / _ \\ '  \\/ _ \\ ' \\ | (_-<  \n" +
-         "  |_\\___|_| \\___|_|_\\___|___/\\___/_|_|_\\___/_||_||_/__/  "}
-      </div>
-
       <div 
         ref={containerRef}
         className="h-44 overflow-y-auto space-y-1.5 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neo-green/30 pr-1 select-none text-[11px]"

@@ -265,7 +265,7 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
                     onChange={(e) => setDiscord(e.target.value)}
                     disabled={status === "loading"}
                     className={inputBase}
-                    placeholder="usuario#0000 o nombre_usuario"
+                    placeholder="ID o nombre_usuario"
                   />
                 </div>
 
