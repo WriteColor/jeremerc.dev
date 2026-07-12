@@ -7,6 +7,7 @@ export interface DomainResultsTableProps {
   onSelect: (result: DomainResult) => void;
   selectedResults: DomainResult[];
   baseName: string;
+  searchedExtension?: string;
 }
 
 export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
@@ -14,26 +15,34 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
   onSelect,
   selectedResults,
   baseName,
+  searchedExtension,
 }) => {
   // Check if any domain in results is currently loading
   const isAnyLoading = results.some(r => r.isAvailable === "loading");
 
-  // Keep stable order if any domain is still loading.
+  // Keep stable order if any domain is still loading (except forcing searchedExtension first).
   // Otherwise, sort available ones cheapest-first, then unavailable ones, then errors.
   const sortedResults = [...results].sort((a, b) => {
-    if (isAnyLoading) return 0; // Stable order
+    // 1. Force the exact searched extension to always float to the top
+    if (searchedExtension) {
+      const isSearchedA = a.extension.toLowerCase() === searchedExtension.toLowerCase();
+      const isSearchedB = b.extension.toLowerCase() === searchedExtension.toLowerCase();
+      if (isSearchedA !== isSearchedB) return isSearchedA ? -1 : 1;
+    }
 
-    // 1. Available first
+    if (isAnyLoading) return 0; // Stable order for other rows during loading
+
+    // 2. Available first
     const availA = a.isAvailable === true ? 1 : 0;
     const availB = b.isAvailable === true ? 1 : 0;
     if (availA !== availB) return availB - availA;
 
-    // 2. Errors last
+    // 3. Errors last
     const errA = a.isAvailable === "error" ? 1 : 0;
     const errB = b.isAvailable === "error" ? 1 : 0;
     if (errA !== errB) return errA - errB;
 
-    // 3. Sort available ones by price (cheapest first)
+    // 4. Sort available ones by price (cheapest first)
     if (a.isAvailable === true && b.isAvailable === true) {
       return a.firstYearPrice - b.firstYearPrice;
     }
@@ -48,7 +57,7 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
           <tr className="border-b-3 border-black bg-[var(--c-surface-hover)]">
             <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-24">Extensión</th>
             <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-32">Estado</th>
-            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-28">Precio (1er Año)</th>
+            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-40">Precio (1er Año)</th>
             <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-28">Renovación</th>
             <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black">Observaciones</th>
             <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] text-center w-24">Acción</th>

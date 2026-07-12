@@ -292,6 +292,7 @@ export const DomainSearchBento: React.FC = () => {
                     onSelect={handleSelectResult} 
                     selectedResults={selectedResults}
                     baseName={validation?.baseName || ""}
+                    searchedExtension={validation?.detectedExtension || undefined}
                   />
 
                   {/* Pricing disclaimer note */}
