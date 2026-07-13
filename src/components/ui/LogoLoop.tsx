@@ -21,8 +21,8 @@ export const LogoLoop: React.FC<LogoLoopProps> = ({
   return (
     <div className={`relative w-full overflow-hidden py-2 ${className}`}>
       {/* Absolute gradient fade edges for visual depth */}
-      <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white to-transparent dark:from-[var(--c-bg)] z-10 pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white to-transparent dark:from-[var(--c-bg)] z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 left-0 w-8 bg-linear-to-r from-white to-transparent dark:from-(--c-bg) z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-8 bg-linear-to-l from-white to-transparent dark:from-(--c-bg) z-10 pointer-events-none" />
 
       <div
         className="flex w-max hover:[animation-play-state:paused]"
@@ -34,14 +34,14 @@ export const LogoLoop: React.FC<LogoLoopProps> = ({
         {/* Render twice for seamless loop */}
         <div className="flex gap-4 px-2">
           {items.map((item, idx) => (
-            <div key={`loop-1-${idx}`} className="flex-shrink-0">
+            <div key={`loop-1-${idx}`} className="shrink-0">
               {item}
             </div>
           ))}
         </div>
         <div className="flex gap-4 px-2" aria-hidden="true">
           {items.map((item, idx) => (
-            <div key={`loop-2-${idx}`} className="flex-shrink-0">
+            <div key={`loop-2-${idx}`} className="shrink-0">
               {item}
             </div>
           ))}

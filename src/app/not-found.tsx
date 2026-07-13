@@ -7,7 +7,7 @@ import ShapeGridBackground from "@/components/backgrounds/ShapeGridBackground";
 
 export default function NotFound() {
   return (
-    <main className="relative min-h-screen p-4 sm:p-8 flex flex-col items-center justify-center bg-[var(--c-bg)] text-[var(--c-text)] overflow-hidden">
+    <main className="relative min-h-screen p-4 sm:p-8 flex flex-col items-center justify-center bg-(--c-bg) text-(--c-text) overflow-hidden">
       {/* Background ShapeGrid (High-Performance Canvas 2D) */}
       <div className="fixed inset-0 z-0 pointer-events-none select-none">
         <ShapeGridBackground />
@@ -21,7 +21,7 @@ export default function NotFound() {
 
         {/* Neobrutalist Title */}
         <div className="flex justify-center my-4">
-          <div className="inline-block bg-[#F5F4F0] text-black border-4 border-black px-6 py-2 rotate-[-3deg] shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] font-display font-black text-6xl sm:text-7xl uppercase tracking-wider">
+          <div className="inline-block bg-[#F5F4F0] text-black border-4 border-black px-6 py-2 -rotate-3 shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] font-display font-black text-6xl sm:text-7xl uppercase tracking-wider">
             404
           </div>
         </div>
@@ -31,10 +31,10 @@ export default function NotFound() {
           <h1 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight">
             Archivo no encontrado
           </h1>
-          <p className="font-mono text-xs text-[var(--c-text-muted)] font-bold">
+          <p className="font-mono text-xs text-(--c-text-muted) font-bold">
             ERROR_CODE: PAGE_NOT_FOUND_404
           </p>
-          <p className="font-sans text-xs sm:text-sm font-semibold text-[var(--c-text-muted)] leading-relaxed pt-2">
+          <p className="font-sans text-xs sm:text-sm font-semibold text-(--c-text-muted) leading-relaxed pt-2">
             La ruta solicitada no corresponde a ningún archivo en el portafolio. Puede haber sido movida, borrada o ingresada incorrectamente en la terminal.
           </p>
         </div>
@@ -43,7 +43,7 @@ export default function NotFound() {
         <div>
           <Link
             href="/"
-            className="neo-btn bg-[var(--c-surface)] text-[var(--c-text)] border-[var(--c-border)] shadow-[4px_4px_0px_0px_rgba(var(--c-shadow),1)] hover:shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] px-5 py-2.5 text-xs font-bold uppercase inline-flex items-center gap-2 cursor-pointer transition-all duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px]"
+            className="neo-btn bg-(--c-surface) text-(--c-text) border-(--c-border) shadow-[4px_4px_0px_0px_rgba(var(--c-shadow),1)] hover:shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] px-5 py-2.5 text-xs font-bold uppercase inline-flex items-center gap-2 cursor-pointer transition-all duration-200 hover:translate-x-[-2px] hover:translate-y-[-2px]"
           >
             <MoveLeft size={16} /> Volver al Inicio
           </Link>

@@ -64,7 +64,7 @@ export default function ErrorTestPage() {
   const current = errorSpecs[activeError];
 
   return (
-    <main className="relative min-h-screen p-4 sm:p-8 flex flex-col items-center justify-center bg-[var(--c-bg)] text-[var(--c-text)] overflow-hidden">
+    <main className="relative min-h-screen p-4 sm:p-8 flex flex-col items-center justify-center bg-(--c-bg) text-(--c-text) overflow-hidden">
       {/* Background ShapeGrid (High-Performance Canvas 2D) */}
       <div className="fixed inset-0 z-0 pointer-events-none select-none">
         <ShapeGridBackground />
@@ -82,8 +82,8 @@ export default function ErrorTestPage() {
               onClick={() => setActiveError(code)}
               className={`px-3 py-1 border-2 font-mono text-[10px] sm:text-xs font-bold uppercase transition-all duration-150 cursor-pointer ${
                 activeError === code
-                  ? "bg-[var(--c-text)] text-[var(--c-bg)] border-[var(--c-border)] shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)]"
-                  : "bg-[var(--c-surface)] text-[var(--c-text)] border-[var(--c-border)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),0.2)] hover:border-[var(--c-border)]"
+                  ? "bg-(--c-text) text-(--c-bg) border-(--c-border) shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)]"
+                  : "bg-(--c-surface) text-(--c-text) border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),0.2)] hover:border-(--c-border)"
               }`}
             >
               {code}
@@ -102,7 +102,7 @@ export default function ErrorTestPage() {
 
         {/* Neobrutalist Title */}
         <div className="flex justify-center my-4">
-          <div className="inline-block bg-[#F5F4F0] text-black border-4 border-black px-6 py-2 rotate-[-3deg] shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] font-display font-black text-5xl sm:text-6xl uppercase tracking-wider">
+          <div className="inline-block bg-[#F5F4F0] text-black border-4 border-black px-6 py-2 -rotate-3 shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] font-display font-black text-5xl sm:text-6xl uppercase tracking-wider">
             {current.codeNum}
           </div>
         </div>
@@ -112,10 +112,10 @@ export default function ErrorTestPage() {
           <h1 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight">
             {current.title}
           </h1>
-          <p className="font-mono text-xs text-[var(--c-text-muted)] font-bold">
+          <p className="font-mono text-xs text-(--c-text-muted) font-bold">
             ERROR_CODE: {current.codeStr}
           </p>
-          <p className="font-sans text-xs sm:text-sm font-semibold text-[var(--c-text-muted)] leading-relaxed pt-2">
+          <p className="font-sans text-xs sm:text-sm font-semibold text-(--c-text-muted) leading-relaxed pt-2">
             {current.description}
           </p>
         </div>
@@ -124,7 +124,7 @@ export default function ErrorTestPage() {
         <div className="flex flex-col sm:flex-row justify-center gap-3">
           <Link
             href="/"
-            className="neo-btn bg-[var(--c-surface)] text-[var(--c-text)] border-[var(--c-border)] shadow-[4px_4px_0px_0px_rgba(var(--c-shadow),1)] hover:shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] px-5 py-2.5 text-xs font-bold uppercase inline-flex items-center gap-2 cursor-pointer transition-all duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px]"
+            className="neo-btn bg-(--c-surface) text-(--c-text) border-(--c-border) shadow-[4px_4px_0px_0px_rgba(var(--c-shadow),1)] hover:shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] px-5 py-2.5 text-xs font-bold uppercase inline-flex items-center gap-2 cursor-pointer transition-all duration-200 hover:translate-x-[-2px] hover:translate-y-[-2px]"
           >
             <MoveLeft size={16} /> Volver al Portafolio
           </Link>

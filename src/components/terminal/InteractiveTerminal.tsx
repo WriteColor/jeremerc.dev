@@ -31,7 +31,7 @@ export const InteractiveTerminal: React.FC<InteractiveTerminalProps> = ({
     {
       command: "system_init",
       output: (
-        <div className="text-[var(--c-text-muted)]">
+        <div className="text-(--c-text-muted)">
           Bienvenido al entorno interactivo de Jeremerc. Escribe <span className="text-neo-pink font-bold">help</span> para listar los comandos disponibles.
         </div>
       ),
@@ -207,7 +207,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
       switch (cmd) {
         case "help":
           output = (
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[var(--c-text-muted)] font-mono text-[10px] sm:text-xs">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-(--c-text-muted) font-mono text-[10px] sm:text-xs">
               <div><span className="text-neo-pink font-bold">help</span> - Muestra esta ayuda.</div>
               <div><span className="text-neo-pink font-bold">clear</span> - Limpia la consola.</div>
               <div><span className="text-neo-pink font-bold">whoami</span> - Muestra info del usuario.</div>
@@ -241,7 +241,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
           const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "Unknown Browser";
           const isMobile = /Mobile|Android|iPhone/i.test(userAgent) ? "Dispositivo Móvil" : "Computadora de Escritorio";
           output = (
-            <div className="text-[var(--c-text-muted)]">
+            <div className="text-(--c-text-muted)">
               usuario: <span className="text-neo-cyan font-bold">guest@jeremerc.dev</span><br />
               plataforma: {isMobile}<br />
               navegador: {userAgent.split(" ").slice(-2).join(" ")}
@@ -251,7 +251,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
 
         case "about":
           output = (
-            <div className="text-[var(--c-text-muted)] leading-relaxed">
+            <div className="text-(--c-text-muted) leading-relaxed">
               Jeremerc - Desarrollador frontend creativo enfocado en crear interfaces robustas y dinámicas. Escribe <span className="text-neo-pink font-bold">cat package.json</span> para ver mi configuración del proyecto o <span className="text-neo-pink font-bold">skills</span> para mi catálogo técnico.
             </div>
           );
@@ -272,7 +272,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
             }
           } else {
             output = (
-              <div className="text-[var(--c-text-muted)]">
+              <div className="text-(--c-text-muted)">
                 Escribe <span className="text-neo-pink font-bold">skills [nombre]</span> para abrir ficha técnica:<br />
                 - Frontend: <span className="text-neo-cyan font-bold">React, Next.js, Astro, Vite, TypeScript, JavaScript, Tailwind CSS, Shadcn/UI, Radix UI, Base UI, Framer Motion, Three.js, React Bits</span><br />
                 - Backend/Tools: <span className="text-neo-pink font-bold">Node.js, Laravel (PHP), Python, C++, Java (Swing), Cargo.js, Supabase, Neon DB, PostgreSQL, Docker, Cloudflare Workers, Git</span>
@@ -293,7 +293,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
 
         case "social":
           output = (
-            <div className="text-[var(--c-text-muted)]">
+            <div className="text-(--c-text-muted)">
               Enlaces de redes sociales:<br />
               - GitHub: <a href="https://github.com/WriteColor" target="_blank" rel="noopener" className="text-neo-cyan font-bold hover:underline">github.com/WriteColor</a><br />
               - Discord: <span className="text-neo-pink font-bold">@WriteColor (ID: 668521031731773460)</span><br />
@@ -325,7 +325,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
 
         case "tree":
           output = (
-            <div className="font-mono text-[var(--c-text-muted)] leading-none">
+            <div className="font-mono text-(--c-text-muted) leading-none">
               .<br />
               ├── package.json<br />
               ├── next.config.ts<br />
@@ -356,7 +356,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
 
         case "history":
           output = (
-            <div className="text-[var(--c-text-muted)]">
+            <div className="text-(--c-text-muted)">
               {cmdHistory.map((cmdText, index) => (
                 <div key={index}>{index + 1}  {cmdText}</div>
               ))}
@@ -384,7 +384,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
  _/ |                 
 |__/                  `}
               </pre>
-              <div className="text-[var(--c-text-muted)]">
+              <div className="text-(--c-text-muted)">
                 <span className="text-neo-cyan font-bold">guest@jeremerc.dev</span><br />
                 -----------------------<br />
                 <span className="text-neo-yellow font-bold">OS:</span> Windows 11 IoT Enterprise LTSC<br />
@@ -473,7 +473,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
             ...prev,
             {
               command: inputValue,
-              output: <div className="text-[var(--c-text-muted)] flex gap-4">{matches.map(m => <span key={m}>{m}</span>)}</div>,
+              output: <div className="text-(--c-text-muted) flex gap-4">{matches.map(m => <span key={m}>{m}</span>)}</div>,
             },
           ]);
         }
@@ -493,7 +493,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
               ...prev,
               {
                 command: inputValue,
-                output: <div className="text-[var(--c-text-muted)] flex gap-4">{matches.map(m => <span key={m}>{m}</span>)}</div>,
+                output: <div className="text-(--c-text-muted) flex gap-4">{matches.map(m => <span key={m}>{m}</span>)}</div>,
               },
             ]);
           }
@@ -508,7 +508,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
               ...prev,
               {
                 command: inputValue,
-                output: <div className="text-[var(--c-text-muted)] flex gap-4">{matches.map(m => <span key={m}>{m}</span>)}</div>,
+                output: <div className="text-(--c-text-muted) flex gap-4">{matches.map(m => <span key={m}>{m}</span>)}</div>,
               },
             ]);
           }
@@ -526,7 +526,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
       case "error":
         return "border-rose-600 shadow-[0_0_15px_rgba(225,29,72,0.35)] transition-all duration-300";
       default:
-        return "border-[var(--c-border)] shadow-inner";
+        return "border-(--c-border) shadow-inner";
     }
   };
 

@@ -89,21 +89,21 @@ export const DomainsModal: React.FC<DomainsModalProps> = ({ isOpen, onClose, onO
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose} 
-          className="fixed inset-0 bg-[var(--c-overlay-bg)] backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
+          className="fixed inset-0 bg-(--c-overlay-bg) backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
         >
           <motion.div 
             initial={{ scale: 0.9, y: 30 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 30 }}
             transition={{ type: "spring", damping: 25, stiffness: 220 }}
-            className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] text-[var(--c-text)] flex flex-col"
+            className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) text-(--c-text) flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
         {/* Header Bar */}
-        <div className="flex items-center justify-between border-b-2 border-[var(--c-border)] pb-4 mb-4 flex-shrink-0">
+        <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4 shrink-0">
           <div className="flex items-center gap-2">
             <Globe className="stroke-[2.5] text-neo-cyan" />
-            <h3 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-[var(--c-text)]">
+            <h3 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
               Mis Dominios ({domains.length})
             </h3>
           </div>
@@ -115,27 +115,27 @@ export const DomainsModal: React.FC<DomainsModalProps> = ({ isOpen, onClose, onO
               onClose();
             }}
             aria-label="Cerrar modal"
-            className="p-1.5 border-2 border-[var(--c-border)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
+            className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
           >
-            <X size={16} className="stroke-[3] sm:w-[18px] sm:h-[18px]" />
+            <X size={16} className="stroke-3 sm:w-[18px] sm:h-[18px]" />
           </button>
         </div>
 
         {/* Intro */}
-        <p className="font-sans text-xs sm:text-sm font-semibold text-[var(--c-text-muted)] mb-4 flex-shrink-0">
+        <p className="font-sans text-xs sm:text-sm font-semibold text-(--c-text-muted) mb-4 shrink-0">
           Aquí se listan todos los nombres de dominios oficiales que poseo actualmente para mis proyectos y redirecciones.
         </p>
 
         {/* Search Box */}
-        <div className="relative mb-4 flex-shrink-0">
+        <div className="relative mb-4 shrink-0">
           <input
             type="text"
             placeholder="Buscar por dominio, estado o categoría..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 border-2 border-[var(--c-border)] bg-[var(--c-surface-hover)] text-[var(--c-text)] font-mono text-xs sm:text-sm font-bold shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] outline-none focus:translate-x-[1px] focus:translate-y-[1px] focus:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] transition-all"
+            className="w-full pl-9 pr-3 py-2 border-2 border-(--c-border) bg-(--c-surface-hover) text-(--c-text) font-mono text-xs sm:text-sm font-bold shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] outline-none focus:translate-x-px focus:translate-y-px focus:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] transition-all"
           />
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--c-text-muted)]" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-(--c-text-muted)" />
         </div>
 
         {/* Domains List - Scrollable */}
@@ -144,23 +144,23 @@ export const DomainsModal: React.FC<DomainsModalProps> = ({ isOpen, onClose, onO
             filteredDomains.map((dom, idx) => (
               <div 
                 key={idx}
-                className="border-3 border-[var(--c-border)] p-3 bg-[var(--c-surface)] hover:bg-[var(--c-surface-hover)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-colors"
+                className="border-3 border-(--c-border) p-3 bg-(--c-surface) hover:bg-(--c-surface-hover) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-colors"
               >
                 <div className="flex flex-col gap-0.5">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-display font-black text-xs sm:text-sm uppercase text-[var(--c-text)]">
+                    <span className="font-display font-black text-xs sm:text-sm uppercase text-(--c-text)">
                       {dom.name}
                     </span>
                     <span className={`text-[8px] font-black uppercase px-1.5 py-0.5 border-2 border-black shadow-[1px_1px_0px_0px_#000] ${getStatusColor(dom.status)}`}>
                       {dom.status}
                     </span>
                   </div>
-                  <span className="font-mono text-[9px] sm:text-[10px] text-[var(--c-text-muted)] font-bold">
+                  <span className="font-mono text-[9px] sm:text-[10px] text-(--c-text-muted) font-bold">
                     {dom.category}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-start sm:justify-end gap-2 flex-shrink-0">
+                <div className="flex items-center justify-start sm:justify-end gap-2 shrink-0">
                   {dom.status.includes("Disponible") ? (
                     <button
                       onClick={() => {
@@ -186,16 +186,16 @@ export const DomainsModal: React.FC<DomainsModalProps> = ({ isOpen, onClose, onO
               </div>
             ))
           ) : (
-            <div className="text-center font-mono text-xs text-[var(--c-text-muted)] py-8 border-2 border-dashed border-[var(--c-border)]/20">
+            <div className="text-center font-mono text-xs text-(--c-text-muted) py-8 border-2 border-dashed border-(--c-border)/20">
               No se encontraron dominios para &quot;{searchQuery}&quot;
             </div>
           )}
         </div>
 
         {/* SSL & DNS Indicator */}
-        <div className="mt-4 border-2 border-dashed border-[var(--c-border)]/30 p-3 bg-[var(--c-surface-hover)] flex items-center gap-2 flex-shrink-0">
-          <ShieldCheck size={16} className="text-emerald-500 flex-shrink-0" />
-          <span className="font-mono text-[8px] sm:text-[9px] text-[var(--c-text-muted)] font-bold uppercase leading-tight">
+        <div className="mt-4 border-2 border-dashed border-(--c-border)/30 p-3 bg-(--c-surface-hover) flex items-center gap-2 shrink-0">
+          <ShieldCheck size={16} className="text-emerald-500 shrink-0" />
+          <span className="font-mono text-[8px] sm:text-[9px] text-(--c-text-muted) font-bold uppercase leading-tight">
             Todos los dominios cuentan con protección DNSSEC y SSL encriptado firmado por Cloudflare.
           </span>
         </div>

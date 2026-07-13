@@ -51,16 +51,15 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
   });
 
   return (
-    <div className="w-full overflow-x-auto border-3 border-black shadow-[4px_4px_0px_0px_#000] bg-[var(--c-surface)] my-4">
+    <div className="w-full overflow-x-auto border-3 border-black shadow-[4px_4px_0px_0px_#000] bg-(--c-surface) my-4">
       <table className="w-full text-left border-collapse min-w-[500px]">
         <thead>
-          <tr className="border-b-3 border-black bg-[var(--c-surface-hover)]">
-            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-24">Extensión</th>
-            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-32">Estado</th>
-            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-40">Precio (1er Año)</th>
-            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black w-28">Renovación</th>
-            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] border-r-2 border-black">Observaciones</th>
-            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-[var(--c-text)] text-center w-24">Acción</th>
+          <tr className="border-b-3 border-black bg-(--c-surface-hover)">
+            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-(--c-text) border-r-2 border-black w-24">Extensión</th>
+            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-(--c-text) border-r-2 border-black w-32">Estado</th>
+            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-(--c-text) border-r-2 border-black w-40">Precio (1er Año)</th>
+            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-(--c-text) border-r-2 border-black w-28">Renovación</th>
+            <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-(--c-text) text-center w-24">Acción</th>
           </tr>
         </thead>
         <tbody>
@@ -71,15 +70,15 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
             return (
               <tr 
                 key={idx}
-                className={`border-b-2 border-black/10 hover:bg-[var(--c-surface-hover)]/40 transition-colors ${
+                className={`border-b-2 border-black/10 hover:bg-(--c-surface-hover)/40 transition-colors ${
                   isSelected ? "bg-neo-cyan/10" : ""
                 }`}
               >
                 {/* Extension */}
-                <td className="p-3 font-mono font-bold text-xs text-[var(--c-text)] border-r-2 border-black/10 whitespace-nowrap">
+                <td className="p-3 font-mono font-bold text-xs text-(--c-text) border-r-2 border-black/10 whitespace-nowrap">
                   <div className="flex items-center gap-0.5">
-                    <span className="text-[var(--c-text-muted)] font-normal">{baseName}</span>
-                    <span className="text-[var(--c-text)] font-black">{res.extension}</span>
+                    <span className="text-(--c-text-muted) font-normal">{baseName}</span>
+                    <span className="text-(--c-text) font-black">{res.extension}</span>
                     {isBestValue && (
                       <span className="bg-neo-yellow text-black border border-black font-display font-black text-[7px] uppercase px-1 py-0.5 shadow-[1px_1px_0px_0px_#000] scale-90 ml-1">
                         Top
@@ -91,46 +90,41 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
                 {/* Status */}
                 <td className="p-3 border-r-2 border-black/10">
                   {res.isAvailable === "loading" ? (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-cyan/20 text-[var(--c-text)] font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000] animate-pulse">
-                      <Loader2 size={10} className="stroke-[3] animate-spin" /> Buscando
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-cyan/20 text-(--c-text) font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000] animate-pulse">
+                      <Loader2 size={10} className="stroke-3 animate-spin" /> Buscando
                     </span>
                   ) : res.isAvailable === true ? (
                     <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-green text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000]">
-                      <Check size={10} className="stroke-[3]" /> Disponible
+                      <Check size={10} className="stroke-3" /> Disponible
                     </span>
                   ) : res.isAvailable === false ? (
                     <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-pink text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000]">
-                      <X size={10} className="stroke-[3]" /> Registrado
+                      <X size={10} className="stroke-3" /> Registrado
                     </span>
                   ) : (
                     <span 
                       className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-yellow text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000] cursor-help"
                       title="Inconclusivo: Consultas directas al puerto 43 (WHOIS) bloqueadas en esta red local/servidor. Para producción o desarrollo local restringido, añade WHOISJSON_API_KEY en tu .env"
                     >
-                      <AlertCircle size={10} className="stroke-[3]" /> Error API
+                      <AlertCircle size={10} className="stroke-3" /> Error API
                     </span>
                   )}
                 </td>
 
                 {/* First year price */}
-                <td className="p-3 font-mono font-bold text-xs text-[var(--c-text)] border-r-2 border-black/10 whitespace-nowrap text-neo-green dark:text-emerald-400">
+                <td className="p-3 font-mono font-bold text-xs text-(--c-text) border-r-2 border-black/10 whitespace-nowrap dark:text-emerald-400">
                   {res.isAvailable === true ? `$${res.firstYearPrice}` : "—"}
                 </td>
 
                 {/* Renewal price */}
-                <td className="p-3 font-mono text-xs text-[var(--c-text-muted)] border-r-2 border-black/10 whitespace-nowrap">
+                <td className="p-3 font-mono text-xs text-(--c-text-muted) border-r-2 border-black/10 whitespace-nowrap">
                   {res.isAvailable === true ? `$${res.renewalPrice}` : "—"}
-                </td>
-
-                {/* Observations */}
-                <td className="p-3 font-sans text-xs text-[var(--c-text-muted)] border-r-2 border-black/10 leading-snug">
-                  {res.observations}
                 </td>
 
                 {/* Action button */}
                 <td className="p-2 text-center whitespace-nowrap">
                   {res.isAvailable === "loading" ? (
-                    <span className="font-mono text-[9px] text-[var(--c-text-muted)] uppercase animate-pulse select-none">
+                    <span className="font-mono text-[9px] text-(--c-text-muted) uppercase animate-pulse select-none">
                       Cargando...
                     </span>
                   ) : res.isAvailable === true ? (
@@ -150,7 +144,7 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
                       {isSelected ? "Elegido ✓" : "Elegir +"}
                     </button>
                   ) : (
-                    <span className="font-mono text-[9px] text-[var(--c-text-subtle)] uppercase select-none">
+                    <span className="font-mono text-[9px] text-(--c-text-subtle) uppercase select-none">
                       Bloqueado
                     </span>
                   )}

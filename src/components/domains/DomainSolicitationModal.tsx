@@ -162,7 +162,7 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
     }
   };
 
-  const inputBase = "w-full border-3 border-black p-2 font-mono text-xs focus:outline-none focus:bg-[var(--c-surface-hover)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.15)]";
+  const inputBase = "w-full border-3 border-black p-2 font-mono text-xs focus:outline-none focus:bg-(--c-surface-hover) bg-(--c-surface) text-(--c-text) shadow-[inset_2px_2px_0px_0px_rgba(0,0,0,0.15)]";
 
   const domainNamesText = selectedDomains.map(d => d.fqdn).join(", ");
 
@@ -174,7 +174,7 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
             initial={{ scale: 0.95, y: 15, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
             exit={{ scale: 0.95, y: 15, opacity: 0 }}
-            className="border-4 border-black bg-[var(--c-bg)] shadow-[8px_8px_0px_0px_#000000] p-5 w-full max-w-lg relative text-left"
+            className="border-4 border-black bg-(--c-bg) shadow-[8px_8px_0px_0px_#000000] p-5 w-full max-w-lg relative text-left"
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b-3 border-black pb-3 mb-4">
@@ -188,19 +188,19 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
                   }
                   onClose();
                 }}
-                className="p-1 border-2 border-black bg-neo-pink text-black hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] cursor-pointer"
+                className="p-1 border-2 border-black bg-neo-pink text-black hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-px active:translate-y-px cursor-pointer"
               >
-                <X size={14} className="stroke-[3]" />
+                <X size={14} className="stroke-3" />
               </button>
             </div>
 
             {status === "success" ? (
               <div className="text-center py-6 space-y-4">
                 <div className="inline-block border-4 border-black bg-neo-green p-3 shadow-[3px_3px_0px_0px_#000]">
-                  <CheckCircle2 size={32} className="stroke-[3] text-black animate-bounce" />
+                  <CheckCircle2 size={32} className="stroke-3 text-black animate-bounce" />
                 </div>
                 <h3 className="font-display font-black text-sm uppercase">¡Solicitud Enviada!</h3>
-                <p className="font-sans text-xs text-[var(--c-text-muted)] leading-relaxed">
+                <p className="font-sans text-xs text-(--c-text-muted) leading-relaxed">
                   He recibido los detalles de tus dominios: <strong className="font-mono text-xs">{domainNamesText}</strong>. Te escribiré a la brevedad por Discord o correo para coordinar los métodos de pago y la entrega.
                 </p>
                 <button
@@ -219,14 +219,14 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
               <form onSubmit={handleSubmit} className="space-y-3">
                 {status === "error" && (
                   <div className="border-3 border-black bg-neo-pink text-black p-3 font-mono text-[11px] font-bold flex items-center gap-2 mb-2">
-                    <AlertCircle size={16} className="flex-shrink-0" />
+                    <AlertCircle size={16} className="shrink-0" />
                     Hubo un problema de red. Intenta enviar de nuevo o contáctame directo.
                   </div>
                 )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="font-display font-black text-[10px] uppercase text-[var(--c-text)] block mb-1">Nombre</label>
+                    <label className="font-display font-black text-[10px] uppercase text-(--c-text) block mb-1">Nombre</label>
                     <input
                       type="text"
                       value={name}
@@ -240,7 +240,7 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
                     )}
                   </div>
                   <div>
-                    <label className="font-display font-black text-[10px] uppercase text-[var(--c-text)] block mb-1">Correo</label>
+                    <label className="font-display font-black text-[10px] uppercase text-(--c-text) block mb-1">Correo</label>
                     <input
                       type="email"
                       value={email}
@@ -256,8 +256,8 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
                 </div>
 
                 <div>
-                  <label className="font-display font-black text-[10px] uppercase text-[var(--c-text)] block mb-1">
-                    Usuario de Discord <span className="text-[9px] text-[var(--c-text-muted)]">(Recomendado)</span>
+                  <label className="font-display font-black text-[10px] uppercase text-(--c-text) block mb-1">
+                    Usuario de Discord <span className="text-[9px] text-(--c-text-muted)">(Recomendado)</span>
                   </label>
                   <input
                     type="text"
@@ -270,7 +270,7 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
                 </div>
 
                 <div>
-                  <label className="font-display font-black text-[10px] uppercase text-[var(--c-text)] block mb-1">Mensaje de Solicitud</label>
+                  <label className="font-display font-black text-[10px] uppercase text-(--c-text) block mb-1">Mensaje de Solicitud</label>
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
@@ -295,14 +295,14 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
                       onClose();
                     }}
                     disabled={status === "loading"}
-                    className="px-3.5 py-1.5 border-2 border-black bg-[var(--c-surface)] text-[var(--c-text)] font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_#000] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] cursor-pointer"
+                    className="px-3.5 py-1.5 border-2 border-black bg-(--c-surface) text-(--c-text) font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_#000] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-px active:translate-y-px cursor-pointer"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
                     disabled={status === "loading"}
-                    className="px-5 py-1.5 border-2 border-black bg-neo-yellow text-black font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_#000] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] inline-flex items-center gap-1.5 cursor-pointer"
+                    className="px-5 py-1.5 border-2 border-black bg-neo-yellow text-black font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_#000] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-px active:translate-y-px inline-flex items-center gap-1.5 cursor-pointer"
                   >
                     {status === "loading" ? (
                       <>

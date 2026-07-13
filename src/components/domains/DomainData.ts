@@ -2,7 +2,6 @@ export interface DomainExtensionInfo {
   extension: string;
   firstYearPrice: number; // in USD
   renewalPrice: number; // in USD
-  observations: string;
   category: "populares" | "economicos" | "tecnicos" | "locales" | "creativos";
   isBestValue?: boolean;
 }
@@ -12,52 +11,100 @@ export interface DomainResult {
   isAvailable: boolean | "error" | "loading";
   firstYearPrice: number;
   renewalPrice: number;
-  observations: string;
   isBestValue?: boolean;
+  domainName?: string;
 }
 
 export const DOMAIN_EXTENSIONS: DomainExtensionInfo[] = [
   // Populares
-  { extension: ".com", firstYearPrice: 6, renewalPrice: 15, observations: "El estándar de oro global.", category: "populares", isBestValue: true },
-  { extension: ".net", firstYearPrice: 6, renewalPrice: 16, observations: "Ideal para redes e infraestructura.", category: "populares" },
-  { extension: ".org", firstYearPrice: 6, renewalPrice: 17, observations: "Perfecto para organizaciones.", category: "populares" },
+  { extension: ".com", firstYearPrice: 6, renewalPrice: 15, category: "populares", isBestValue: true },
+  { extension: ".net", firstYearPrice: 6, renewalPrice: 16, category: "populares" },
+  { extension: ".org", firstYearPrice: 6, renewalPrice: 17, category: "populares" },
   
   // Locales
-  { extension: ".es", firstYearPrice: 3, renewalPrice: 10, observations: "Esencial para el público en España.", category: "locales", isBestValue: true },
-  { extension: ".com.es", firstYearPrice: 3, renewalPrice: 9, observations: "Alternativa económica local.", category: "locales" },
-  { extension: ".org.es", firstYearPrice: 3, renewalPrice: 9, observations: "Para organizaciones españolas.", category: "locales" },
-  { extension: ".nom.es", firstYearPrice: 3, renewalPrice: 9, observations: "Para portafolios personales.", category: "locales" },
-  { extension: ".lat", firstYearPrice: 3, renewalPrice: 12, observations: "Ideal para América Latina.", category: "locales" },
+  { extension: ".es", firstYearPrice: 3, renewalPrice: 10, category: "locales", isBestValue: true },
+  { extension: ".com.es", firstYearPrice: 3, renewalPrice: 9, category: "locales" },
+  { extension: ".org.es", firstYearPrice: 3, renewalPrice: 9, category: "locales" },
+  { extension: ".nom.es", firstYearPrice: 3, renewalPrice: 9, category: "locales" },
+  { extension: ".lat", firstYearPrice: 3, renewalPrice: 12, category: "locales" },
 
   // Economicos
-  { extension: ".online", firstYearPrice: 3, renewalPrice: 32, observations: "Presencia en línea inmediata.", category: "economicos" },
-  { extension: ".xyz", firstYearPrice: 3, renewalPrice: 14, observations: "Moderno y altamente popular.", category: "economicos" },
-  { extension: ".shop", firstYearPrice: 3, renewalPrice: 30, observations: "Para tiendas virtuales.", category: "economicos" },
-  { extension: ".wiki", firstYearPrice: 3, renewalPrice: 19, observations: "Para bases de conocimiento.", category: "economicos" },
-  { extension: ".store", firstYearPrice: 4, renewalPrice: 35, observations: "Perfecto para e-commerce.", category: "economicos" },
-  { extension: ".blog", firstYearPrice: 4, renewalPrice: 22, observations: "Excelente para publicaciones.", category: "economicos" },
-  { extension: ".mom", firstYearPrice: 3, renewalPrice: 20, observations: "Para blogs familiares.", category: "economicos" },
-  { extension: ".help", firstYearPrice: 3, renewalPrice: 28, observations: "Sitios de soporte y ayuda.", category: "economicos" },
-  { extension: ".quest", firstYearPrice: 3, renewalPrice: 15, observations: "Portales de aventuras o retos.", category: "economicos" },
-  { extension: ".homes", firstYearPrice: 3, renewalPrice: 30, observations: "Bienes raíces e inmobiliario.", category: "economicos" },
-  { extension: ".autos", firstYearPrice: 3, renewalPrice: 25, observations: "Para el sector automotriz.", category: "economicos" },
+  { extension: ".online", firstYearPrice: 3, renewalPrice: 32, category: "economicos" },
+  { extension: ".xyz", firstYearPrice: 3, renewalPrice: 14, category: "economicos" },
+  { extension: ".shop", firstYearPrice: 3, renewalPrice: 30, category: "economicos" },
+  { extension: ".wiki", firstYearPrice: 3, renewalPrice: 19, category: "economicos" },
+  { extension: ".store", firstYearPrice: 4, renewalPrice: 35, category: "economicos" },
+  { extension: ".blog", firstYearPrice: 4, renewalPrice: 22, category: "economicos" },
+  { extension: ".mom", firstYearPrice: 3, renewalPrice: 20, category: "economicos" },
+  { extension: ".help", firstYearPrice: 3, renewalPrice: 28, category: "economicos" },
+  { extension: ".quest", firstYearPrice: 3, renewalPrice: 15, category: "economicos" },
+  { extension: ".homes", firstYearPrice: 3, renewalPrice: 30, category: "economicos" },
+  { extension: ".autos", firstYearPrice: 3, renewalPrice: 25, category: "economicos" },
 
   // Tecnicos / SaaS
-  { extension: ".cloud", firstYearPrice: 5, renewalPrice: 18, observations: "Ideal para SaaS y servicios en la nube.", category: "tecnicos", isBestValue: true },
-  { extension: ".pro", firstYearPrice: 5, renewalPrice: 16, observations: "Para profesionales calificados.", category: "tecnicos" },
-  { extension: ".info", firstYearPrice: 5, renewalPrice: 15, observations: "Portales informativos globales.", category: "tecnicos" },
-  { extension: ".tech", firstYearPrice: 8, renewalPrice: 38, observations: "Enfoque puramente tecnológico.", category: "tecnicos" },
-  { extension: ".dev", firstYearPrice: 10, renewalPrice: 15, observations: "El preferido por desarrolladores.", category: "tecnicos", isBestValue: true },
-  { extension: ".app", firstYearPrice: 10, renewalPrice: 15, observations: "Diseñado para aplicaciones.", category: "tecnicos" },
-  { extension: ".ing", firstYearPrice: 12, renewalPrice: 20, observations: "Llamativo para marcas en inglés.", category: "tecnicos" },
-  { extension: ".lk", firstYearPrice: 12, renewalPrice: 25, observations: "Uso específico o especializado.", category: "tecnicos" },
+  { extension: ".cloud", firstYearPrice: 5, renewalPrice: 18, category: "tecnicos", isBestValue: true },
+  { extension: ".pro", firstYearPrice: 5, renewalPrice: 16, category: "tecnicos" },
+  { extension: ".info", firstYearPrice: 5, renewalPrice: 15, category: "tecnicos" },
+  { extension: ".tech", firstYearPrice: 8, renewalPrice: 38, category: "tecnicos" },
+  { extension: ".dev", firstYearPrice: 10, renewalPrice: 15, category: "tecnicos", isBestValue: true },
+  { extension: ".app", firstYearPrice: 10, renewalPrice: 15, category: "tecnicos" },
+  { extension: ".ing", firstYearPrice: 12, renewalPrice: 20, category: "tecnicos" },
+  { extension: ".lk", firstYearPrice: 12, renewalPrice: 25, category: "tecnicos" },
 
   // Creativos / Negocios
-  { extension: ".club", firstYearPrice: 6, renewalPrice: 14, observations: "Para comunidades y agrupaciones.", category: "creativos" },
-  { extension: ".art", firstYearPrice: 5, renewalPrice: 13, observations: "Para diseñadores y artistas.", category: "creativos" },
-  { extension: ".biz", firstYearPrice: 8, renewalPrice: 18, observations: "Alternativa para empresas.", category: "creativos" },
-  { extension: ".one", firstYearPrice: 8, renewalPrice: 14, observations: "Simple, corto y recordable.", category: "creativos" },
-  { extension: ".love", firstYearPrice: 10, renewalPrice: 25, observations: "Temático y emocional.", category: "creativos" },
-  { extension: ".design", firstYearPrice: 13, renewalPrice: 42, observations: "Excelente para agencias creativas.", category: "creativos" },
-  { extension: ".studio", firstYearPrice: 14, renewalPrice: 35, observations: "Estudios de diseño o software.", category: "creativos" }
+  { extension: ".club", firstYearPrice: 6, renewalPrice: 14, category: "creativos" },
+  { extension: ".art", firstYearPrice: 5, renewalPrice: 13, category: "creativos" },
+  { extension: ".biz", firstYearPrice: 8, renewalPrice: 18, category: "creativos" },
+  { extension: ".one", firstYearPrice: 8, renewalPrice: 14, category: "creativos" },
+  { extension: ".love", firstYearPrice: 10, renewalPrice: 25, category: "creativos" },
+  { extension: ".design", firstYearPrice: 13, renewalPrice: 42, category: "creativos" },
+  { extension: ".studio", firstYearPrice: 14, renewalPrice: 35, category: "creativos" }
 ];
+
+export interface DomainWhoisInfo {
+  domain_name: string;
+  registrar?: string;
+  whois_server?: string;
+  creation_date?: number; // unix timestamp
+  expiration_date?: number; // unix timestamp
+  updated_date?: number; // unix timestamp
+  name_servers?: string[];
+  dnssec?: string;
+}
+
+export interface DomainValuationInfo {
+  domain: string;
+  label: string;
+  tld: string;
+  estimate: {
+    low: number;
+    mid: number;
+    high: number;
+    currency: string;
+  };
+  confidence: number;
+  factors: {
+    length: number;
+    tldTier: string;
+    lettersOnly: boolean;
+    isDictionaryWord: boolean;
+    isBrandable: boolean;
+  };
+  comparables?: Array<{
+    category: string;
+    typical_range: { low: number; high: number };
+    relevance: number;
+  }>;
+  methodology?: string;
+}
+
+export interface DomainSuggestion {
+  name: string;
+  domain: string;
+  tld: string;
+  score: number;
+  styles: string[];
+  method: string;
+  available: boolean;
+}
+

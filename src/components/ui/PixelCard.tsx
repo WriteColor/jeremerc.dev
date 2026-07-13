@@ -118,7 +118,7 @@ export const PixelCard: React.FC<PixelCardProps> = ({
         mouseRef.current = { x: -1000, y: -1000 };
       }}
       onMouseMove={handleMouseMove}
-      className={`relative overflow-hidden border-4 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[4px_4px_0px_0px_rgba(var(--c-shadow),1)] transition-all duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] ${className}`}
+      className={`relative overflow-hidden border-4 border-(--c-border) bg-(--c-surface) text-(--c-text) shadow-[4px_4px_0px_0px_rgba(var(--c-shadow),1)] transition-all duration-200 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] ${className}`}
       {...props}
     >
       <canvas

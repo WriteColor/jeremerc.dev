@@ -141,17 +141,17 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
   };
 
   /* Shared input class string — uses CSS vars for theme adaptation */
-  const inputBase = `px-2 py-1 border-2 border-[var(--c-border)] bg-[var(--c-input-bg)] text-[var(--c-text)] font-sans text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-neo-yellow placeholder:text-[var(--c-text-subtle)]`;
+  const inputBase = `px-2 py-1 border-2 border-(--c-border) bg-(--c-input-bg) text-(--c-text) font-sans text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-neo-yellow placeholder:text-(--c-text-subtle)`;
 
   return (
-    <div className="text-[var(--c-text)] w-full">
+    <div className="text-(--c-text) w-full">
       {status === "error" && (
         <motion.div 
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-3 p-3 border-4 border-black bg-neo-pink text-black font-display font-black text-[10px] uppercase flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#000]"
         >
-          <AlertCircle size={14} className="stroke-[3]" />
+          <AlertCircle size={14} className="stroke-3" />
           Fallo de envío SMTP. Intente más tarde o contácteme directo a contacto@jeremerc.dev.
         </motion.div>
       )}
@@ -160,7 +160,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="flex flex-col items-center justify-center py-4 text-center border-4 border-[var(--c-border)] bg-neo-green p-4 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] text-black"
+          className="flex flex-col items-center justify-center py-4 text-center border-4 border-(--c-border) bg-neo-green p-4 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] text-black"
         >
           <CheckCircle2 size={32} className="stroke-[2.5] mb-1 animate-bounce" />
           <h4 className="font-display font-black text-sm uppercase">¡Mensaje Enviado!</h4>
@@ -175,7 +175,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
               }
               setStatus("idle");
             }}
-            className="mt-2 px-4 py-1.5 border-2 border-black font-display font-bold text-xs uppercase bg-white text-black hover:bg-gray-50 active:translate-x-[1px] active:translate-y-[1px] cursor-pointer"
+            className="mt-2 px-4 py-1.5 border-2 border-black font-display font-bold text-xs uppercase bg-white text-black hover:bg-gray-50 active:translate-x-px active:translate-y-px cursor-pointer"
           >
             Enviar otro
           </button>
@@ -196,7 +196,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
           >
             {/* Name */}
             <div className="flex flex-col gap-0.5">
-              <label className="font-display font-black text-[9px] uppercase text-[var(--c-text)]">Tu Nombre</label>
+              <label className="font-display font-black text-[9px] uppercase text-(--c-text)">Tu Nombre</label>
               <input
                 type="text"
                 value={name}
@@ -214,7 +214,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
 
             {/* Email */}
             <div className="flex flex-col gap-0.5">
-              <label className="font-display font-black text-[9px] uppercase text-[var(--c-text)]">Correo Electrónico</label>
+              <label className="font-display font-black text-[9px] uppercase text-(--c-text)">Correo Electrónico</label>
               <input
                 type="email"
                 value={email}
@@ -238,12 +238,12 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
             transition={{ delay: 0.1 }}
             className="flex flex-col gap-0.5 h-full"
           >
-            <label className="font-display font-black text-[9px] uppercase text-[var(--c-text)]">Mensaje</label>
+            <label className="font-display font-black text-[9px] uppercase text-(--c-text)">Mensaje</label>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               disabled={status === "loading"}
-              className={`${inputBase} resize-none flex-grow h-[84px] ${errors.message ? "border-neo-pink" : ""}`}
+              className={`${inputBase} resize-none grow h-[84px] ${errors.message ? "border-neo-pink" : ""}`}
               placeholder="Cuéntame sobre tu proyecto, objetivos y plazos..."
             />
             {errors.message && (
@@ -262,7 +262,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
           >
             <div 
               ref={turnstileRef} 
-              className="border-2 border-[var(--c-border)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] p-0.5 bg-[var(--c-surface)] inline-block overflow-hidden max-w-full"
+              className="border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] p-0.5 bg-(--c-surface) inline-block overflow-hidden max-w-full"
             ></div>
           </motion.div>
 
@@ -271,7 +271,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
             initial={{ y: 5, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="col-span-1 sm:col-span-2 flex gap-2 justify-end mt-1 border-t border-[var(--c-border)]/15 pt-2"
+            className="col-span-1 sm:col-span-2 flex gap-2 justify-end mt-1 border-t border-(--c-border)/15 pt-2"
           >
             {onClose && (
               <button
@@ -283,7 +283,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
                   onClose();
                 }}
                 disabled={status === "loading"}
-                className="px-3.5 py-1.5 border-2 border-[var(--c-border)] font-display font-black text-xs uppercase bg-[var(--c-surface)] text-[var(--c-text)] shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] cursor-pointer"
+                className="px-3.5 py-1.5 border-2 border-(--c-border) font-display font-black text-xs uppercase bg-(--c-surface) text-(--c-text) shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-px active:translate-y-px cursor-pointer"
               >
                 Cancelar
               </button>
@@ -296,7 +296,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
                 }
               }}
               disabled={status === "loading"}
-              className="px-5 py-1.5 border-2 border-[var(--c-border)] bg-neo-yellow text-black font-display font-black text-xs uppercase shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] inline-flex items-center gap-1.5 cursor-pointer"
+              className="px-5 py-1.5 border-2 border-(--c-border) bg-neo-yellow text-black font-display font-black text-xs uppercase shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-px active:translate-y-px inline-flex items-center gap-1.5 cursor-pointer"
             >
               {status === "loading" ? (
                 <>

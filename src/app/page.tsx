@@ -860,7 +860,7 @@ export default function Home() {
       <button
         key={idx}
         onClick={() => setSelectedSkillName(skill)}
-        className={`px-4 py-2 border-2 border-[var(--c-border)] font-display font-bold uppercase text-xs tracking-wider shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] inline-block ${color} text-black cursor-pointer hover:-translate-y-0.5 active:translate-y-0 transition-transform`}
+        className={`px-4 py-2 border-2 border-(--c-border) font-display font-bold uppercase text-xs tracking-wider shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] inline-block ${color} text-black cursor-pointer hover:-translate-y-0.5 active:translate-y-0 transition-transform`}
       >
         {skill} <span className="font-mono text-[9px] font-black">+</span>
       </button>
@@ -885,7 +885,7 @@ export default function Home() {
 
         {/* Theme Switcher, Sound Controls and Header Widget */}
         <div className="flex justify-between items-center px-1 sm:px-2">
-          <div className="flex items-center gap-1.5 font-mono text-[10px] sm:text-xs font-bold text-[var(--c-text-muted)]">
+          <div className="flex items-center gap-1.5 font-mono text-[10px] sm:text-xs font-bold text-(--c-text-muted)">
             <Terminal size={14} /> status: 200
           </div>
 
@@ -916,10 +916,10 @@ export default function Home() {
                   window.dispatchEvent(new CustomEvent("play-click"));
                 }
               }}
-              className="neo-btn bg-[var(--c-surface)] w-[34px] h-[34px] cursor-pointer flex items-center justify-center animate-fadeIn"
+              className="neo-btn bg-(--c-surface) w-[34px] h-[34px] cursor-pointer flex items-center justify-center animate-fadeIn"
               title={isMusicMuted ? "Activar música de fondo" : "Silenciar música de fondo"}
             >
-              {isMusicMuted ? <Play className="stroke-[2.5] text-[var(--c-text-muted)]" size={14} /> : <Pause className="stroke-[2.5] text-neo-pink fill-neo-pink/20" size={14} />}
+              {isMusicMuted ? <Play className="stroke-[2.5] text-(--c-text-muted)" size={14} /> : <Pause className="stroke-[2.5] text-neo-pink fill-neo-pink/20" size={14} />}
             </button>
 
             {/* SFX Mute Button */}
@@ -931,10 +931,10 @@ export default function Home() {
                   window.dispatchEvent(new CustomEvent("play-click"));
                 }
               }}
-              className="neo-btn bg-[var(--c-surface)] w-[34px] h-[34px] cursor-pointer flex items-center justify-center"
+              className="neo-btn bg-(--c-surface) w-[34px] h-[34px] cursor-pointer flex items-center justify-center"
               title={isSFXMuted ? "Activar efectos de sonido" : "Silenciar efectos de sonido"}
             >
-              {isSFXMuted ? <VolumeX className="stroke-[2.5] text-[var(--c-text-muted)]" size={14} /> : <Volume2 className="stroke-[2.5] text-neo-cyan" size={14} />}
+              {isSFXMuted ? <VolumeX className="stroke-[2.5] text-(--c-text-muted)" size={14} /> : <Volume2 className="stroke-[2.5] text-neo-cyan" size={14} />}
             </button>
 
             {/* Theme Switcher Button */}
@@ -945,7 +945,7 @@ export default function Home() {
                   window.dispatchEvent(new CustomEvent("play-click"));
                 }
               }}
-              className="neo-btn bg-[var(--c-surface)] w-[128px] h-[34px] text-xs font-bold uppercase flex items-center justify-center gap-1.5 cursor-pointer"
+              className="neo-btn bg-(--c-surface) w-[128px] h-[34px] text-xs font-bold uppercase flex items-center justify-center gap-1.5 cursor-pointer"
             >
               {theme === "light" ? (
                 <>
@@ -979,7 +979,7 @@ export default function Home() {
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-3">
                     {/* Profile Picture with graceful CSS Art fallback */}
-                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 border-4 border-[var(--c-border)] bg-neo-yellow overflow-hidden shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] flex-shrink-0">
+                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 border-4 border-(--c-border) bg-neo-yellow overflow-hidden shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] shrink-0">
                       {!avatarError ? (
                         <img 
                           src="/avatar.png" 
@@ -989,7 +989,7 @@ export default function Home() {
                         />
                       ) : (
                         <>
-                          <div className="absolute inset-0 bg-[radial-gradient(#000_20%,transparent_20%)] [background-size:8px_8px] opacity-20" />
+                          <div className="absolute inset-0 bg-[radial-gradient(#000_20%,transparent_20%)] bg-size-[8px_8px] opacity-20" />
                           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-10 h-10 rounded-t-full bg-black border-2 border-black" />
                           <div className="absolute top-3 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white border-2 border-black flex items-center justify-center">
                             <div className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />
@@ -998,10 +998,10 @@ export default function Home() {
                       )}
                     </div>
                     <div className="flex flex-col">
-                      <h1 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-[var(--c-text)] leading-none">
+                      <h1 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text) leading-none">
                         Jeremyah
                       </h1>
-                      <span className="font-mono text-[10px] sm:text-xs font-bold text-[var(--c-text-muted)] mt-1">
+                      <span className="font-mono text-[10px] sm:text-xs font-bold text-(--c-text-muted) mt-1">
                         @WriteColor
                       </span>
                       <div className="flex flex-wrap gap-2 items-center mt-2.5">
@@ -1012,7 +1012,7 @@ export default function Home() {
                               window.dispatchEvent(new CustomEvent("play-click"));
                             }
                           }}
-                          className="font-mono text-xs font-bold text-neo-cyan cursor-pointer flex items-center gap-1.5 border-2 border-[var(--c-border)] px-2.5 py-1 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform flex-shrink-0 whitespace-nowrap"
+                          className="font-mono text-xs font-bold text-neo-cyan cursor-pointer flex items-center gap-1.5 border-2 border-(--c-border) px-2.5 py-1 bg-(--c-surface) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform shrink-0 whitespace-nowrap"
                         >
                           <Laptop size={13} /> Specs +
                         </button>
@@ -1023,7 +1023,7 @@ export default function Home() {
                               window.dispatchEvent(new CustomEvent("play-click"));
                             }
                           }}
-                          className="font-mono text-xs font-bold text-neo-yellow cursor-pointer flex items-center gap-1.5 border-2 border-[var(--c-border)] px-2.5 py-1 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform flex-shrink-0 whitespace-nowrap"
+                          className="font-mono text-xs font-bold text-neo-yellow cursor-pointer flex items-center gap-1.5 border-2 border-(--c-border) px-2.5 py-1 bg-(--c-surface) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform shrink-0 whitespace-nowrap"
                         >
                           <Globe size={13} /> Dominios +
                         </button>
@@ -1032,7 +1032,7 @@ export default function Home() {
                   </div>
 
                   {/* Pulsing Status Beacon - Redesigned to be premium neobrutalist */}
-                  <span className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 border-2 border-black bg-neo-green font-display font-black uppercase text-[8px] sm:text-[10px] tracking-wider text-black shadow-[2px_2px_0px_0px_#000] flex-shrink-0 select-none">
+                  <span className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 border-2 border-black bg-neo-green font-display font-black uppercase text-[8px] sm:text-[10px] tracking-wider text-black shadow-[2px_2px_0px_0px_#000] shrink-0 select-none">
                     <span className="relative flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-45"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
@@ -1058,23 +1058,23 @@ export default function Home() {
                 </div>
 
                 {/* Profile statistics widgets */}
-                <div className="grid grid-cols-2 gap-2 border-t-4 border-dashed border-[var(--c-border)]/20 pt-3 sm:pt-4 mb-2 sm:mb-3">
+                <div className="grid grid-cols-2 gap-2 border-t-4 border-dashed border-(--c-border)/20 pt-3 sm:pt-4 mb-2 sm:mb-3">
                   <div className="flex flex-col">
                     <span className="font-display font-black text-xl sm:text-2xl text-neo-pink leading-none">98%</span>
-                    <span className="font-mono text-[8px] sm:text-[9px] uppercase font-bold text-[var(--c-text-muted)]">Score de Optimización</span>
+                    <span className="font-mono text-[8px] sm:text-[9px] uppercase font-bold text-(--c-text-muted)">Score de Optimización</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="font-display font-black text-xl sm:text-2xl text-neo-cyan leading-none">100%</span>
-                    <span className="font-mono text-[8px] sm:text-[9px] uppercase font-bold text-[var(--c-text-muted)]">Calidad de Código</span>
+                    <span className="font-mono text-[8px] sm:text-[9px] uppercase font-bold text-(--c-text-muted)">Calidad de Código</span>
                   </div>
                 </div>
 
                 {/* Footer Bio summary */}
                 <div>
-                  <h2 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tighter leading-none mb-1 text-[var(--c-text)]">
+                  <h2 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tighter leading-none mb-1 text-(--c-text)">
                     Full Stack Developer
                   </h2>
-                  <p className="font-sans text-xs sm:text-sm text-[var(--c-text-muted)] font-medium">
+                  <p className="font-sans text-xs sm:text-sm text-(--c-text-muted) font-medium">
                     Desarrollador web, asistentes de IA y arquitectura de software escalable.
                   </p>
                 </div>
@@ -1090,9 +1090,9 @@ export default function Home() {
             <CardSwap
               className="w-full h-full min-h-[180px]"
               front={
-                <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between hover:bg-[var(--c-surface-hover)] transition-colors relative">
+                <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between hover:bg-(--c-surface-hover) transition-colors relative">
                   <div className="flex justify-between items-start gap-2">
-                    <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-1">
+                    <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-(--c-text) text-(--c-bg) px-2 py-1">
                       Quién Soy
                     </span>
                     <button
@@ -1103,20 +1103,20 @@ export default function Home() {
                           window.dispatchEvent(new CustomEvent("play-click"));
                         }
                       }}
-                      className="font-mono text-xs sm:text-[13px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-3 py-1 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] cursor-pointer flex-shrink-0"
+                      className="font-mono text-xs sm:text-[13px] font-black uppercase text-neo-pink border-2 border-(--c-border) px-3 py-1 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) cursor-pointer shrink-0"
                     >
                       Expandir +
                     </button>
                   </div>
-                  <p className="font-sans text-xs sm:text-sm font-semibold text-[var(--c-text)] my-3 leading-snug">
+                  <p className="font-sans text-xs sm:text-sm font-semibold text-(--c-text) my-3 leading-snug">
                     Soy un desarrollador de software Full Stack apasionado por crear aplicaciones web modernas, robustas, escalables y visualmente atractivas.
                   </p>
-                  <div className="font-display font-bold text-xs uppercase flex justify-between items-center text-[var(--c-text)]">
+                  <div className="font-display font-bold text-xs uppercase flex justify-between items-center text-(--c-text)">
                     <div className="flex gap-3 sm:gap-4">
                       <span>📍 Remoto</span>
                       <span>⚡ Rápido</span>
                     </div>
-                    <span className="font-mono text-[9px] text-[var(--c-text-subtle)] flex items-center gap-1">
+                    <span className="font-mono text-[9px] text-(--c-text-subtle) flex items-center gap-1">
                       Click para voltear <ChevronRight size={10} />
                     </span>
                   </div>
@@ -1236,7 +1236,7 @@ export default function Home() {
           >
             <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between overflow-hidden min-h-[160px] sm:min-h-[180px]">
               <div className="flex justify-between items-center self-stretch">
-                <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-1">
+                <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-(--c-text) text-(--c-bg) px-2 py-1">
                   Skills & Stacks
                 </span>
                 <button
@@ -1246,7 +1246,7 @@ export default function Home() {
                       window.dispatchEvent(new CustomEvent("play-click"));
                     }
                   }}
-                  className="font-mono text-[11px] sm:text-xs font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-2.5 py-1 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform cursor-pointer"
+                  className="font-mono text-[11px] sm:text-xs font-black uppercase text-neo-pink border-2 border-(--c-border) px-2.5 py-1 bg-(--c-surface) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform cursor-pointer"
                 >
                   Pulse para detalle +
                 </button>
@@ -1257,7 +1257,7 @@ export default function Home() {
                 <LogoLoop items={renderSkillTags(SKILLS_BACK, "bg-neo-pink")} speed="medium" direction="right" />
               </div>
 
-              <div className="font-mono text-[9px] sm:text-[10px] font-bold text-[var(--c-text-muted)] uppercase">
+              <div className="font-mono text-[9px] sm:text-[10px] font-bold text-(--c-text-muted) uppercase">
                 Interacciones fluidas & API Robustas
               </div>
             </div>
@@ -1272,7 +1272,7 @@ export default function Home() {
             <PixelCard pixelColor="#FF4E88" className="h-full">
               <div className="p-4 sm:p-6 h-full flex flex-col justify-between min-h-[160px]">
                 <div className="flex justify-between items-center mb-1 gap-2">
-                  <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-1">
+                  <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-(--c-text) text-(--c-bg) px-2 py-1">
                     Colaborar Conmigo
                   </span>
                   <button
@@ -1282,7 +1282,7 @@ export default function Home() {
                         window.dispatchEvent(new CustomEvent("play-click"));
                       }
                     }}
-                    className="font-mono text-xs sm:text-[13px] font-black uppercase text-neo-pink border-2 border-[var(--c-border)] px-3 py-1 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-[var(--c-surface)] cursor-pointer flex-shrink-0"
+                    className="font-mono text-xs sm:text-[13px] font-black uppercase text-neo-pink border-2 border-(--c-border) px-3 py-1 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) cursor-pointer shrink-0"
                   >
                     {showContactForm ? "Ver Info" : "Escríbeme +"}
                   </button>
@@ -1313,33 +1313,33 @@ export default function Home() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="w-full flex flex-col justify-between flex-grow"
+                      className="w-full flex flex-col justify-between grow"
                     >
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 my-3">
                         <div className="flex flex-col gap-1">
                           <div className="flex items-center gap-1 text-neo-pink">
-                            <Clock size={16} className="stroke-[3]" />
-                            <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Tiempos</span>
+                            <Clock size={16} className="stroke-3" />
+                            <span className="font-display font-black text-xs uppercase text-(--c-text)">Tiempos</span>
                           </div>
-                          <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Flexibles & veloces</span>
+                          <span className="font-mono text-[10px] font-bold text-(--c-text-muted)">Flexibles & veloces</span>
                         </div>
                         <div className="flex flex-col gap-1">
                           <div className="flex items-center gap-1 text-neo-yellow">
-                            <CircleDollarSign size={16} className="stroke-[3]" />
-                            <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Presupuesto</span>
+                            <CircleDollarSign size={16} className="stroke-3" />
+                            <span className="font-display font-black text-xs uppercase text-(--c-text)">Presupuesto</span>
                           </div>
-                          <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Adaptable al producto</span>
+                          <span className="font-mono text-[10px] font-bold text-(--c-text-muted)">Adaptable al producto</span>
                         </div>
                         <div className="flex flex-col gap-1">
                           <div className="flex items-center gap-1 text-neo-cyan">
-                            <CheckCircle2 size={16} className="stroke-[3]" />
-                            <span className="font-display font-black text-xs uppercase text-[var(--c-text)]">Entrega</span>
+                            <CheckCircle2 size={16} className="stroke-3" />
+                            <span className="font-display font-black text-xs uppercase text-(--c-text)">Entrega</span>
                           </div>
-                          <span className="font-mono text-[10px] font-bold text-[var(--c-text-muted)]">Calidad garantizada</span>
+                          <span className="font-mono text-[10px] font-bold text-(--c-text-muted)">Calidad garantizada</span>
                         </div>
                       </div>
 
-                      <div className="font-sans text-[10px] sm:text-[11px] font-bold text-[var(--c-text)] leading-tight">
+                      <div className="font-sans text-[10px] sm:text-[11px] font-bold text-(--c-text) leading-tight">
                         Listo para desarrollar soluciones a medida. Sin rodeos comerciales agresivos, solo ingeniería sólida.
                       </div>
                     </motion.div>
@@ -1359,7 +1359,7 @@ export default function Home() {
 
               {/* Header with Custom Category Filter buttons */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
-                <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-1">
+                <span className="font-display font-black text-[10px] sm:text-xs uppercase bg-(--c-text) text-(--c-bg) px-2 py-1">
                   Proyectos Freelance & Propios
                 </span>
 
@@ -1374,9 +1374,9 @@ export default function Home() {
                           window.dispatchEvent(new CustomEvent("play-click"));
                         }
                       }}
-                      className={`px-2.5 sm:px-3 py-1 border-2 border-[var(--c-border)] font-display font-bold text-[10px] sm:text-xs uppercase transition-all duration-150 cursor-pointer ${activeCategory === cat
-                        ? "bg-[var(--c-text)] text-[var(--c-bg)] translate-x-[1px] translate-y-[1px] shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)]"
-                        : "bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px]"
+                      className={`px-2.5 sm:px-3 py-1 border-2 border-(--c-border) font-display font-bold text-[10px] sm:text-xs uppercase transition-all duration-150 cursor-pointer ${activeCategory === cat
+                        ? "bg-(--c-text) text-(--c-bg) translate-x-px translate-y-px shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)]"
+                        : "bg-(--c-surface) text-(--c-text) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-px hover:translate-y-px active:translate-x-px active:translate-y-px"
                         }`}
                     >
                       {cat === "All" ? "Todos" : cat}
@@ -1405,39 +1405,39 @@ export default function Home() {
                           <button
                             key={project.id}
                             onClick={() => setExpandedCard(project)}
-                            className="neo-card hover:bg-[var(--c-surface-hover)] p-3 sm:p-4 flex flex-col justify-between h-auto min-h-[120px] sm:min-h-[130px] relative group overflow-hidden cursor-pointer text-left w-full"
+                            className="neo-card hover:bg-(--c-surface-hover) p-3 sm:p-4 flex flex-col justify-between h-auto min-h-[120px] sm:min-h-[130px] relative group overflow-hidden cursor-pointer text-left w-full"
                           >
-                            <div className="absolute top-0 right-0 h-5 sm:h-6 px-2.5 border-b-2 border-l-2 border-[var(--c-border)] font-display font-bold text-[8px] sm:text-[9px] uppercase bg-[var(--c-surface)] text-[var(--c-text)] flex items-center justify-center shadow-[-2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
+                            <div className="absolute top-0 right-0 h-5 sm:h-6 px-2.5 border-b-2 border-l-2 border-(--c-border) font-display font-bold text-[8px] sm:text-[9px] uppercase bg-(--c-surface) text-(--c-text) flex items-center justify-center shadow-[-2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
                               {project.type}
                             </div>
 
                             <div>
                               <div className="flex flex-wrap gap-1.5 items-center">
-                                <span className={`px-2 py-0.5 border-2 border-[var(--c-border)] font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${project.color} text-black shadow-[1px_1px_0px_0px_#000]`}>
+                                <span className={`px-2 py-0.5 border-2 border-(--c-border) font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${project.color} text-black shadow-[1px_1px_0px_0px_#000]`}>
                                   {project.stat}
                                 </span>
                                 <span className={`px-2 py-0.5 border-2 border-black font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${getProjectStatusColor(project.status)} shadow-[1px_1px_0px_0px_#000]`}>
                                   {project.status}
                                 </span>
                               </div>
-                              <h4 className="font-display font-black text-base sm:text-lg uppercase tracking-tight mt-2 leading-none text-[var(--c-text)]">
+                              <h4 className="font-display font-black text-base sm:text-lg uppercase tracking-tight mt-2 leading-none text-(--c-text)">
                                 {project.title}
                               </h4>
-                              <p className="font-sans text-[10px] sm:text-xs font-semibold text-[var(--c-text-muted)] mt-1 line-clamp-2">
+                              <p className="font-sans text-[10px] sm:text-xs font-semibold text-(--c-text-muted) mt-1 line-clamp-2">
                                 {project.shortDesc}
                               </p>
                             </div>
 
-                            <div className="flex justify-between items-center mt-3 pt-2 border-t border-[var(--c-border)]/10">
+                            <div className="flex justify-between items-center mt-3 pt-2 border-t border-(--c-border)/10">
                               <div className="flex gap-2 items-center">
-                                <span className="font-mono text-[9px] sm:text-[10px] font-bold uppercase text-[var(--c-text)]">
+                                <span className="font-mono text-[9px] sm:text-[10px] font-bold uppercase text-(--c-text)">
                                   {project.metric}
                                 </span>
-                                <span className="px-1.5 py-0.5 border border-[var(--c-border)] font-display font-black text-[7px] sm:text-[8px] uppercase bg-[var(--c-surface-hover)] text-[var(--c-text-muted)]">
+                                <span className="px-1.5 py-0.5 border border-(--c-border) font-display font-black text-[7px] sm:text-[8px] uppercase bg-(--c-surface-hover) text-(--c-text-muted)">
                                   {project.category}
                                 </span>
                               </div>
-                              <span className="font-display font-bold text-[10px] sm:text-xs uppercase text-[var(--c-text)] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                              <span className="font-display font-bold text-[10px] sm:text-xs uppercase text-(--c-text) flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                                 Ver Más <ArrowRight size={12} />
                               </span>
                             </div>
@@ -1473,7 +1473,7 @@ export default function Home() {
                                 pageRefs.current.delete(pageIdx);
                               }
                             }}
-                            className="w-full flex-shrink-0 px-1 will-change-[opacity,filter]"
+                            className="w-full shrink-0 px-1 will-change-[opacity,filter]"
                             style={{
                               opacity,
                               filter: `blur(${blurVal}px)`,
@@ -1490,39 +1490,39 @@ export default function Home() {
                                       window.dispatchEvent(new CustomEvent("play-click"));
                                     }
                                   }}
-                                  className="neo-card hover:bg-[var(--c-surface-hover)] p-3 sm:p-4 flex flex-col justify-between h-auto min-h-[120px] sm:min-h-[130px] relative group overflow-hidden cursor-pointer text-left w-full"
+                                  className="neo-card hover:bg-(--c-surface-hover) p-3 sm:p-4 flex flex-col justify-between h-auto min-h-[120px] sm:min-h-[130px] relative group overflow-hidden cursor-pointer text-left w-full"
                                 >
-                                  <div className="absolute top-0 right-0 h-5 sm:h-6 px-2.5 border-b-2 border-l-2 border-[var(--c-border)] font-display font-bold text-[8px] sm:text-[9px] uppercase bg-[var(--c-surface)] text-[var(--c-text)] flex items-center justify-center shadow-[-2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
+                                  <div className="absolute top-0 right-0 h-5 sm:h-6 px-2.5 border-b-2 border-l-2 border-(--c-border) font-display font-bold text-[8px] sm:text-[9px] uppercase bg-(--c-surface) text-(--c-text) flex items-center justify-center shadow-[-2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
                                     {project.type}
                                   </div>
 
                                   <div>
                                     <div className="flex flex-wrap gap-1.5 items-center">
-                                      <span className={`px-2 py-0.5 border-2 border-[var(--c-border)] font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${project.color} text-black shadow-[1px_1px_0px_0px_#000]`}>
+                                      <span className={`px-2 py-0.5 border-2 border-(--c-border) font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${project.color} text-black shadow-[1px_1px_0px_0px_#000]`}>
                                         {project.stat}
                                       </span>
                                       <span className={`px-2 py-0.5 border-2 border-black font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${getProjectStatusColor(project.status)} shadow-[1px_1px_0px_0px_#000]`}>
                                         {project.status}
                                       </span>
                                     </div>
-                                    <h4 className="font-display font-black text-base sm:text-lg uppercase tracking-tight mt-2 leading-none text-[var(--c-text)]">
+                                    <h4 className="font-display font-black text-base sm:text-lg uppercase tracking-tight mt-2 leading-none text-(--c-text)">
                                       {project.title}
                                     </h4>
-                                    <p className="font-sans text-[10px] sm:text-xs font-semibold text-[var(--c-text-muted)] mt-1 line-clamp-2">
+                                    <p className="font-sans text-[10px] sm:text-xs font-semibold text-(--c-text-muted) mt-1 line-clamp-2">
                                       {project.shortDesc}
                                     </p>
                                   </div>
 
-                                  <div className="flex justify-between items-center mt-3 pt-2 border-t border-[var(--c-border)]/10">
+                                  <div className="flex justify-between items-center mt-3 pt-2 border-t border-(--c-border)/10">
                                     <div className="flex gap-2 items-center">
-                                      <span className="font-mono text-[9px] sm:text-[10px] font-bold uppercase text-[var(--c-text)]">
+                                      <span className="font-mono text-[9px] sm:text-[10px] font-bold uppercase text-(--c-text)">
                                         {project.metric}
                                       </span>
-                                      <span className="px-1.5 py-0.5 border border-[var(--c-border)] font-display font-black text-[7px] sm:text-[8px] uppercase bg-[var(--c-surface-hover)] text-[var(--c-text-muted)]">
+                                      <span className="px-1.5 py-0.5 border border-(--c-border) font-display font-black text-[7px] sm:text-[8px] uppercase bg-(--c-surface-hover) text-(--c-text-muted)">
                                         {project.category}
                                       </span>
                                     </div>
-                                    <span className="font-display font-bold text-[10px] sm:text-xs uppercase text-[var(--c-text)] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                    <span className="font-display font-bold text-[10px] sm:text-xs uppercase text-(--c-text) flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                                       Ver Más <ArrowRight size={12} />
                                     </span>
                                   </div>
@@ -1535,19 +1535,19 @@ export default function Home() {
                     </div>
                   )
                 ) : (
-                  <div className="text-center font-mono text-xs text-[var(--c-text-muted)] py-8 border-2 border-dashed border-[var(--c-border)]/20">
+                  <div className="text-center font-mono text-xs text-(--c-text-muted) py-8 border-2 border-dashed border-(--c-border)/20">
                     No se encontraron proyectos para esta categoría
                   </div>
                 )}
                 {isTouchDevice && (
-                  <div className="block sm:hidden font-mono text-[7px] text-[var(--c-text-subtle)] uppercase text-center mt-2.5 animate-pulse select-none">
+                  <div className="block sm:hidden font-mono text-[7px] text-(--c-text-subtle) uppercase text-center mt-2.5 animate-pulse select-none">
                     ← Desliza hacia los lados para cambiar de página →
                   </div>
                 )}
               </div>
 
               {/* Status and Pagination footer inside projects */}
-              <div className="border-t-2 border-[var(--c-border)] pt-3 mt-4 grid grid-cols-3 items-center text-[var(--c-text-muted)] font-mono text-[9px] sm:text-[10px] font-bold uppercase select-none w-full">
+              <div className="border-t-2 border-(--c-border) pt-3 mt-4 grid grid-cols-3 items-center text-(--c-text-muted) font-mono text-[9px] sm:text-[10px] font-bold uppercase select-none w-full">
                 <div className="text-left truncate">
                   Total: {filteredProjects.length} {filteredProjects.length === 1 ? "proyecto" : "proyectos"}
                 </div>
@@ -1564,10 +1564,10 @@ export default function Home() {
                           }
                         }}
                         disabled={projectPage === 0}
-                        className="p-1.5 sm:p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-100 flex items-center justify-center cursor-pointer"
+                        className="p-1.5 sm:p-2 border-2 border-(--c-border) bg-(--c-surface) text-(--c-text) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-px hover:translate-y-px hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-px active:translate-y-px active:shadow-none disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-100 flex items-center justify-center cursor-pointer"
                         title="Página Anterior"
                       >
-                        <ChevronLeft size={12} className="stroke-[3]" />
+                        <ChevronLeft size={12} className="stroke-3" />
                       </button>
                       <span className="text-[9px] sm:text-xs font-black min-w-[55px] sm:min-w-[65px] text-center">
                         Pág {projectPage + 1} / {pageCount}
@@ -1581,16 +1581,16 @@ export default function Home() {
                           }
                         }}
                         disabled={projectPage === pageCount - 1}
-                        className="p-1.5 sm:p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-100 flex items-center justify-center cursor-pointer"
+                        className="p-1.5 sm:p-2 border-2 border-(--c-border) bg-(--c-surface) text-(--c-text) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-px hover:translate-y-px hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-px active:translate-y-px active:shadow-none disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-100 flex items-center justify-center cursor-pointer"
                         title="Siguiente Página"
                       >
-                        <ChevronRight size={12} className="stroke-[3]" />
+                        <ChevronRight size={12} className="stroke-3" />
                       </button>
                     </div>
                   )}
                 </div>
                 
-                <div className="text-right text-[7px] sm:text-[9px] text-[var(--c-text-subtle)] truncate">
+                <div className="text-right text-[7px] sm:text-[9px] text-(--c-text-subtle) truncate">
                   JEREMERC.DEV
                 </div>
               </div>
@@ -1634,15 +1634,15 @@ export default function Home() {
             <CardSwap
               className="w-full h-full min-h-[185px] sm:min-h-[195px] md:min-h-[200px]"
               front={
-                <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between items-center text-center hover:bg-[var(--c-surface-hover)]">
-                  <div className="border-4 border-[var(--c-border)] bg-neo-yellow p-3 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
+                <div className="neo-card p-4 sm:p-6 h-full flex flex-col justify-between items-center text-center hover:bg-(--c-surface-hover)">
+                  <div className="border-4 border-(--c-border) bg-neo-yellow p-3 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
                     <Lock size={24} className="stroke-[2.5] text-black sm:w-7 sm:h-7" />
                   </div>
                   <div>
-                    <h3 className="font-display font-black text-xs sm:text-sm uppercase leading-none mt-2 text-[var(--c-text)]">
+                    <h3 className="font-display font-black text-xs sm:text-sm uppercase leading-none mt-2 text-(--c-text)">
                       Referencias
                     </h3>
-                    <p className="font-mono text-[8px] sm:text-[9px] uppercase font-bold text-[var(--c-text-muted)] mt-1">
+                    <p className="font-mono text-[8px] sm:text-[9px] uppercase font-bold text-(--c-text-muted) mt-1">
                       Haz click para desbloquear +
                     </p>
                   </div>
@@ -1658,8 +1658,8 @@ export default function Home() {
                   <div className="flex flex-col h-full gap-1.5 overflow-hidden">
 
                     {/* Top Row: Info Tag & Action Button */}
-                    <div className="flex items-center justify-between gap-1.5 flex-shrink-0">
-                      <span className="font-display font-black text-[8px] sm:text-[9px] uppercase bg-neo-cyan text-black px-1.5 py-0.5 shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] border border-[var(--c-border)] select-none">
+                    <div className="flex items-center justify-between gap-1.5 shrink-0">
+                      <span className="font-display font-black text-[8px] sm:text-[9px] uppercase bg-neo-cyan text-black px-1.5 py-0.5 shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] border border-(--c-border) select-none">
                         Opinión {refIndex + 1}/{REFERENCES_DB.length}
                       </span>
                       <div className="flex gap-1 items-center">
@@ -1671,26 +1671,26 @@ export default function Home() {
                               window.dispatchEvent(new CustomEvent("play-click"));
                             }
                           }}
-                          className="font-mono text-[11px] sm:text-xs font-black text-neo-pink uppercase cursor-pointer border-2 border-[var(--c-border)] px-2.5 py-1 bg-[var(--c-surface)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] flex-shrink-0 hover:bg-[var(--c-surface-hover)]"
+                          className="font-mono text-[11px] sm:text-xs font-black text-neo-pink uppercase cursor-pointer border-2 border-(--c-border) px-2.5 py-1 bg-(--c-surface) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] shrink-0 hover:bg-(--c-surface-hover)"
                         >
                           Ver Todas +
                         </button>
-                        <Unlock size={10} className="text-neo-pink animate-pulse flex-shrink-0" />
+                        <Unlock size={10} className="text-neo-pink animate-pulse shrink-0" />
                       </div>
                     </div>
 
                     {/* Content Area - Scrollable when height is compressed */}
-                    <div className="flex-grow overflow-y-auto flex flex-col justify-center min-h-[30px] pr-0.5 scrollbar-thin select-none">
-                      <p className="font-sans text-[9px] sm:text-[10px] md:text-[11px] font-semibold text-[var(--c-text)] italic leading-tight">
+                    <div className="grow overflow-y-auto flex flex-col justify-center min-h-[30px] pr-0.5 scrollbar-thin select-none">
+                      <p className="font-sans text-[9px] sm:text-[10px] md:text-[11px] font-semibold text-(--c-text) italic leading-tight">
                         &quot;{REFERENCES_DB[refIndex].text}&quot;
                       </p>
-                      <span className="font-mono text-[7px] sm:text-[8px] md:text-[9px] font-black uppercase text-[var(--c-text-muted)] block mt-1 text-right">
+                      <span className="font-mono text-[7px] sm:text-[8px] md:text-[9px] font-black uppercase text-(--c-text-muted) block mt-1 text-right">
                         — {REFERENCES_DB[refIndex].author} ({REFERENCES_DB[refIndex].role})
                       </span>
                     </div>
 
                     {/* Manual Carousel Controls */}
-                    <div className="flex justify-between items-center border-t border-[var(--c-border)]/10 pt-2">
+                    <div className="flex justify-between items-center border-t border-(--c-border)/10 pt-2">
                       <div className="flex gap-2">
                         <button
                           onClick={(e) => {
@@ -1700,10 +1700,10 @@ export default function Home() {
                               window.dispatchEvent(new CustomEvent("play-click"));
                             }
                           }}
-                          className="p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100 flex items-center justify-center cursor-pointer"
+                          className="p-2 border-2 border-(--c-border) bg-(--c-surface) text-(--c-text) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-px active:translate-y-px active:shadow-none transition-all duration-100 flex items-center justify-center cursor-pointer"
                           title="Opinión Anterior"
                         >
-                          <ChevronLeft size={14} className="stroke-[3]" />
+                          <ChevronLeft size={14} className="stroke-3" />
                         </button>
                         <button
                           onClick={(e) => {
@@ -1713,13 +1713,13 @@ export default function Home() {
                               window.dispatchEvent(new CustomEvent("play-click"));
                             }
                           }}
-                          className="p-2 border-2 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all duration-100 flex items-center justify-center cursor-pointer"
+                          className="p-2 border-2 border-(--c-border) bg-(--c-surface) text-(--c-text) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[0.5px] hover:translate-y-[0.5px] hover:shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] active:translate-x-px active:translate-y-px active:shadow-none transition-all duration-100 flex items-center justify-center cursor-pointer"
                           title="Siguiente Opinión"
                         >
-                          <ChevronRight size={14} className="stroke-[3]" />
+                          <ChevronRight size={14} className="stroke-3" />
                         </button>
                       </div>
-                      <span className="font-mono text-[7px] sm:text-[8px] uppercase text-[var(--c-text-subtle)] select-none">
+                      <span className="font-mono text-[7px] sm:text-[8px] uppercase text-(--c-text-subtle) select-none">
                         Cierra clickeando de nuevo
                       </span>
                     </div>
@@ -1736,10 +1736,10 @@ export default function Home() {
       </LayoutGroup>
 
         {/* Footer Accent Decoration & Stats Metric Tracker */}
-        <div className="neo-card p-4 md:p-5 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-5 text-center md:text-left bg-[var(--c-surface)]">
+        <div className="neo-card p-4 md:p-5 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-5 text-center md:text-left bg-(--c-surface)">
           <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5 w-full md:w-auto">
             {/* Visitors metric badge */}
-            <div className="flex items-center gap-2 px-3 py-1.5 border-2 border-[var(--c-border)] bg-[var(--c-surface-hover)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] font-mono text-[10px] sm:text-xs font-bold text-[var(--c-text)]">
+            <div className="flex items-center gap-2 px-3 py-1.5 border-2 border-(--c-border) bg-(--c-surface-hover) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] font-mono text-[10px] sm:text-xs font-bold text-(--c-text)">
               <Eye size={12} className="text-neo-cyan animate-pulse" />
               <span>
                 Visitas únicas:{" "}
@@ -1755,13 +1755,13 @@ export default function Home() {
 
             {/* Voting Component */}
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] sm:text-xs text-[var(--c-text-muted)] uppercase font-bold">¿Te gusta el portfolio?</span>
+              <span className="font-mono text-[10px] sm:text-xs text-(--c-text-muted) uppercase font-bold">¿Te gusta el portfolio?</span>
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => handleVote("like")}
                   disabled={!!userVote}
                   className={`p-1.5 border-2 transition-transform flex items-center gap-1 text-[9px] sm:text-[10px] font-black uppercase cursor-pointer ${userVote === "like"
-                    ? "bg-emerald-500 text-black border-black translate-x-[1px] translate-y-[1px] shadow-none"
+                    ? "bg-emerald-500 text-black border-black translate-x-px translate-y-px shadow-none"
                     : userVote
                       ? "opacity-30 grayscale cursor-not-allowed border-zinc-300 dark:border-zinc-700"
                       : "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 dark:border-emerald-500/50 shadow-[2px_2px_0px_0px_rgba(16,185,129,0.2)] hover:-translate-y-0.5 active:translate-y-0"
@@ -1782,7 +1782,7 @@ export default function Home() {
                   onClick={() => handleVote("dislike")}
                   disabled={!!userVote}
                   className={`p-1.5 border-2 transition-transform flex items-center gap-1 text-[9px] sm:text-[10px] font-black uppercase cursor-pointer ${userVote === "dislike"
-                    ? "bg-rose-500 text-black border-black translate-x-[1px] translate-y-[1px] shadow-none"
+                    ? "bg-rose-500 text-black border-black translate-x-px translate-y-px shadow-none"
                     : userVote
                       ? "opacity-30 grayscale cursor-not-allowed border-zinc-300 dark:border-zinc-700"
                       : "bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30 dark:border-rose-500/50 shadow-[2px_2px_0px_0px_rgba(244,63,94,0.2)] hover:-translate-y-0.5 active:translate-y-0"
@@ -1802,7 +1802,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center md:items-end gap-1 font-mono text-[9px] sm:text-xs text-[var(--c-text-muted)] w-full md:w-auto">
+          <div className="flex flex-col items-center md:items-end gap-1 font-mono text-[9px] sm:text-xs text-(--c-text-muted) w-full md:w-auto">
             <span>© 2026 Jeremyah (WriteColor). Construido bajo la filosofía Neobrutalist + BaseUI.</span>
             {/*<span className="text-[8px] opacity-75">Datos persistidos en Vercel Serverless Edge</span>*/}
           </div>
@@ -1817,7 +1817,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[var(--c-overlay-bg)] backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
+            className="fixed inset-0 bg-(--c-overlay-bg) backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
             onClick={() => setExpandedCard(null)}
           >
             <motion.div
@@ -1832,35 +1832,35 @@ export default function Home() {
               <ModalEscapeHandler onClose={() => setExpandedCard(null)} />
 
               {/* Unified Header Row (Prevents close button overlap) */}
-              <div className="flex items-center justify-between border-b-2 border-[var(--c-border)]/10 pb-3.5 mb-4">
+              <div className="flex items-center justify-between border-b-2 border-(--c-border)/10 pb-3.5 mb-4">
                 <div className="flex items-center gap-2">
                   {expandedCard === "quien-soy" && (
                     <div className="flex items-center gap-1.5 text-neo-pink">
                       <Sparkles className="stroke-[2.5]" size={16} />
-                      <span className="font-display font-black text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-0.5">Trayectoria</span>
+                      <span className="font-display font-black text-xs uppercase bg-(--c-text) text-(--c-bg) px-2 py-0.5">Trayectoria</span>
                     </div>
                   )}
                   {expandedCard === "estudios" && (
                     <div className="flex items-center gap-1.5 text-neo-cyan">
                       <BookOpen className="stroke-[2.5]" size={16} />
-                      <span className="font-display font-black text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-0.5">Educación</span>
+                      <span className="font-display font-black text-xs uppercase bg-(--c-text) text-(--c-bg) px-2 py-0.5">Educación</span>
                     </div>
                   )}
                   {expandedCard === "foco" && (
                     <div className="flex items-center gap-1.5 text-neo-yellow">
                       <Target className="stroke-[2.5]" size={16} />
-                      <span className="font-display font-black text-xs uppercase bg-[var(--c-text)] text-[var(--c-bg)] px-2 py-0.5">Especialización</span>
+                      <span className="font-display font-black text-xs uppercase bg-(--c-text) text-(--c-bg) px-2 py-0.5">Especialización</span>
                     </div>
                   )}
                   {typeof expandedCard === "object" && expandedCard !== null && "category" in expandedCard && (
                     <div className="flex items-center gap-2">
-                      <span className={`px-2 py-0.5 border-2 border-[var(--c-border)] font-display font-black text-[9px] sm:text-[10px] uppercase tracking-wider ${expandedCard.color} text-black shadow-[1px_1px_0px_0px_#000]`}>
+                      <span className={`px-2 py-0.5 border-2 border-(--c-border) font-display font-black text-[9px] sm:text-[10px] uppercase tracking-wider ${expandedCard.color} text-black shadow-[1px_1px_0px_0px_#000]`}>
                         {expandedCard.type}
                       </span>
-                      <span className="px-2 py-0.5 border-2 border-[var(--c-border)] font-mono text-[9px] sm:text-[10px] uppercase font-bold text-[var(--c-text)] bg-[var(--c-surface-hover)]">
+                      <span className="px-2 py-0.5 border-2 border-(--c-border) font-mono text-[9px] sm:text-[10px] uppercase font-bold text-(--c-text) bg-(--c-surface-hover)">
                         {expandedCard.category}
                       </span>
-                      <span className="font-mono text-[9px] sm:text-[10px] font-black uppercase text-[var(--c-text-muted)]">
+                      <span className="font-mono text-[9px] sm:text-[10px] font-black uppercase text-(--c-text-muted)">
                         {expandedCard.metric}
                       </span>
                     </div>
@@ -1876,21 +1876,21 @@ export default function Home() {
                     setExpandedCard(null);
                   }}
                   aria-label="Cerrar modal"
-                  className="p-1.5 border-2 border-[var(--c-border)] shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
+                  className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
                 >
-                  <X size={16} className="stroke-[3] sm:w-[18px] sm:h-[18px]" />
+                  <X size={16} className="stroke-3 sm:w-[18px] sm:h-[18px]" />
                 </button>
               </div>
 
               {/* BIO CARD EXPANSION */}
               {expandedCard === "quien-soy" && (
                 <div className="space-y-4 sm:space-y-5">
-                  <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tight text-[var(--c-text)]">Biografía Completa</h3>
-                  <div className="space-y-4 font-sans text-xs sm:text-sm text-[var(--c-text)] leading-relaxed font-semibold">
+                  <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tight text-(--c-text)">Biografía Completa</h3>
+                  <div className="space-y-4 font-sans text-xs sm:text-sm text-(--c-text) leading-relaxed font-semibold">
                     <p>
                       Soy un desarrollador de software con una profunda pasión por construir aplicaciones web modernas, robustas, escalables y con un diseño visual interactivo de alta fidelidad. Mi trayectoria comenzó como graduado de Bachillerato Técnico Profesional (BTP) en Informática en 2024, lo que me otorgó una base sólida en mantenimiento de sistemas, soporte y administración de redes locales.
                     </p>
-                    <div className="border-l-4 border-neo-pink pl-4 py-1.5 bg-[var(--c-surface-hover)] font-mono text-[10px] sm:text-xs">
+                    <div className="border-l-4 border-neo-pink pl-4 py-1.5 bg-(--c-surface-hover) font-mono text-[10px] sm:text-xs">
                       <span className="text-neo-pink font-black block">FILOSOFÍA DE TRABAJO (ARTESANÍA DEL CÓDIGO):</span>
                       &quot;Me dedico a escribir software mantenible y modular, optimizando cada milisegundo de rendimiento visual en la interfaz y diseñando arquitecturas distribuidas en la periferia (Edge Computing) para que el navegador se sienta vivo, fluido y responda en tiempo real.&quot;
                     </div>
@@ -1899,16 +1899,16 @@ export default function Home() {
                     </p>
                   </div>
 
-                  <div className="border-t-2 border-[var(--c-border)] pt-4 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="border-t-2 border-(--c-border) pt-4 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <span className="font-display font-black text-xs uppercase block text-neo-pink">Objetivos</span>
-                      <span className="font-sans text-[10px] sm:text-xs text-[var(--c-text-muted)] font-bold block mt-1">
+                      <span className="font-sans text-[10px] sm:text-xs text-(--c-text-muted) font-bold block mt-1">
                         Especializarme en gráficos de alto rendimiento en navegador (WebGL/WebGPU) y aportar a proyectos interactivos a gran escala.
                       </span>
                     </div>
                     <div>
                       <span className="font-display font-black text-xs uppercase block text-neo-cyan">Colaboraciones</span>
-                      <span className="font-sans text-[10px] sm:text-xs text-[var(--c-text-muted)] font-bold block mt-1">
+                      <span className="font-sans text-[10px] sm:text-xs text-(--c-text-muted) font-bold block mt-1">
                         Abierto a trabajar en equipos dinámicos en remoto, con horarios flexibles y presupuestos que se amolden al tamaño del producto.
                       </span>
                     </div>
@@ -1919,38 +1919,38 @@ export default function Home() {
               {/* STUDIES CARD EXPANSION */}
               {expandedCard === "estudios" && (
                 <div className="space-y-4 sm:space-y-5">
-                  <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tight text-[var(--c-text)]">Formación Académica</h3>
+                  <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tight text-(--c-text)">Formación Académica</h3>
 
-                  <div className="space-y-4 font-sans text-xs sm:text-sm text-[var(--c-text)]">
-                    <div className="border-3 border-[var(--c-border)] p-3 sm:p-4 bg-[var(--c-surface-hover)] relative shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
+                  <div className="space-y-4 font-sans text-xs sm:text-sm text-(--c-text)">
+                    <div className="border-3 border-(--c-border) p-3 sm:p-4 bg-(--c-surface-hover) relative shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
                       <div className="absolute top-2 right-2 flex items-center gap-1 text-neo-cyan font-mono text-[9px] font-bold">
                         <Calendar size={10} /> En Curso
                       </div>
                       <span className="font-mono text-xs font-bold text-neo-cyan uppercase">Grado Universitario</span>
-                      <h4 className="font-display font-black text-base sm:text-lg uppercase mt-1 text-[var(--c-text)]">Ingeniería en Ciencia de Datos & IA</h4>
-                      <p className="font-semibold text-[10px] sm:text-xs mt-1 text-[var(--c-text-muted)]">
+                      <h4 className="font-display font-black text-base sm:text-lg uppercase mt-1 text-(--c-text)">Ingeniería en Ciencia de Datos & IA</h4>
+                      <p className="font-semibold text-[10px] sm:text-xs mt-1 text-(--c-text-muted)">
                         Estudios enfocados en la construcción de algoritmos de optimización matemática, estructuras de datos complejas, análisis predictivo de datos masivos y el diseño e integración de redes neuronales artificiales y Machine Learning.
                       </p>
                     </div>
 
-                    <div className="border-3 border-[var(--c-border)] p-3 sm:p-4 bg-[var(--c-surface-hover)] relative shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
+                    <div className="border-3 border-(--c-border) p-3 sm:p-4 bg-(--c-surface-hover) relative shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
                       <div className="absolute top-2 right-2 flex items-center gap-1 text-neo-yellow font-mono text-[9px] font-bold">
                         <Award size={10} /> Graduado 2024
                       </div>
                       <span className="font-mono text-xs font-bold text-neo-yellow uppercase">Educación Secundaria Técnica</span>
-                      <h4 className="font-display font-black text-base sm:text-lg uppercase mt-1 text-[var(--c-text)]">BTP en Informática</h4>
-                      <p className="font-semibold text-[10px] sm:text-xs mt-1 text-[var(--c-text-muted)]">
+                      <h4 className="font-display font-black text-base sm:text-lg uppercase mt-1 text-(--c-text)">BTP en Informática</h4>
+                      <p className="font-semibold text-[10px] sm:text-xs mt-1 text-(--c-text-muted)">
                         Formación técnica de base sobre mantenimiento de hardware de computadoras, soporte de sistemas operativos, diseño inicial de bases de datos relacionales y cableado estructurado para redes locales LAN.
                       </p>
                     </div>
 
-                    <div className="border-3 border-[var(--c-border)] p-3 sm:p-4 bg-[var(--c-surface-hover)] relative shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
+                    <div className="border-3 border-(--c-border) p-3 sm:p-4 bg-(--c-surface-hover) relative shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)]">
                       <div className="absolute top-2 right-2 flex items-center gap-1 text-neo-pink font-mono text-[9px] font-bold">
                         <Award size={10} /> Autodidacta
                       </div>
                       <span className="font-mono text-xs font-bold text-neo-pink uppercase">Especialización Continua</span>
-                      <h4 className="font-display font-black text-base sm:text-lg uppercase mt-1 text-[var(--c-text)]">Desarrollo Full Stack & Cloud</h4>
-                      <p className="font-semibold text-[10px] sm:text-xs mt-1 text-[var(--c-text-muted)]">
+                      <h4 className="font-display font-black text-base sm:text-lg uppercase mt-1 text-(--c-text)">Desarrollo Full Stack & Cloud</h4>
+                      <p className="font-semibold text-[10px] sm:text-xs mt-1 text-(--c-text-muted)">
                         Especialización avanzada e independiente en el despliegue de arquitecturas en la periferia de la red (Edge Computing), optimización SEO de nivel técnico, virtualización y orquestación mediante Docker, y despliegue robusto sobre servidores Linux VPS administrados manualmente.
                       </p>
                     </div>
@@ -1961,23 +1961,23 @@ export default function Home() {
               {/* FOCO CARD EXPANSION */}
               {expandedCard === "foco" && (
                 <div className="space-y-4 sm:space-y-5">
-                  <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tight text-[var(--c-text)]">Foco Profesional</h3>
+                  <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tight text-(--c-text)">Foco Profesional</h3>
 
-                  <div className="space-y-4 font-sans text-xs sm:text-sm text-[var(--c-text)] font-semibold leading-relaxed">
+                  <div className="space-y-4 font-sans text-xs sm:text-sm text-(--c-text) font-semibold leading-relaxed">
                     <p>
                       Mi enfoque profesional principal consiste en diseñar e implementar arquitecturas sólidas y escalables que unifiquen la lógica de negocio con la excelencia visual interactiva en el navegador. Me apasiona el desarrollo Full Stack moderno, la automatización inteligente mediante Inteligencia Artificial y la optimización extrema del rendimiento para garantizar tiempos de respuesta mínimos.
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
-                      <div className="border-2 border-[var(--c-border)] p-3 bg-[var(--c-surface-hover)]">
+                      <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
                         <span className="font-display font-black text-xs uppercase text-neo-pink block">Tecnologías Preferidas</span>
-                        <span className="font-sans text-[10px] sm:text-[11px] text-[var(--c-text-muted)] block mt-1 font-bold">
+                        <span className="font-sans text-[10px] sm:text-[11px] text-(--c-text-muted) block mt-1 font-bold">
                           React, Next.js, TypeScript, Node.js, Python, Supabase, Cloudflare Workers, Neon DB.
                         </span>
                       </div>
-                      <div className="border-2 border-[var(--c-border)] p-3 bg-[var(--c-surface-hover)]">
+                      <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
                         <span className="font-display font-black text-xs uppercase text-neo-cyan block">Ruta de Evolución</span>
-                        <span className="font-sans text-[10px] sm:text-[11px] text-[var(--c-text-muted)] block mt-1 font-bold">
+                        <span className="font-sans text-[10px] sm:text-[11px] text-(--c-text-muted) block mt-1 font-bold">
                           Integración de streaming de audio interactivo bidireccional en tiempo real, pipelines seguros de IA (Generative AI) y orquestación de bases de datos serverless distribuidas.
                         </span>
                       </div>
@@ -1990,7 +1990,7 @@ export default function Home() {
               {typeof expandedCard === "object" && expandedCard !== null && (
                 <div className="space-y-4 sm:space-y-5">
                   <div className="flex flex-wrap items-center gap-2.5">
-                    <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tight leading-none text-[var(--c-text)]">
+                    <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tight leading-none text-(--c-text)">
                       {expandedCard.title}
                     </h3>
                     <span className={`px-2 py-0.5 border-2 border-black font-display font-black text-[8px] sm:text-[9px] uppercase tracking-wider ${getProjectStatusColor(expandedCard.status)} shadow-[1px_1px_0px_0px_#000] select-none`}>
@@ -1998,34 +1998,34 @@ export default function Home() {
                     </span>
                   </div>
 
-                  <div className="space-y-4 font-sans text-xs sm:text-sm text-[var(--c-text)]">
+                  <div className="space-y-4 font-sans text-xs sm:text-sm text-(--c-text)">
 
                     {/* Problem Section */}
-                    <div className="border-4 border-[var(--c-border)] p-3 sm:p-4 bg-[var(--c-surface-hover)]">
+                    <div className="border-4 border-(--c-border) p-3 sm:p-4 bg-(--c-surface-hover)">
                       <span className="font-display font-black text-xs uppercase text-neo-pink block mb-1">
                         El Problema de Negocio
                       </span>
-                      <p className="font-semibold text-[var(--c-text)] leading-relaxed text-[10px] sm:text-xs">
+                      <p className="font-semibold text-(--c-text) leading-relaxed text-[10px] sm:text-xs">
                         {expandedCard.problem}
                       </p>
                     </div>
 
                     {/* Description */}
                     <div>
-                      <span className="font-display font-black text-xs uppercase block mb-1 text-[var(--c-text)]">
+                      <span className="font-display font-black text-xs uppercase block mb-1 text-(--c-text)">
                         Descripción General
                       </span>
-                      <p className="font-medium leading-relaxed text-[var(--c-text)]">
+                      <p className="font-medium leading-relaxed text-(--c-text)">
                         {expandedCard.longDesc}
                       </p>
                     </div>
 
                     {/* Features List */}
                     <div>
-                      <span className="font-display font-black text-xs uppercase block mb-2 text-[var(--c-text)]">
+                      <span className="font-display font-black text-xs uppercase block mb-2 text-(--c-text)">
                         Funcionalidades Clave
                       </span>
-                      <ul className="list-disc pl-5 space-y-1 text-[10px] sm:text-xs font-semibold text-[var(--c-text)]">
+                      <ul className="list-disc pl-5 space-y-1 text-[10px] sm:text-xs font-semibold text-(--c-text)">
                         {expandedCard.features.map((feat, idx) => (
                           <li key={idx}>{feat}</li>
                         ))}
@@ -2034,30 +2034,30 @@ export default function Home() {
 
                     {/* Process timeline */}
                     <div>
-                      <span className="font-display font-black text-xs uppercase block mb-2 text-[var(--c-text)]">
+                      <span className="font-display font-black text-xs uppercase block mb-2 text-(--c-text)">
                         Proceso de Desarrollo
                       </span>
                       <div className="flex flex-col gap-2 font-mono text-[10px] sm:text-[11px]">
                         {expandedCard.process.map((step, idx) => (
                           <div key={idx} className="flex gap-2 items-start">
                             <span className="text-neo-cyan font-bold">{idx + 1}.</span>
-                            <span className="font-sans font-bold text-[var(--c-text-muted)]">{step}</span>
+                            <span className="font-sans font-bold text-(--c-text-muted)">{step}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     {/* Challenge & Solution */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border-t-2 border-[var(--c-border)] pt-4 mt-2">
-                      <div className="p-3 border-2 border-[var(--c-border)] bg-[var(--c-surface-hover)]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border-t-2 border-(--c-border) pt-4 mt-2">
+                      <div className="p-3 border-2 border-(--c-border) bg-(--c-surface-hover)">
                         <span className="font-display font-black text-xs uppercase text-neo-pink block">El Reto</span>
-                        <p className="font-sans text-[10px] sm:text-[11px] text-[var(--c-text-muted)] font-bold block mt-1 leading-snug">
+                        <p className="font-sans text-[10px] sm:text-[11px] text-(--c-text-muted) font-bold block mt-1 leading-snug">
                           {expandedCard.challenge}
                         </p>
                       </div>
-                      <div className="p-3 border-2 border-[var(--c-border)] bg-[var(--c-surface-hover)]">
+                      <div className="p-3 border-2 border-(--c-border) bg-(--c-surface-hover)">
                         <span className="font-display font-black text-xs uppercase text-neo-green block">La Solución</span>
-                        <p className="font-sans text-[10px] sm:text-[11px] text-[var(--c-text-muted)] font-bold block mt-1 leading-snug">
+                        <p className="font-sans text-[10px] sm:text-[11px] text-(--c-text-muted) font-bold block mt-1 leading-snug">
                           {expandedCard.solution}
                         </p>
                       </div>
@@ -2065,12 +2065,12 @@ export default function Home() {
 
                     {/* Technologies */}
                     <div>
-                      <span className="font-display font-black text-xs uppercase block mb-2 text-[var(--c-text)]">
+                      <span className="font-display font-black text-xs uppercase block mb-2 text-(--c-text)">
                         Tecnologías Utilizadas
                       </span>
                       <div className="flex flex-wrap gap-2">
                         {expandedCard.tags.map((tag, idx) => (
-                          <span key={idx} className="px-2.5 py-1 border-2 border-[var(--c-border)] bg-[var(--c-tag-bg)] font-mono text-[10px] sm:text-xs font-bold shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] text-[var(--c-text)]">
+                          <span key={idx} className="px-2.5 py-1 border-2 border-(--c-border) bg-(--c-tag-bg) font-mono text-[10px] sm:text-xs font-bold shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] text-(--c-text)">
                             {tag}
                           </span>
                         ))}
@@ -2081,13 +2081,13 @@ export default function Home() {
 
                   {/* Links */}
                   {expandedCard.status !== "Vendido" && (
-                    <div className="mt-6 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-2 border-t-2 border-[var(--c-border)]">
+                    <div className="mt-6 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-2 border-t-2 border-(--c-border)">
                       {expandedCard.githubUrl && (
                         <a
                           href={expandedCard.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 border-3 border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px] inline-flex items-center justify-center gap-1.5"
+                          className="px-4 py-2 border-3 border-(--c-border) bg-(--c-surface) text-(--c-text) font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-px hover:translate-y-px active:translate-x-[2px] active:translate-y-[2px] inline-flex items-center justify-center gap-1.5"
                         >
                           Repositorio <GithubIcon className="h-4 w-4" />
                         </a>
@@ -2097,7 +2097,7 @@ export default function Home() {
                           href={expandedCard.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 border-3 border-[var(--c-border)] bg-neo-yellow text-black font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-[1px] hover:translate-y-[1px] active:translate-x-[2px] active:translate-y-[2px] inline-flex items-center justify-center gap-1.5"
+                          className="px-4 py-2 border-3 border-(--c-border) bg-neo-yellow text-black font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-px hover:translate-y-px active:translate-x-[2px] active:translate-y-[2px] inline-flex items-center justify-center gap-1.5"
                         >
                           Demo en Vivo <ExternalLink size={14} className="stroke-[2.5]" />
                         </a>
@@ -2105,7 +2105,7 @@ export default function Home() {
                     </div>
                   )}
                   {expandedCard.status === "Vendido" && (
-                    <div className="mt-6 flex justify-end pt-2 border-t-2 border-[var(--c-border)]">
+                    <div className="mt-6 flex justify-end pt-2 border-t-2 border-(--c-border)">
                       <span className="px-4 py-2 border-3 border-black bg-neo-cyan text-black font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] select-none">
                         Código Fuente Vendido (Propiedad Privada)
                       </span>
