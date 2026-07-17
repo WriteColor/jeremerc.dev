@@ -1,97 +1,118 @@
-# JereMerc.dev — Portafolio Profesional Neobrutalista
+# Portafolio Profesional Neobrutalista
 
-Este es el repositorio oficial del portafolio personal de **Jeremyah ("JereMerc")**, diseñado bajo una estética Neobrutalista premium e implementado utilizando **Next.js 16 (App Router)**, **TypeScript**, y **Tailwind CSS** para ofrecer un diseño fluido, responsivo y de alto rendimiento.
+Este repositorio contiene el código fuente de un portafolio web interactivo de alto rendimiento desarrollado bajo una estética de diseño **Neobrutalista**. El proyecto está implementado utilizando **Next.js 16 (App Router)**, **TypeScript** y **Tailwind CSS**, y está diseñado para cargarse de forma fluida y responsiva garantizando compatibilidad total con dispositivos de diversas gamas.
 
 ---
 
 ## 🚀 Arquitectura y Tecnologías
 
-El portafolio está estructurado para maximizar el rendimiento visual, la interactividad y la velocidad de carga (Locked 60+ FPS):
-*   **Framework Principal:** [Next.js 16.2.10](https://nextjs.org/) (utilizando Turbopack para optimización de desarrollo y compilación rápida).
-*   **Base de Datos (Neon DB):** [Neon Serverless PostgreSQL](https://neon.tech/) para rate-limiting distribuido, registro seguro de formularios y persistencia de métricas en tiempo real.
-*   **Estilos y CSS:** Tailwind CSS y variables dinámicas neobrutalistas para soporte de temas Claro/Oscuro instantáneo.
-*   **Iconografía (Devicon + SVG):** Integración con [Devicon CDN](https://devicons.io/) para iconos de tecnología oficiales coloridos, con fallbacks de SVGs personalizados en código.
-*   **Motor 3D y Canvas:** [OGL](https://github.com/o-g-l/ogl) para el fondo fluido y canvas interactivos optimizados mediante cacheado de dimensiones del DOM.
+El proyecto está optimizado a nivel de servidor y cliente para asegurar una tasa de refresco constante (60+ FPS) y baja latencia de carga:
+* **Framework Principal:** [Next.js 16.2.10](https://nextjs.org/) con compilador Turbopack para optimizar los tiempos de desarrollo y empaquetado de producción.
+* **Estilos y Maquetación:** Tailwind CSS v4, estructurado mediante variables dinámicas que actúan como única fuente de verdad para el soporte nativo e instantáneo de temas Claro y Oscuro.
+* **Base de Datos (Neon DB):** [Neon Serverless PostgreSQL](https://neon.tech/) para rate-limiting atómico distribuido y persistencia de métricas en tiempo real.
+* **Componentes Creativos y Animaciones:** [Framer Motion](https://www.framer.com/motion/) para transiciones fluidas de resorte (spring physics) y microinteracciones de interfaz.
+* **Gráficos 3D y Fondos:** Renderizadores acelerados por GPU y canvas interactivos optimizados mediante el cálculo diferido de dimensiones del DOM.
+* **Iconografía Adaptativa:** Iconos cargados a través de Devicon CDN con fallbacks en formato SVG inline que respetan de forma dinámica los cambios de color del tema claro/oscuro del sistema.
 
 ---
 
-## 📂 Organización del Proyecto
+## 📂 Estructura del Directorio
 
-El código está estructurado de manera profesional, limpia y modular:
+El proyecto sigue una estructura limpia, modular y orientada a componentes independientes:
 
 ```text
 src/
 ├── app/
 │   ├── api/
-│   │   ├── contact/           # Endpoint SMTP Zoho para envío de correos con Turnstile
-│   │   └── stats/             # Endpoint Neon DB para visitas, likes y dislikes
-│   ├── error-test/            # Sandbox para simulación de errores HTTP
-│   ├── globals.css            # Estilos globales y tokens neobrutalistas
-│   ├── layout.tsx             # Layout base, SEO metadatos y CDN de Devicon
-│   └── page.tsx               # Grilla Bento principal y control de modales
+│   │   ├── contact/           # Envío de correos por SMTP protegido con Cloudflare Turnstile
+│   │   ├── domains/           # Módulos del motor de búsqueda y verificación de dominios
+│   │   │   ├── check/         # Endpoint de disponibilidad DoH, WHOIS TCP y fallbacks
+│   │   │   ├── info/          # Endpoint de detalles de WHOIS y valoración procedural
+│   │   │   └── suggest/       # Endpoint de generación de dominios alternativos sugeridos
+│   │   └── stats/             # Persistencia de métricas (visitas, votos positivos/negativos)
+│   ├── error-test/            # Sandbox para simulación de respuestas de error de la API
+│   ├── globals.css            # Estilos globales, variables de color y layouts neobrutalistas
+│   ├── layout.tsx             # Proveedor del tema, metadatos SEO y fuentes del sistema
+│   └── page.tsx               # Bento Grid principal y control global de modales
 ├── components/
-│   ├── backgrounds/           # Fondos interactivos (ShapeGrid, Fluid)
+│   ├── backgrounds/           # Fondos vectoriales y fluidos interactivos
+│   ├── domains/               # Componentes del motor de verificación (Bento, Resultados, Modal Detalles)
 │   ├── forms/                 # Formulario de contacto
-│   ├── modals/                # Diálogos de habilidades, dominios y opiniones
-│   ├── terminal/              # Widget de terminal interactiva con autocompletado TAB
-│   └── ui/                    # Componentes UI (CardSwap por GPU CSS, PixelCard, DecayCard)
-├── utils/
-│   ├── db.ts                  # Gestor del cliente Neon DB y métodos de lectura/escritura KV
-│   └── rateLimit.ts           # Rate Limiter distribuido en Neon DB con fallback en memoria
+│   ├── modals/                # Diálogos de proyectos, especificaciones e información de tecnologías
+│   ├── terminal/              # Terminal interactiva CLI con navegación jerárquica
+│   └── ui/                    # Primitivas UI reutilizables (PixelCard, CountUp, etc.)
+├── hooks/
+│   └── useFocusTrap.ts        # Hook para captura y retención de foco en teclados (Accesibilidad)
+├── data/
+│   ├── projects.ts            # Datos estáticos e información técnica de proyectos reales
+│   └── skills.ts              # Catálogo estructurado de tecnologías y niveles de dominio
+└── utils/
+    ├── db.ts                  # Cliente de base de datos Neon PostgreSQL y operaciones clave-valor
+    └── rateLimit.ts           # Rate limiter atómico con fallback local en memoria
 ```
 
 ---
 
 ## 🛠️ Funcionalidades Clave
 
-### 1. Terminal Interactiva con Autocompletado TAB
-Ubicada en la tarjeta de perfil, esta consola ofrece comandos interactivos reales:
-*   `help`: Muestra la lista de comandos disponibles.
-*   `skills`: Muestra la lista completa de habilidades y tecnologías. Puedes autocompletar con `skills <Nombre Habilidad>` usando Tab.
-*   `cat`: Abre y visualiza el código real de configuración del proyecto (`package.json`, `tsconfig.json`, `next.config.ts` o `globals.css`). Autocompleta los nombres de archivo presionando Tab.
-*   `neofetch`: Muestra especificaciones de sistema retro neobrutalistas.
-*   `clear`: Limpia el historial de comandos de la consola.
-*   **Efectos Físicos:** El terminal reacciona con sacudidas (`shake`) al ingresar comandos inexistentes y cambia el color del borde de forma dinámica.
+### 1. Motor de Consulta y Verificación de Dominios en Tiempo Real
+Un sistema de búsqueda de dominios integrado en la interfaz Bento Grid que implementa:
+* **Lógica de Consulta de Triple Fallback:** Realiza verificaciones de disponibilidad secuenciales mediante DoH (DNS-over-HTTPS) utilizando servidores seguros de Cloudflare y Google, conexiones TCP WHOIS directas en sockets de red (incluyendo servidores específicos como `.es` nic lookups) y WHOIS JSON Web APIs.
+* **Ficha Técnica & Valoración Estimada:** Los dominios disponibles o registrados despliegan un botón de `[Ficha]` que muestra información detallada del WHOIS (servidores DNS, registrador, fechas clave) y una valoración comercial estimada calculada por el backend en base a factores léxicos y la extensión del dominio.
+* **Control de Errores y Tooltips:** En caso de fallas de conexión o restricciones de red de la API, el sistema marca el dominio en estado inconcluso (`Error API`), desactivando la ficha detallada y mostrando una descripción explicativa para optimizar la experiencia de usuario.
+* **Modal de Solicitud de Registro:** Integración para exportar dominios disponibles directamente a un modal de solicitud de cotización o pre-registro.
+* **Optimización de Estado y Caching:** Los resultados se persisten temporalmente mediante un servicio de caché local (`DomainCacheService.ts`) para minimizar consultas innecesarias a APIs de red.
 
-### 2. Formulario de Contacto Seguro (Zoho SMTP + Cloudflare Turnstile)
-*   El formulario realiza el despacho de correos usando Zoho SMTP (`smtp.zoho.com`).
-*   Envía una copia del mensaje del usuario a `contacto@jeremerc.dev` y una confirmación directa al correo del remitente utilizando una plantilla de diseño HTML neobrutalista personalizada.
-*   **Protección Anti-Abuso:** Integra **Cloudflare Turnstile** para verificar la validez del token en el servidor mediante la API oficial `siteverify` antes de despachar cualquier correo.
+### 2. Terminal CLI Interactiva
+Ubicada en la tarjeta del perfil, esta consola ofrece comandos interactivos reales:
+* `help`: Muestra la lista de comandos disponibles.
+* `skills`: Muestra habilidades y permite autocompletar con `skills <Nombre Habilidad>` usando la tecla Tab.
+* `cat`: Abre y visualiza el código real de archivos críticos de configuración (`package.json`, `tsconfig.json`, `next.config.ts` o `globals.css`).
+* `neofetch`: Muestra especificaciones de sistema en estilo retro.
+* `clear`: Limpia el historial de comandos de la consola.
+* **Efectos Físicos:** El terminal reacciona con sacudidas visuales (`shake`) y cambios dinámicos del borde cuando se introduce un comando inexistente.
 
-### 3. Sistema de Rate Limiting (Límite de Tráfico)
-Para evitar el abuso en el envío de correos y votaciones, la utilidad `rateLimit.ts` detecta si está en producción y se comunica de forma atómica con la base de datos Neon DB. Si no detecta la base de datos, conmuta automáticamente a un caché local en memoria (`Map`) con limpieza activa de registros expirados.
+### 3. Pautas de Accesibilidad (WCAG 2.1 AA)
+* **Captura de Foco (Focus Trap):** Implementada mediante el hook `useFocusTrap` en todos los modales para obligar al cursor de teclado a ciclar estrictamente dentro del diálogo activo.
+* **Escape Jerárquico:** El teclado responde a la tecla `Escape` cerrando capas de forma progresiva: en modales complejos como el catálogo de habilidades, el primer escape regresa a la lista global y el segundo cierra el diálogo.
+* **Etiquetado Semántico:** Uso exhaustivo de roles `dialog`, etiquetas descriptivas `aria-labelledby`, `aria-modal="true"`, y nombres alternativos `aria-label` en botones compuestos únicamente por iconos.
+* **Outlines y Movimiento Reducido:** Enfoque de alta visibilidad para navegación por teclado en `globals.css` y desactivación de animaciones para usuarios con la directiva de sistema `prefers-reduced-motion` activa.
 
-### 4. Métricas de Feedback en el Footer
-*   Lleva registro de visitas únicas totales y contador de Likes/Dislikes persistidos en la base de datos.
-*   Excluye del conteo a rastreadores automatizados de IA, indexadores y motores de búsqueda mediante expresiones regulares del `User-Agent`.
+### 4. Sincronización de Audio y Eventos
+* **Retardo de Sonido:** Despacho de audio sincronizado con las transiciones visuales mediante retardos controlados (80ms para efectos de clic y 100ms para efectos de swipe lateral) para adaptarse al renderizado de Framer Motion.
+* **Mute Control Limitado:** Restricción de los efectos de sonido estrictamente a la apertura/cierre de diálogos interactivos, eliminando interferencias de audio al presionar controles del sistema como selectores de tema o botones de silenciado de música de fondo.
+
+### 5. Formulario de Contacto Seguro
+* Despacha correos electrónicos directos utilizando SMTP seguro de Zoho.
+* Envía confirmaciones con formato HTML adaptado al diseño de la página al remitente y alertas instantáneas al administrador.
+* **Protección Anti-Abuso:** Integración nativa de Cloudflare Turnstile verificando el token de validación en la API oficial en el servidor antes de autorizar cualquier envío de correo.
 
 ---
 
-## 💾 Estructura del Modelo de Base de Datos (PostgreSQL)
+## 📊 Estructura de Datos y Base de Datos (PostgreSQL)
 
-El proyecto utiliza Neon PostgreSQL para persistencia de datos y estadísticas:
-
-*   **`kv_cache`**: Almacena contadores clave del sitio web en formato clave-valor (p. ej., `stats:visits`, `stats:likes`, `stats:dislikes`).
-*   **`contact_logs`**: Guarda un registro histórico de los mensajes enviados a través del formulario de contacto para auditorías de soporte.
-*   **`rate_limits`**: Gestiona las restricciones de IP y conteo de peticiones para mitigar ataques DDoS o spam.
+La persistencia de estadísticas y rate limits atómicos se realiza sobre las siguientes tablas:
+* **`kv_cache`**: Almacena contadores clave del sitio en formato clave-valor (p. ej., visitas, me gusta, no me gusta).
+* **`contact_logs`**: Almacena el historial de consultas enviadas para auditorías de rendimiento y soporte del servidor de correo.
+* **`rate_limits`**: Registra identificadores de red con marca de tiempo para prevenir ataques DDoS o spam.
 
 ---
 
-## 🛠️ Desarrollo Local
+## 🛠️ Configuración y Desarrollo Local
 
-1. Instala las dependencias necesarias:
+1. Instala las dependencias del proyecto:
    ```bash
    pnpm install
    ```
-2. Ejecuta el servidor de desarrollo:
+2. Ejecuta el servidor de desarrollo local:
    ```bash
    pnpm dev
    ```
-3. Realiza la construcción para producción:
+3. Construye el paquete de producción optimizado:
    ```bash
    pnpm build
    ```
-4. Arranca la compilación de producción:
+4. Inicia el servidor compilado:
    ```bash
    pnpm start
    ```
@@ -101,8 +122,8 @@ El proyecto utiliza Neon PostgreSQL para persistencia de datos y estadísticas:
 ## ☁️ Variables de Entorno (.env)
 
 Crea un archivo `.env` en la raíz del proyecto configurando tus variables:
-*   `DATABASE_URL`: URL de conexión directa de Neon PostgreSQL (ej: `postgresql://user:pass@ep-host.aws.neon.tech/dbname`).
-*   `SMTP_HOST`: Host SMTP de Zoho (`smtp.zoho.com`).
-*   `SMTP_PORT`: Puerto seguro (`465`).
-*   `SMTP_USER` / `SMTP_PASS`: Cuenta y credenciales de envío del correo.
-*   `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY`: Par de llaves de Cloudflare Turnstile para protección de bots.
+* `DATABASE_URL`: URL de conexión directa de Neon PostgreSQL (ej: `postgresql://user:pass@ep-host.aws.neon.tech/dbname`).
+* `SMTP_HOST`: Host SMTP de Zoho (`smtp.zoho.com`).
+* `SMTP_PORT`: Puerto seguro (`465`).
+* `SMTP_USER` / `SMTP_PASS`: Cuenta y credenciales de envío del correo.
+* `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY`: Par de llaves de Cloudflare Turnstile para protección contra bots.

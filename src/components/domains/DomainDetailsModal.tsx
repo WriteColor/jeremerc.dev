@@ -143,9 +143,9 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
                 playClick();
                 onClose();
               }}
-              className="absolute top-4 right-4 border-2 border-black bg-neo-pink text-black p-1 hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-[1px] active:translate-y-[1px] transition-transform shadow-[2px_2px_0px_0px_#000] cursor-pointer"
+              className="absolute top-4 right-4 border-2 border-black bg-neo-pink text-black p-1 hover:translate-x-[0.5px] hover:translate-y-[0.5px] active:translate-x-px active:translate-y-px transition-transform shadow-[2px_2px_0px_0px_#000] cursor-pointer"
             >
-              <X size={18} className="stroke-[3]" />
+              <X size={18} className="stroke-3" />
             </button>
 
             {/* Header */}
@@ -161,7 +161,7 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
             {/* Error or Loading State */}
             {isLoading && (
               <div className="flex flex-col items-center justify-center py-12 gap-3">
-                <Loader2 className="animate-spin text-neo-yellow stroke-[3]" size={36} />
+                <Loader2 className="animate-spin text-neo-yellow stroke-3" size={36} />
                 <span className="font-mono text-xs uppercase font-bold text-(--c-text-muted)">
                   Consultando registros distribuidos WHOIS y valoración...
                 </span>
