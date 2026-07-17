@@ -124,34 +124,71 @@ export const BioProjectDetailModal: React.FC<BioProjectDetailModalProps> = ({
             <div className="select-text">
               {/* Biography sheet */}
               {expandedCard === "quien-soy" && (
-                <div className="space-y-4 sm:space-y-5">
-                  <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tight text-(--c-text)">
-                    Biografía Completa
-                  </h3>
+                <div className="space-y-5 sm:space-y-6">
+                  <div className="border-b-4 border-neo-pink pb-3 mb-2 flex items-center justify-between">
+                    <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tight text-(--c-text)">
+                      Biografía Completa
+                    </h3>
+                    <Sparkles className="text-neo-pink animate-pulse shrink-0" size={24} />
+                  </div>
+
                   <div className="space-y-4 font-sans text-xs sm:text-sm text-(--c-text) leading-relaxed font-semibold">
                     <p>
                       Soy un desarrollador de software con una profunda pasión por construir aplicaciones web modernas, robustas, escalables y con un diseño visual interactivo de alta fidelidad. Mi trayectoria comenzó como graduado de Bachillerato Técnico Profesional (BTP) en Informática en 2024, lo que me otorgó una base sólida en mantenimiento de sistemas, soporte y administración de redes locales.
                     </p>
-                    <div className="border-l-4 border-neo-pink pl-4 py-1.5 bg-(--c-surface-hover) font-mono text-[10px] sm:text-xs">
-                      <span className="text-neo-pink font-black block">FILOSOFÍA DE TRABAJO (ARTESANÍA DEL CÓDIGO):</span>
+
+                    <div className="border-l-4 border-neo-pink pl-4 py-2 bg-(--c-surface-hover) font-mono text-[10px] sm:text-xs">
+                      <span className="text-neo-pink font-black block mb-1">FILOSOFÍA DE TRABAJO (ARTESANÍA DEL CÓDIGO):</span>
                       &quot;Me dedico a escribir software mantenible y modular, optimizando cada milisegundo de rendimiento visual en la interfaz y diseñando arquitecturas distribuidas en la periferia (Edge Computing) para que el navegador se sienta vivo, fluido y responda en tiempo real.&quot;
                     </div>
+
                     <p>
                       Actualmente continúo mi formación como estudiante de Ingeniería en Ciencia de Datos e Inteligencia Artificial. Esto me permite especializarme en la intersección de modelos de lenguaje avanzados, procesamiento de datos masivos y sistemas de audio bidireccionales en tiempo real (STT/TTS/VAD). Combino mi formación académica con un desarrollo autodidacta intensivo en infraestructura de servidores Linux VPS, virtualización con Docker y el despliegue de soluciones tolerantes a fallos en la nube.
                     </p>
                   </div>
 
-                  <div className="border-t-2 border-(--c-border) pt-4 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Trayectoria & Evolución */}
+                  <div className="space-y-3">
+                    <span className="font-display font-black text-sm uppercase text-neo-pink block">
+                      Trayectoria y Evolución Profesional
+                    </span>
+                    <div className="border-2 border-(--c-border) p-3.5 bg-(--c-surface-hover) space-y-2.5 font-sans text-[11px] sm:text-xs text-(--c-text-muted) font-semibold leading-relaxed">
+                      <p>
+                        Desde mis inicios técnicos en el ámbito del hardware y redes, comprendí que el software de calidad requiere de un entendimiento profundo del sistema completo. He evolucionado desde la programación estructurada hasta la creación de plataformas web reactivas que consumen APIs distribuidas.
+                      </p>
+                      <p>
+                        Mi pasión por la excelencia visual me llevó a dominar frameworks de animación interactiva y tecnologías WebGL para romper los límites convencionales de las páginas web estáticas, convirtiendo formularios tradicionales en consolas de comando interactivas y tableros Bento Grid vivos.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Intereses & Filosofía */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
+                      <span className="font-display font-black text-xs uppercase text-neo-cyan block mb-1">Intereses Tecnológicos</span>
+                      <p className="font-sans text-[10px] sm:text-xs text-(--c-text-muted) font-bold leading-normal">
+                        Procesamiento de lenguajes naturales, desarrollo de agentes inteligentes basados en IA, síntesis y transmisión de audio en tiempo real y gráficos en 2D/3D con canvas y shaders matemáticos.
+                      </p>
+                    </div>
+                    <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
+                      <span className="font-display font-black text-xs uppercase text-neo-yellow block mb-1">Evolución & Metas</span>
+                      <p className="font-sans text-[10px] sm:text-xs text-(--c-text-muted) font-bold leading-normal">
+                        Convertirme en un referente técnico en la construcción de sistemas distribuidos tolerantes a fallos y en la integración práctica de la Ciencia de Datos en el flujo diario de productos SaaS.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="border-t-2 border-(--c-border) pt-4 mt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <span className="font-display font-black text-xs uppercase block text-neo-pink">Objetivos</span>
+                      <span className="font-display font-black text-xs uppercase block text-neo-pink">Objetivos Clave</span>
                       <span className="font-sans text-[10px] sm:text-xs text-(--c-text-muted) font-bold block mt-1">
-                        Especializarme en gráficos de alto rendimiento en navegador (WebGL/WebGPU) y aportar a proyectos interactivos a gran escala.
+                        Especializarme en gráficos de alto rendimiento en navegador (WebGL/WebGPU) y aportar en arquitecturas interactivas robustas de gran volumen de peticiones.
                       </span>
                     </div>
                     <div>
-                      <span className="font-display font-black text-xs uppercase block text-neo-cyan">Colaboraciones</span>
+                      <span className="font-display font-black text-xs uppercase block text-neo-cyan">Esquema de Colaboraciones</span>
                       <span className="font-sans text-[10px] sm:text-xs text-(--c-text-muted) font-bold block mt-1">
-                        Abierto a trabajar en equipos dinámicos en remoto, con horarios flexibles y presupuestos que se amolden al tamaño del producto.
+                        Colaboración directa y proactiva con equipos remotos multidisciplinares, bajo flujos de Git estructurados y metodologías ágiles de ingeniería.
                       </span>
                     </div>
                   </div>
@@ -210,30 +247,65 @@ export const BioProjectDetailModal: React.FC<BioProjectDetailModalProps> = ({
 
               {/* Professional Focus Sheet */}
               {expandedCard === "foco" && (
-                <div className="space-y-4 sm:space-y-5">
-                  <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tight text-(--c-text)">
-                    Foco Profesional
-                  </h3>
+                <div className="space-y-5 sm:space-y-6">
+                  <div className="border-b-4 border-neo-cyan pb-3 mb-2 flex items-center justify-between">
+                    <h3 className="font-display font-black text-2xl sm:text-3xl uppercase tracking-tight text-(--c-text)">
+                      Foco Profesional
+                    </h3>
+                    <Target className="text-neo-cyan animate-spin-slow shrink-0" size={24} />
+                  </div>
 
                   <div className="space-y-4 font-sans text-xs sm:text-sm text-(--c-text) font-semibold leading-relaxed">
                     <p>
                       Mi enfoque profesional principal consiste en diseñar e implementar arquitecturas sólidas y escalables que unifiquen la lógica de negocio con la excelencia visual interactiva en el navegador. Me apasiona el desarrollo Full Stack moderno, la automatización inteligente mediante Inteligencia Artificial y la optimización extrema del rendimiento para garantizar tiempos de respuesta mínimos.
                     </p>
+                  </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-                      <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
-                        <span className="font-display font-black text-xs uppercase text-neo-pink block">Tecnologías Preferidas</span>
-                        <span className="font-sans text-[10px] sm:text-[11px] text-(--c-text-muted) block mt-1 font-bold">
-                          React, Next.js, TypeScript, Node.js, Python, Supabase, Cloudflare Workers, Neon DB.
-                        </span>
+                  {/* Visión Técnica & Metodología */}
+                  <div className="space-y-3">
+                    <span className="font-display font-black text-sm uppercase text-neo-cyan block">
+                      Metodología de Trabajo y Enfoque de Proyectos
+                    </span>
+                    <div className="border-2 border-(--c-border) p-3.5 bg-(--c-surface-hover) font-sans text-[11px] sm:text-xs text-(--c-text-muted) font-semibold leading-relaxed space-y-3">
+                      <div>
+                        <strong className="text-(--c-text) font-display text-xs block uppercase mb-0.5">1. Planificación Rigurosa</strong>
+                        <span>Establezco diagramas estructurados y definiciones de contratos API antes de escribir código. Creo firmemente que 1 hora de diseño ahorra 10 horas de depuración.</span>
                       </div>
-                      <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
-                        <span className="font-display font-black text-xs uppercase text-neo-cyan block">Ruta de Evolución</span>
-                        <span className="font-sans text-[10px] sm:text-[11px] text-(--c-text-muted) block mt-1 font-bold">
-                          Integración de streaming de audio interactivo bidireccional en tiempo real, pipelines seguros de IA (Generative AI) y orquestación de bases de datos serverless distribuidas.
-                        </span>
+                      <div>
+                        <strong className="text-(--c-text) font-display text-xs block uppercase mb-0.5">2. Tipado Estricto y Arquitectura Mantenible</strong>
+                        <span>Despliego interfaces TypeScript robustas que auto-documentan el flujo de datos. Busco la modularidad máxima de componentes para facilitar refactorizaciones masivas sin fricción.</span>
+                      </div>
+                      <div>
+                        <strong className="text-(--c-text) font-display text-xs block uppercase mb-0.5">3. Optimización Basada en Datos</strong>
+                        <span>Utilizo herramientas de perfilado de rendimiento y auditorías de accesibilidad web de forma constante para reducir la carga de CPU y el consumo de ancho de banda del cliente.</span>
                       </div>
                     </div>
+                  </div>
+
+                  {/* Especialización Técnica y Pilares */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                    <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
+                      <span className="font-display font-black text-xs uppercase text-neo-pink block mb-1">Tecnologías Preferidas</span>
+                      <p className="font-sans text-[10px] sm:text-xs text-(--c-text-muted) block mt-1 font-bold">
+                        Ecosistema React/Next.js, tipado TypeScript estricto, APIs con Node.js, automatización con Python, Supabase, Cloudflare Workers y Neon serverless database.
+                      </p>
+                    </div>
+                    <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
+                      <span className="font-display font-black text-xs uppercase text-neo-cyan block mb-1">Ruta de Especialización</span>
+                      <p className="font-sans text-[10px] sm:text-xs text-(--c-text-muted) block mt-1 font-bold">
+                        Integración de flujos de streaming de voz interactivos en tiempo real, agentes autónomos basados en Modelos de Lenguaje (LLMs) y pipelines automatizados de Ciencia de Datos en la nube.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Visión del Negocio */}
+                  <div className="border-2 border-dashed border-neo-yellow p-4 bg-neo-yellow/5">
+                    <span className="font-display font-black text-xs uppercase text-neo-yellow block mb-1">
+                      Alineamiento con los Objetivos del Producto
+                    </span>
+                    <p className="font-sans text-[10px] sm:text-xs text-(--c-text-muted) font-semibold leading-relaxed">
+                      Un buen desarrollador no solo escribe código bonito, sino que resuelve problemas de negocio reales. Busco siempre que mis decisiones técnicas (caching local, renderizado híbrido, etc.) se traduzcan directamente en menores costos de infraestructura, mayor tasa de conversión SEO y una experiencia premium que deje huella en el usuario final.
+                    </p>
                   </div>
                 </div>
               )}

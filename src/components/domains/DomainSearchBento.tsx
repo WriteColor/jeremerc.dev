@@ -5,6 +5,7 @@ import { parseAndValidateDomain, ParsedDomain } from "./DomainValidator";
 import { DOMAIN_EXTENSIONS, DomainExtensionInfo, DomainResult } from "./DomainData";
 import { DomainResultsTable } from "./DomainResultsTable";
 import { DomainSolicitationModal } from "./DomainSolicitationModal";
+import { DomainDetailsModal } from "./DomainDetailsModal";
 
 export const DomainSearchBento: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -17,6 +18,7 @@ export const DomainSearchBento: React.FC = () => {
   const [results, setResults] = useState<DomainResult[]>([]);
   const [selectedResults, setSelectedResults] = useState<DomainResult[]>([]);
   const [isSolicitationOpen, setIsSolicitationOpen] = useState(false);
+  const [detailDomain, setDetailDomain] = useState<string | null>(null);
   const [hasScrolledToSummary, setHasScrolledToSummary] = useState(false);
 
   const summaryPanelRef = useRef<HTMLDivElement>(null);
@@ -292,6 +294,7 @@ export const DomainSearchBento: React.FC = () => {
                     selectedResults={selectedResults}
                     baseName={validation?.baseName || ""}
                     searchedExtension={validation?.detectedExtension || undefined}
+                    onOpenDetails={(fqdn) => setDetailDomain(fqdn)}
                   />
 
                   {/* Pricing disclaimer note */}
@@ -368,6 +371,15 @@ export const DomainSearchBento: React.FC = () => {
             fqdn: `${validation?.baseName}${r.extension}`,
             price: r.firstYearPrice
           }))}
+        />
+      )}
+
+      {/* Domain Info/Details Sheet Modal */}
+      {detailDomain !== null && (
+        <DomainDetailsModal
+          isOpen={detailDomain !== null}
+          onClose={() => setDetailDomain(null)}
+          domainName={detailDomain}
         />
       )}
     </motion.div>

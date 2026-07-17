@@ -327,14 +327,22 @@ export default function Home() {
   useEffect(() => {
     const handlePlayClick = () => {
       if (!isSFXMuted && clickRef.current) {
-        clickRef.current.currentTime = 0;
-        clickRef.current.play().catch(() => {});
+        setTimeout(() => {
+          if (clickRef.current) {
+            clickRef.current.currentTime = 0;
+            clickRef.current.play().catch(() => {});
+          }
+        }, 80);
       }
     };
     const handlePlaySwipe = () => {
       if (!isSFXMuted && swipeRef.current) {
-        swipeRef.current.currentTime = 0;
-        swipeRef.current.play().catch(() => {});
+        setTimeout(() => {
+          if (swipeRef.current) {
+            swipeRef.current.currentTime = 0;
+            swipeRef.current.play().catch(() => {});
+          }
+        }, 100);
       }
     };
     const handlePlayError = () => {
@@ -453,16 +461,7 @@ export default function Home() {
     // Play swipe sound when a modal opens/closes
     if (isAnyModalOpen !== wasAnyModalOpenRef.current) {
       if (typeof window !== "undefined") {
-        if (isAnyModalOpen) {
-          // Delay to align sound with spring animations (stiffness: 220, damping: 25)
-          const timer = setTimeout(() => {
-            window.dispatchEvent(new CustomEvent("play-swipe"));
-          }, 100);
-          wasAnyModalOpenRef.current = isAnyModalOpen;
-          return () => clearTimeout(timer);
-        } else {
-          window.dispatchEvent(new CustomEvent("play-swipe"));
-        }
+        window.dispatchEvent(new CustomEvent("play-swipe"));
       }
     }
     wasAnyModalOpenRef.current = isAnyModalOpen;
@@ -599,9 +598,6 @@ export default function Home() {
                     setIsMusicMuted(true);
                   }
                 }
-                if (typeof window !== "undefined") {
-                  window.dispatchEvent(new CustomEvent("play-click"));
-                }
               }}
               className="neo-btn bg-(--c-surface) w-[34px] h-[34px] cursor-pointer flex items-center justify-center animate-fadeIn"
               title={isMusicMuted ? "Activar música de fondo" : "Silenciar música de fondo"}
@@ -615,9 +611,6 @@ export default function Home() {
               onClick={() => {
                 const newState = !isSFXMuted;
                 setIsSFXMuted(newState);
-                if (!newState && typeof window !== "undefined") {
-                  window.dispatchEvent(new CustomEvent("play-click"));
-                }
               }}
               className="neo-btn bg-(--c-surface) w-[34px] h-[34px] cursor-pointer flex items-center justify-center"
               title={isSFXMuted ? "Activar efectos de sonido" : "Silenciar efectos de sonido"}
@@ -630,9 +623,6 @@ export default function Home() {
             <button
               onClick={() => {
                 toggleTheme();
-                if (typeof window !== "undefined") {
-                  window.dispatchEvent(new CustomEvent("play-click"));
-                }
               }}
               className="neo-btn bg-(--c-surface) w-[128px] h-[34px] text-xs font-bold uppercase flex items-center justify-center gap-1.5 cursor-pointer"
               aria-label={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}
@@ -1080,7 +1070,7 @@ export default function Home() {
                 onTouchStart={isTouchDevice ? handleProjTouchStart : undefined}
                 onTouchMove={isTouchDevice ? handleProjTouchMove : undefined}
                 onTouchEnd={isTouchDevice ? handleProjTouchEnd : undefined}
-                className="w-full my-2 touch-pan-y overflow-hidden relative"
+                className="w-full my-2 touch-pan-y overflow-hidden relative sm:min-h-[290px] flex flex-col justify-start"
               >
                 {pageCount > 0 ? (
                   !isTouchDevice ? (

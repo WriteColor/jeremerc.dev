@@ -20,11 +20,9 @@ const DEVICON_MAP: Record<string, string> = {
   "react": "devicon-react-original colored",
   "next.js": "devicon-nextjs-plain",
   "astro": "devicon-astro-plain colored",
-  "typescript": "devicon-typescript-plain colored",
   "javascript": "devicon-javascript-plain colored",
   "tailwind css": "devicon-tailwindcss-original colored",
   "laravel (php)": "devicon-laravel-original colored",
-  "c++": "devicon-cplusplus-plain colored",
   "supabase": "devicon-supabase-plain colored",
   "postgresql": "devicon-postgresql-plain colored",
   "docker": "devicon-docker-plain colored",
@@ -52,6 +50,40 @@ export const SkillIcon: React.FC<SkillIconProps> = ({ name, className = "w-6 h-6
       return <Python className={className} />;
     case "java (swing)":
       return <Java className={className} />;
+    case "typescript":
+      return (
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} shrink-0`}>
+          <rect width="100" height="100" fill="#3178C6" rx="8" />
+          <text 
+            x="85" 
+            y="85" 
+            fill="white" 
+            fontSize="52" 
+            fontWeight="900" 
+            fontFamily="system-ui, -apple-system, sans-serif" 
+            textAnchor="end"
+          >
+            TS
+          </text>
+        </svg>
+      );
+    case "c++":
+      return (
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} shrink-0`}>
+          <rect width="100" height="100" fill="#00599C" rx="8" />
+          <text 
+            x="50" 
+            y="65" 
+            fill="white" 
+            fontSize="45" 
+            fontWeight="900" 
+            fontFamily="system-ui, -apple-system, sans-serif" 
+            textAnchor="middle"
+          >
+            C++
+          </text>
+        </svg>
+      );
   }
 
   // 2. Devicon font icon mapping

@@ -34,6 +34,17 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
 
   useFocusTrap(modalRef, isOpen);
 
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
   useEffect(() => {
     if (!isOpen || !domainName) return;
 
@@ -181,16 +192,16 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
             {!isLoading && !error && data && (
               <div className="space-y-5">
                 {/* Tabs Selector */}
-                <div className="flex border-3 border-black bg-black p-0.5 gap-0.5">
+                <div className="flex bg-transparent gap-2 border-b-2 border-(--c-border)/15 pb-1">
                   <button
                     onClick={() => {
                       playClick();
                       setActiveTab("whois");
                     }}
-                    className={`flex-1 py-2 font-display font-black text-xs uppercase text-center cursor-pointer transition-colors ${
+                    className={`flex-1 py-2 font-display font-black text-xs uppercase text-center cursor-pointer transition-all border-l-4 pl-2 ${
                       activeTab === "whois"
-                        ? "bg-neo-yellow text-black"
-                        : "bg-(--c-surface) text-(--c-text) hover:bg-(--c-surface-hover)"
+                        ? "border-neo-yellow text-neo-yellow bg-transparent"
+                        : "border-transparent text-(--c-text) bg-transparent hover:text-(--c-text-muted)"
                     }`}
                   >
                     Detalles WHOIS
@@ -200,10 +211,10 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
                       playClick();
                       setActiveTab("valuation");
                     }}
-                    className={`flex-1 py-2 font-display font-black text-xs uppercase text-center cursor-pointer transition-colors ${
+                    className={`flex-1 py-2 font-display font-black text-xs uppercase text-center cursor-pointer transition-all border-l-4 pl-2 ${
                       activeTab === "valuation"
-                        ? "bg-neo-yellow text-black"
-                        : "bg-(--c-surface) text-(--c-text) hover:bg-(--c-surface-hover)"
+                        ? "border-neo-yellow text-neo-yellow bg-transparent"
+                        : "border-transparent text-(--c-text) bg-transparent hover:text-(--c-text-muted)"
                     }`}
                   >
                     Valoración Estimada

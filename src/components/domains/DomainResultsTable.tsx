@@ -8,6 +8,7 @@ export interface DomainResultsTableProps {
   selectedResults: DomainResult[];
   baseName: string;
   searchedExtension?: string;
+  onOpenDetails: (domainName: string) => void;
 }
 
 export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
@@ -16,6 +17,7 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
   selectedResults,
   baseName,
   searchedExtension,
+  onOpenDetails,
 }) => {
   // Check if any domain in results is currently loading
   const isAnyLoading = results.some(r => r.isAvailable === "loading");
@@ -87,20 +89,47 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
                   </div>
                 </td>
 
-                {/* Status */}
                 <td className="p-3 border-r-2 border-black/10">
                   {res.isAvailable === "loading" ? (
                     <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-cyan/20 text-(--c-text) font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000] animate-pulse">
                       <Loader2 size={10} className="stroke-3 animate-spin" /> Buscando
                     </span>
                   ) : res.isAvailable === true ? (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-green text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000]">
-                      <Check size={10} className="stroke-3" /> Disponible
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-green text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000]">
+                        <Check size={10} className="stroke-3" /> Disponible
+                      </span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (typeof window !== "undefined") {
+                            window.dispatchEvent(new CustomEvent("play-click"));
+                          }
+                          onOpenDetails(`${baseName}${res.extension}`);
+                        }}
+                        className="font-mono text-[9px] text-neo-cyan hover:underline cursor-pointer bg-transparent border-none p-0 flex items-center gap-0.5"
+                      >
+                        [Ficha]
+                      </button>
+                    </div>
                   ) : res.isAvailable === false ? (
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-pink text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000]">
-                      <X size={10} className="stroke-3" /> Registrado
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-pink text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000]">
+                        <X size={10} className="stroke-3" /> Registrado
+                      </span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (typeof window !== "undefined") {
+                            window.dispatchEvent(new CustomEvent("play-click"));
+                          }
+                          onOpenDetails(`${baseName}${res.extension}`);
+                        }}
+                        className="font-mono text-[9px] text-neo-cyan hover:underline cursor-pointer bg-transparent border-none p-0 flex items-center gap-0.5"
+                      >
+                        [Ficha]
+                      </button>
+                    </div>
                   ) : (
                     <span 
                       className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-yellow text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000] cursor-help"
