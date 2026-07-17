@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { X, Heart, Calendar, Award, CheckCircle2, ArrowLeft } from "lucide-react";
 import { SkillIcon } from "@/components/ui/SkillIcons";
 import { motion, AnimatePresence } from "framer-motion";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 export interface SkillDetail {
   name: string;
@@ -368,14 +369,20 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && skillName) {
-        onClose();
+        if (activeSkill && activeSkill !== "all") {
+          navigateTo("all");
+        } else {
+          onClose();
+        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [skillName, onClose]);
+  }, [skillName, activeSkill, onClose]);
 
   const isOpen = skillName !== null;
+
+  useFocusTrap(containerRef, isOpen);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -433,6 +440,9 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
           >
             <motion.div 
               ref={containerRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="skill-details-modal-title"
               initial={{ scale: 0.9, y: 30 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 30 }}
@@ -444,7 +454,7 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
           <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
             <div className="flex items-center gap-2">
               <SkillIcon name="default" className="w-6 h-6 text-neo-yellow animate-bounce" />
-              <h3 className="font-display font-black text-lg sm:text-xl uppercase tracking-tight text-(--c-text)">
+              <h3 id="skill-details-modal-title" className="font-display font-black text-lg sm:text-xl uppercase tracking-tight text-(--c-text)">
                 Catálogo de Stacks & Tecnologías
               </h3>
             </div>
@@ -534,6 +544,9 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
           >
             <motion.div 
               ref={containerRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="skill-details-modal-title"
               initial={{ scale: 0.9, y: 30 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 30 }}
@@ -552,7 +565,7 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
                 <ArrowLeft size={14} className="stroke-3" />
               </button>
               <SkillIcon name="default" className="w-5 h-5 text-neo-yellow" />
-              <h3 className="font-display font-black text-base sm:text-lg uppercase tracking-tight text-(--c-text)">
+              <h3 id="skill-details-modal-title" className="font-display font-black text-base sm:text-lg uppercase tracking-tight text-(--c-text)">
                 Planos de Construcción del Portafolio
               </h3>
             </div>
@@ -654,6 +667,9 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
         >
           <motion.div 
             ref={containerRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="skill-details-modal-title"
             initial={{ scale: 0.9, y: 30 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 30 }}
@@ -674,7 +690,7 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
               </button>
             )}
             <SkillIcon name={skill.name} className="w-8 h-8 shrink-0" />
-            <h3 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
+            <h3 id="skill-details-modal-title" className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
               Ficha: {skill.name}
             </h3>
           </div>

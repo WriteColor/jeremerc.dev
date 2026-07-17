@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { X, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface DomainSolicitationModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
   onClose,
   selectedDomains,
 }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [discord, setDiscord] = useState("");
@@ -44,6 +46,8 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
       setErrors({});
     }
   }, [isOpen, selectedDomains]);
+
+  useFocusTrap(modalRef, isOpen);
 
   // Load Cloudflare Turnstile Script
   useEffect(() => {
@@ -171,6 +175,10 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
       {isOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
           <motion.div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="solicitation-modal-title"
             initial={{ scale: 0.95, y: 15, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
             exit={{ scale: 0.95, y: 15, opacity: 0 }}
@@ -178,7 +186,7 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b-3 border-black pb-3 mb-4">
-              <span className="font-display font-black text-xs uppercase bg-neo-pink text-black px-2 py-1 shadow-[2px_2px_0px_0px_#000]">
+              <span id="solicitation-modal-title" className="font-display font-black text-xs uppercase bg-neo-pink text-black px-2 py-1 shadow-[2px_2px_0px_0px_#000]">
                 Solicitud de Dominio(s)
               </span>
               <button

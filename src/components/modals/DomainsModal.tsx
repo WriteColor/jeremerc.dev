@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { X, Globe, ArrowUpRight, ShieldCheck, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface DomainsModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ interface DomainItem {
 
 export const DomainsModal: React.FC<DomainsModalProps> = ({ isOpen, onClose, onOpenContactWithPrefill }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // Close on Escape key
   useEffect(() => {
@@ -29,6 +31,8 @@ export const DomainsModal: React.FC<DomainsModalProps> = ({ isOpen, onClose, onO
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
+
+  useFocusTrap(modalRef, isOpen);
 
 
   const domains: DomainItem[] = [
@@ -92,6 +96,10 @@ export const DomainsModal: React.FC<DomainsModalProps> = ({ isOpen, onClose, onO
           className="fixed inset-0 bg-(--c-overlay-bg) backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
         >
           <motion.div 
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="domains-modal-title"
             initial={{ scale: 0.9, y: 30 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 30 }}
@@ -103,7 +111,7 @@ export const DomainsModal: React.FC<DomainsModalProps> = ({ isOpen, onClose, onO
         <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4 shrink-0">
           <div className="flex items-center gap-2">
             <Globe className="stroke-[2.5] text-neo-cyan" />
-            <h3 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
+            <h3 id="domains-modal-title" className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
               Mis Dominios ({domains.length})
             </h3>
           </div>

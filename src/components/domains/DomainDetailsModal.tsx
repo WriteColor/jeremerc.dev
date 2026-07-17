@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { X, Globe, Calendar, Server, Shield, CircleDollarSign, BarChart3, AlertCircle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DomainWhoisInfo, DomainValuationInfo } from "./DomainData";
 import { DomainCacheService } from "./DomainCacheService";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface DomainDetailsModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ interface DomainDetailsData {
 
 export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, onClose, domainName }) => {
   const [activeTab, setActiveTab] = useState<"whois" | "valuation">("whois");
+  const modalRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<DomainDetailsData | null>(null);
@@ -29,6 +31,8 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
       window.dispatchEvent(new CustomEvent("play-click"));
     }
   };
+
+  useFocusTrap(modalRef, isOpen);
 
   useEffect(() => {
     if (!isOpen || !domainName) return;
@@ -112,6 +116,10 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
 
           {/* Modal Container */}
           <motion.div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="domain-details-modal-title"
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -134,9 +142,9 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
               <span className="font-display font-black text-[10px] uppercase bg-neo-cyan text-black px-2 py-1 shadow-[2px_2px_0px_0px_#000] border-2 border-black mr-2 inline-block">
                 Inspección de Dominio
               </span>
-              <h2 className="font-display font-black text-xl sm:text-2xl uppercase mt-2 select-text selection:bg-neo-yellow selection:text-black">
+              <h3 id="domain-details-modal-title" className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text) mt-2 leading-none">
                 {domainName}
-              </h2>
+              </h3>
             </div>
 
             {/* Error or Loading State */}

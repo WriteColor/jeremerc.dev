@@ -40,10 +40,10 @@ export const SkillIcon: React.FC<SkillIconProps> = ({ name, className = "w-6 h-6
     case "vite":
       return <Vite className={className} />;
     case "framer motion":
-      // Framer Motion icon, black by default as requested
-      return <Framer className={className} />;
+      // Framer Motion icon, black/white adaptivity
+      return <Framer className={`${className} dark:text-white text-black`} />;
     case "three.js":
-      return <Threejs className={className} />;
+      return <Threejs className={`${className} dark:text-white text-black`} />;
     case "node.js":
       return <NodejsIcon className={className} />;
     case "neon db":

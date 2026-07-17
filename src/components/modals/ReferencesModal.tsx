@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { X, Award, Quote, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface Reference {
   author: string;
@@ -49,6 +50,8 @@ interface ReferencesModalProps {
 }
 
 export const ReferencesModal: React.FC<ReferencesModalProps> = ({ isOpen, onClose }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
@@ -59,6 +62,7 @@ export const ReferencesModal: React.FC<ReferencesModalProps> = ({ isOpen, onClos
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
+  useFocusTrap(modalRef, isOpen);
 
   return (
     <AnimatePresence>
@@ -71,6 +75,10 @@ export const ReferencesModal: React.FC<ReferencesModalProps> = ({ isOpen, onClos
           className="fixed inset-0 bg-(--c-overlay-bg) backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
         >
           <motion.div 
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="references-modal-title"
             initial={{ scale: 0.9, y: 30 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 30 }}
@@ -82,7 +90,7 @@ export const ReferencesModal: React.FC<ReferencesModalProps> = ({ isOpen, onClos
         <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
           <div className="flex items-center gap-2">
             <Award className="stroke-[2.5] text-neo-yellow" />
-            <h3 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
+            <h3 id="references-modal-title" className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
               Referencias & Opiniones
             </h3>
           </div>

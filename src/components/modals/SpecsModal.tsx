@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { X, Cpu, HardDrive, Laptop, Monitor, ArrowUpRight, HelpCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface SpecsModalProps {
   isOpen: boolean;
@@ -20,17 +21,24 @@ interface SpecItem {
 
 export const SpecsModal: React.FC<SpecsModalProps> = ({ isOpen, onClose }) => {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // Close on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
-        onClose();
+        if (expandedSection !== null) {
+          setExpandedSection(null);
+        } else {
+          onClose();
+        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, expandedSection]);
+
+  useFocusTrap(modalRef, isOpen);
 
 
   const specSections: SpecItem[] = [
@@ -128,6 +136,10 @@ export const SpecsModal: React.FC<SpecsModalProps> = ({ isOpen, onClose }) => {
           className="fixed inset-0 bg-(--c-overlay-bg) backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
         >
           <motion.div 
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="specs-modal-title"
             initial={{ scale: 0.9, y: 30 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 30 }}
@@ -139,7 +151,7 @@ export const SpecsModal: React.FC<SpecsModalProps> = ({ isOpen, onClose }) => {
         <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
           <div className="flex items-center gap-2">
             <Laptop className="stroke-[2.5] text-neo-yellow" />
-            <h3 className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
+            <h3 id="specs-modal-title" className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
               Especificaciones del Equipo
             </h3>
           </div>

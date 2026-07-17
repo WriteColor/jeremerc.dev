@@ -4,6 +4,25 @@ import React, { useState, useEffect, useRef } from "react";
 import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (
+        container: string | HTMLElement,
+        options: {
+          sitekey: string;
+          callback: (token: string) => void;
+          "expired-callback"?: () => void;
+          "error-callback"?: () => void;
+        }
+      ) => string;
+      reset: (widgetId: string) => void;
+      remove: (widgetId: string) => void;
+    };
+    onloadTurnstileCallback?: () => void;
+  }
+}
+
 interface ContactFormProps {
   onClose?: () => void;
   initialMessage?: string;
@@ -45,10 +64,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
     let widgetId: string | null = null;
 
     const renderWidget = () => {
-      if (turnstileRef.current && (window as any).turnstile) {
+      if (turnstileRef.current && window.turnstile) {
         try {
           turnstileRef.current.innerHTML = "";
-          widgetId = (window as any).turnstile.render(turnstileRef.current, {
+          widgetId = window.turnstile.render(turnstileRef.current, {
             sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "",
             callback: (token: string) => {
               setTurnstileToken(token);
@@ -66,23 +85,23 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
       }
     };
 
-    (window as any).onloadTurnstileCallback = () => {
+    window.onloadTurnstileCallback = () => {
       renderWidget();
     };
 
-    if ((window as any).turnstile) {
+    if (window.turnstile) {
       renderWidget();
     }
 
     return () => {
-      if (widgetId && (window as any).turnstile) {
+      if (widgetId && window.turnstile) {
         try {
-          (window as any).turnstile.remove(widgetId);
+          window.turnstile.remove(widgetId);
         } catch (e) {
           // Ignore
         }
       }
-      delete (window as any).onloadTurnstileCallback;
+      delete window.onloadTurnstileCallback;
     };
   }, [status]);
 

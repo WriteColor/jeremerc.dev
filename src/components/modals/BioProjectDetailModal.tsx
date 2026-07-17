@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { X, Sparkles, BookOpen, Target, Calendar, Award, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Project, getProjectStatusColor } from "@/data/projects";
 import { GithubIcon } from "@/components/ui/Icons";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface BioProjectDetailModalProps {
   expandedCard: "quien-soy" | "estudios" | "foco" | Project | null;
@@ -15,6 +16,8 @@ export const BioProjectDetailModal: React.FC<BioProjectDetailModalProps> = ({
   expandedCard,
   onClose,
 }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
   // Play click sound if defined globally on window
   const playClick = () => {
     if (typeof window !== "undefined") {
@@ -35,6 +38,8 @@ export const BioProjectDetailModal: React.FC<BioProjectDetailModalProps> = ({
 
   const isOpen = expandedCard !== null;
 
+  useFocusTrap(modalRef, isOpen);
+
   return (
     <AnimatePresence>
       {isOpen && expandedCard && (
@@ -49,6 +54,10 @@ export const BioProjectDetailModal: React.FC<BioProjectDetailModalProps> = ({
           }}
         >
           <motion.div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="bioproject-modal-title"
             initial={{ scale: 0.9, y: 30 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 30 }}
@@ -58,7 +67,7 @@ export const BioProjectDetailModal: React.FC<BioProjectDetailModalProps> = ({
           >
             {/* Unified Header Row */}
             <div className="flex items-center justify-between border-b-2 border-(--c-border)/10 pb-3.5 mb-4">
-              <div className="flex items-center gap-2">
+              <div id="bioproject-modal-title" className="flex items-center gap-2">
                 {expandedCard === "quien-soy" && (
                   <div className="flex items-center gap-1.5 text-neo-pink">
                     <Sparkles className="stroke-[2.5]" size={16} />
