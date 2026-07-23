@@ -1,0 +1,21 @@
+# Jeremerc.dev — Portafolio Profesional de Jeremyah Mercado
+
+> Desarrollador Full Stack, Especialista en IA, Ciencia de Datos y Sistemas Web de Alto Rendimiento.
+
+## Información General
+- **Nombre**: Jeremyah Mercado (WriteColor)
+- **Rol**: Full Stack Developer, IA Engineer & Data Scientist Freelance
+- **Sitio Web**: https://jeremerc.dev
+- **GitHub**: https://github.com/WriteColor
+- **Contacto**: contacto@jeremerc.dev
+
+## Especializaciones Técnicas
+- **Frontend**: Next.js 16, React 19, TypeScript, Tailwind CSS v4, WebGL / OGL Shaders, Framer Motion
+- **Backend & Cloud**: Node.js, Python, Laravel (PHP), Cloudflare Workers (Edge Computing), Neon PostgreSQL, Supabase Serverless, Docker
+- **IA & Ciencia de Datos**: Integraciones con Gemini API, modelos LLM, procesamiento de voz bidireccional, Machine Learning
+
+## Servicios y Proyectos
+- Desarrollo de aplicaciones web SaaS de alto rendimiento y arquitectura neobrutalista.
+- Integración de asistentes de voz e Inteligencia Artificial en productos digitales.
+- Consultoría de software freelance con presupuestos adaptables y tiempos flexibles.
+- Verificación y análisis procedural de dominios en tiempo real.

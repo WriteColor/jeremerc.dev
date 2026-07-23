@@ -24,8 +24,8 @@
   --c-surface: #FFFFFF;
   --c-surface-hover: #F3F4F6;
   --c-text: #0C0C0E;
-  --c-text-muted: #6B7280;
-  --c-text-subtle: #9CA3AF;
+  --c-text-muted: #4B5563;
+  --c-text-subtle: #6B7280;
   --c-border: #000000;
   --c-shadow: 0, 0, 0;
   --c-tag-bg: #FFFFFF;
@@ -39,7 +39,7 @@
   --c-surface-hover: #26262B;
   --c-text: #F5F4F0;
   --c-text-muted: #9CA3AF;
-  --c-text-subtle: #6B7280;
+  --c-text-subtle: #9CA3AF;
   --c-border: #FFFFFF;
   --c-shadow: 255, 255, 255;
   --c-tag-bg: #26262B;

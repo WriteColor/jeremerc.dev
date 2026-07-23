@@ -3,12 +3,23 @@
 import React from "react";
 import { 
   Vite, 
-  Framer, 
   Threejs, 
   NodejsIcon, 
   NeonIcon, 
   Python, 
-  Java 
+  Java,
+  _React,
+  NextjsIcon,
+  AstroIcon,
+  Javascript,
+  TailwindIcon,
+  Laravel,
+  CPlusplus,
+  SupabaseIcon,
+  Postgresql,
+  DockerIcon,
+  CloudflareWorkersIcon,
+  GitIcon
 } from "@dev.icons/react";
 
 interface SkillIconProps {
@@ -16,40 +27,36 @@ interface SkillIconProps {
   className?: string;
 }
 
-const DEVICON_MAP: Record<string, string> = {
-  "react": "devicon-react-original colored",
-  "next.js": "devicon-nextjs-plain",
-  "astro": "devicon-astro-plain colored",
-  "javascript": "devicon-javascript-plain colored",
-  "tailwind css": "devicon-tailwindcss-original colored",
-  "laravel (php)": "devicon-laravel-original colored",
-  "c++": "devicon-cplusplus-plain colored",
-  "supabase": "devicon-supabase-plain colored",
-  "postgresql": "devicon-postgresql-plain colored",
-  "docker": "devicon-docker-plain colored",
-  "cloudflare workers": "devicon-cloudflare-plain colored",
-  "git": "devicon-git-plain colored",
-};
-
 export const SkillIcon: React.FC<SkillIconProps> = ({ name, className = "w-6 h-6" }) => {
   const normName = name.toLowerCase().trim();
 
-  // 1. Direct imports from @dev.icons/react as specified
   switch (normName) {
+    case "react":
+      return <_React className={className} />;
+    case "next.js":
+      return <NextjsIcon className={`${className} dark:invert shrink-0`} />;
+    case "astro":
+      return <AstroIcon className={`${className} dark:invert shrink-0`} />;
+    case "javascript":
+      return <Javascript className={className} />;
+    case "tailwind css":
+      return <TailwindIcon className={className} />;
+    case "laravel (php)":
+      return <Laravel className={className} />;
+    case "c++":
+      return <CPlusplus className={className} />;
+    case "supabase":
+      return <SupabaseIcon className={className} />;
+    case "postgresql":
+      return <Postgresql className={className} />;
+    case "docker":
+      return <DockerIcon className={className} />;
+    case "cloudflare workers":
+      return <CloudflareWorkersIcon className={className} />;
+    case "git":
+      return <GitIcon className={className} />;
     case "vite":
       return <Vite className={className} />;
-    case "framer motion":
-      return (
-        <svg role="img" viewBox="0 0 24 24" fill="currentColor" className={`${className} text-(--c-text) shrink-0`}>
-          <path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z" />
-        </svg>
-      );
-    case "three.js":
-      return (
-        <svg role="img" viewBox="0 0 24 24" fill="currentColor" className={`${className} text-(--c-text) shrink-0`}>
-          <path d="M.38 0a.268.268 0 0 0-.256.332l2.894 11.716a.268.268 0 0 0 .01.04l2.89 11.708a.268.268 0 0 0 .447.128L23.802 7.15a.268.268 0 0 0-.112-.45l-5.784-1.667a.268.268 0 0 0-.123-.035L6.38 1.715a.268.268 0 0 0-.144-.04L.456.01A.268.268 0 0 0 .38 0zm.374.654L5.71 2.08 1.99 5.664zM6.61 2.34l4.864 1.4-3.65 3.515zm-.522.12l1.217 4.926-4.877-1.4zm6.28 1.538l4.878 1.404-3.662 3.53zm-.52.13l1.208 4.9-4.853-1.392zm6.3 1.534l4.947 1.424-3.715 3.574zm-.524.12l1.215 4.926-4.876-1.398zm-15.432.696l4.964 1.424-3.726 3.586zM8.047 8.15l4.877 1.4-3.66 3.527zm-.518.137l1.236 5.017-4.963-1.432zm6.274 1.535l4.965 1.425-3.73 3.586zm-.52.127l1.235 5.012-4.958-1.43zm-9.63 2.438l4.873 1.406-3.656 3.523zm5.854 1.687l4.863 1.403-3.648 3.51zm-.54.04l1.214 4.927-4.875-1.4zm-3.896 4.02l5.037 1.442-3.782 3.638z" />
-        </svg>
-      );
     case "node.js":
       return <NodejsIcon className={className} />;
     case "neon db":
@@ -58,6 +65,14 @@ export const SkillIcon: React.FC<SkillIconProps> = ({ name, className = "w-6 h-6
       return <Python className={className} />;
     case "java (swing)":
       return <Java className={className} />;
+    case "three.js":
+      return <Threejs className={`${className} dark:invert shrink-0`} />;
+    case "framer motion":
+      return (
+        <svg role="img" viewBox="0 0 24 24" fill="currentColor" className={`${className} text-(--c-text) shrink-0`}>
+          <path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z" />
+        </svg>
+      );
     case "typescript":
       return (
         <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} shrink-0`}>
@@ -75,32 +90,6 @@ export const SkillIcon: React.FC<SkillIconProps> = ({ name, className = "w-6 h-6
           </text>
         </svg>
       );
-  }
-
-  // 2. Devicon font icon mapping
-  if (DEVICON_MAP[normName]) {
-    const style: React.CSSProperties = {
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      lineHeight: "1",
-    };
-
-    if (className.includes("w-8") || className.includes("h-8")) {
-      style.fontSize = "1.875rem";
-    } else if (className.includes("w-6") || className.includes("h-6")) {
-      style.fontSize = "1.5rem";
-    } else if (className.includes("w-5") || className.includes("h-5")) {
-      style.fontSize = "1.25rem";
-    } else {
-      style.fontSize = "1.5rem";
-    }
-
-    return <i className={`${DEVICON_MAP[normName]} ${className}`} style={style} />;
-  }
-
-  // 3. Fallback custom inline SVGs for shadcn, radix, baseui, react bits, cargo.js
-  switch (normName) {
     case "shadcn/ui":
       return (
         <svg viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>

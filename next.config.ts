@@ -5,11 +5,26 @@ const nextConfig: NextConfig = {
   transpilePackages: ["ogl"],
   poweredByHeader: false,
   compress: true,
+  images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 31536000,
+  },
+  experimental: {
+    optimizePackageImports: ["lucide-react", "framer-motion", "@dev.icons/react"],
+  },
   async headers() {
     return [
       {
         source: "/:path*",
         headers: [
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin",
+          },
           {
             key: "X-Frame-Options",
             value: "DENY",

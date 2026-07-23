@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, lazy, Suspense, useMemo, useCallback } from "react";
+import Image from "next/image";
 import {
   MessageSquare,
   Lock,
@@ -555,10 +556,10 @@ export default function Home() {
       </a>
 
       {/* Native HTML5 Audio nodes for script-blocker bypass */}
-      <audio ref={musicRef} src="/sounds/ambient.mp3" loop muted autoPlay />
-      <audio ref={clickRef} src="/sounds/click.wav" preload="auto" />
-      <audio ref={swipeRef} src="/sounds/swipe.wav" preload="auto" />
-      <audio ref={errorRef} src="/sounds/error.wav" preload="auto" />
+      <audio ref={musicRef} src="/sounds/ambient.mp3" loop muted preload="none" />
+      <audio ref={clickRef} src="/sounds/click.wav" preload="none" />
+      <audio ref={swipeRef} src="/sounds/swipe.wav" preload="none" />
+      <audio ref={errorRef} src="/sounds/error.wav" preload="none" />
 
       {/* Background ShapeGrid (High-Performance lightweight Canvas 2D) */}
       <div className="fixed inset-0 z-0 pointer-events-none select-none" style={{ pointerEvents: 'none' }}>
@@ -661,9 +662,12 @@ export default function Home() {
                     {/* Profile Picture with graceful CSS Art fallback */}
                     <div className="relative w-14 h-14 sm:w-16 sm:h-16 border-4 border-(--c-border) bg-neo-yellow overflow-hidden shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] shrink-0">
                       {!avatarError ? (
-                        <img 
-                          src="/avatar.png" 
+                        <Image 
+                          src="/avatar.webp" 
                           alt="Jeremyah Mercado" 
+                          width={128}
+                          height={128}
+                          priority
                           className="w-full h-full object-cover" 
                           onError={() => setAvatarError(true)}
                         />
@@ -692,7 +696,7 @@ export default function Home() {
                               window.dispatchEvent(new CustomEvent("play-click"));
                             }
                           }}
-                          className="font-mono text-xs font-bold text-neo-cyan cursor-pointer flex items-center gap-1.5 border-2 border-(--c-border) px-2.5 py-1 bg-(--c-surface) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform shrink-0 whitespace-nowrap"
+                          className="font-mono text-xs font-bold text-cyan-800 dark:text-neo-cyan cursor-pointer flex items-center gap-1.5 border-2 border-(--c-border) px-2.5 py-1 bg-(--c-surface) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform shrink-0 whitespace-nowrap"
                         >
                           <Laptop size={13} /> Specs +
                         </button>
@@ -703,7 +707,7 @@ export default function Home() {
                               window.dispatchEvent(new CustomEvent("play-click"));
                             }
                           }}
-                          className="font-mono text-xs font-bold text-neo-yellow cursor-pointer flex items-center gap-1.5 border-2 border-(--c-border) px-2.5 py-1 bg-(--c-surface) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform shrink-0 whitespace-nowrap"
+                          className="font-mono text-xs font-bold text-amber-800 dark:text-neo-yellow cursor-pointer flex items-center gap-1.5 border-2 border-(--c-border) px-2.5 py-1 bg-(--c-surface) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform shrink-0 whitespace-nowrap"
                         >
                           <Globe size={13} /> Dominios +
                         </button>
@@ -926,7 +930,7 @@ export default function Home() {
                       window.dispatchEvent(new CustomEvent("play-click"));
                     }
                   }}
-                  className="font-mono text-[11px] sm:text-xs font-black uppercase text-neo-pink border-2 border-(--c-border) px-2.5 py-1 bg-(--c-surface) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform cursor-pointer"
+                  className="font-mono text-[11px] sm:text-xs font-black uppercase text-rose-700 dark:text-neo-pink border-2 border-(--c-border) px-2.5 py-1 bg-(--c-surface) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:-translate-y-0.5 active:translate-y-0 transition-transform cursor-pointer"
                 >
                   Pulse para detalle +
                 </button>
@@ -962,7 +966,7 @@ export default function Home() {
                         window.dispatchEvent(new CustomEvent("play-click"));
                       }
                     }}
-                    className="font-mono text-xs sm:text-[13px] font-black uppercase text-neo-pink border-2 border-(--c-border) px-3 py-1 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) cursor-pointer shrink-0"
+                    className="font-mono text-xs sm:text-[13px] font-black uppercase text-rose-700 dark:text-neo-pink border-2 border-(--c-border) px-3 py-1 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) cursor-pointer shrink-0"
                   >
                     {showContactForm ? "Ver Info" : "Escríbeme +"}
                   </button>

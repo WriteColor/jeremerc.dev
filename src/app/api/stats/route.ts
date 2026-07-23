@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     const isAgentBot = isBot(userAgent);
 
     if (isAgentBot) {
-      return NextResponse.json({ error: "Bots not counted" }, { status: 403 });
+      return NextResponse.json({ isBot: true, counted: false, visits: 0, likes: 0, dislikes: 0 });
     }
 
     let visits = 0;

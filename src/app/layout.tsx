@@ -107,8 +107,6 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" crossOrigin="anonymous" />
         {/* Inline script to set theme class before paint to avoid flash */}
         <script dangerouslySetInnerHTML={{ __html: `
           (function() {

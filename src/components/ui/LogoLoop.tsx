@@ -41,8 +41,13 @@ export const LogoLoop: React.FC<LogoLoopProps> = ({
         </div>
         <div className="flex gap-4 px-2" aria-hidden="true">
           {items.map((item, idx) => (
-            <div key={`loop-2-${idx}`} className="shrink-0">
-              {item}
+            <div key={`loop-2-${idx}`} className="shrink-0" tabIndex={-1} aria-hidden="true">
+              {React.isValidElement(item)
+                ? React.cloneElement(item as React.ReactElement<{ tabIndex?: number; "aria-hidden"?: boolean }>, {
+                    tabIndex: -1,
+                    "aria-hidden": true,
+                  })
+                : item}
             </div>
           ))}
         </div>
