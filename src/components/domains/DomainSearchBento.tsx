@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Globe, ArrowRight, Laptop, Sparkles, ChevronRight, X, AlertTriangle, ShieldCheck, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { parseAndValidateDomain, ParsedDomain } from "./DomainValidator";
@@ -144,6 +144,13 @@ export const DomainSearchBento: React.FC = () => {
   };
 
   const totalPrice = selectedResults.reduce((sum, item) => sum + item.firstYearPrice, 0);
+
+  const domainsToSolicit = useMemo(() => {
+    return selectedResults.map((r) => ({
+      fqdn: `${validation?.baseName || ""}${r.extension}`,
+      price: r.firstYearPrice,
+    }));
+  }, [selectedResults, validation?.baseName]);
 
   return (
     <motion.div
@@ -367,10 +374,7 @@ export const DomainSearchBento: React.FC = () => {
         <DomainSolicitationModal
           isOpen={isSolicitationOpen}
           onClose={() => setIsSolicitationOpen(false)}
-          selectedDomains={selectedResults.map(r => ({
-            fqdn: `${validation?.baseName}${r.extension}`,
-            price: r.firstYearPrice
-          }))}
+          selectedDomains={domainsToSolicit}
         />
       )}
 
