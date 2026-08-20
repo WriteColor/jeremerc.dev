@@ -26,9 +26,11 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
   const turnstileRef = useRef<HTMLDivElement>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
-  // Set initial pre-filled message with multiple domains
+  const prevIsOpenRef = useRef(false);
+
+  // Set initial pre-filled message with multiple domains only when modal opens
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !prevIsOpenRef.current) {
       setName("");
       setEmail("");
       setDiscord("");
@@ -45,6 +47,7 @@ export const DomainSolicitationModal: React.FC<DomainSolicitationModalProps> = (
       setTurnstileToken(null);
       setErrors({});
     }
+    prevIsOpenRef.current = isOpen;
   }, [isOpen, selectedDomains]);
 
   useFocusTrap(modalRef, isOpen);

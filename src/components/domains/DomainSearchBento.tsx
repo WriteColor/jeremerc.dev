@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Globe, ArrowRight, Laptop, Sparkles, ChevronRight, X, AlertTriangle, ShieldCheck, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { parseAndValidateDomain, ParsedDomain } from "./DomainValidator";
@@ -11,7 +11,7 @@ export const DomainSearchBento: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [rawQuery, setRawQuery] = useState("");
   const [validation, setValidation] = useState<ParsedDomain | null>(null);
-  
+
   const [isSearching, setIsSearching] = useState(false);
   const [searchCompleted, setSearchCompleted] = useState(false);
 
@@ -79,7 +79,7 @@ export const DomainSearchBento: React.FC = () => {
       const batch = extensionsToQuery.slice(i, i + batchSize);
       const promises = batch.map(async (extInfo) => {
         const isAvailable = await checkDomainDns(baseName, extInfo.extension);
-        
+
         // Update results state dynamically in real-time
         setResults((prev) =>
           prev.map((r) =>
@@ -92,7 +92,7 @@ export const DomainSearchBento: React.FC = () => {
 
       await Promise.all(promises);
     }
-    
+
     setIsSearching(false);
   };
 
@@ -145,6 +145,13 @@ export const DomainSearchBento: React.FC = () => {
 
   const totalPrice = selectedResults.reduce((sum, item) => sum + item.firstYearPrice, 0);
 
+  const domainsToSolicit = useMemo(() => {
+    return selectedResults.map((r) => ({
+      fqdn: `${validation?.baseName || ""}${r.extension}`,
+      price: r.firstYearPrice,
+    }));
+  }, [selectedResults, validation?.baseName]);
+
   return (
     <motion.div
       layout
@@ -152,7 +159,7 @@ export const DomainSearchBento: React.FC = () => {
       className="col-span-1 sm:col-span-2 md:col-span-4 mt-2"
     >
       <div className="border-4 border-black bg-(--c-surface) text-(--c-text) shadow-[4px_4px_0px_0px_#000] p-5 sm:p-6 w-full relative select-none">
-        
+
         {/* Header (Cerrar Buscador visible only when expanded) */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b-2 border-black/10 pb-3 mb-4">
           <div className="flex items-center gap-2">
@@ -233,7 +240,7 @@ export const DomainSearchBento: React.FC = () => {
                       placeholder="ejemplo: mi-proyecto, midominio.dev o www.marca.es"
                       className="w-full border-3 border-black p-3 pr-28 font-mono text-xs sm:text-sm focus:outline-none focus:bg-(--c-surface-hover) bg-(--c-surface) text-(--c-text) shadow-[inset_3px_3px_0px_0px_rgba(0,0,0,0.15)]"
                     />
-                    
+
                     {/* Clear Button */}
                     {rawQuery && (
                       <button
@@ -248,7 +255,7 @@ export const DomainSearchBento: React.FC = () => {
 
                   {/* Validation State Badge */}
                   {validation && (
-                    <div className="mt-1 flex items-center gap-1.5 min-h-[16px]">
+                    <div className="mt-1 flex items-center gap-1.5 min-h-4">
                       {validation.isValid ? (
                         <span className="font-mono text-[9px] uppercase font-bold text-neo-green flex items-center gap-0.5">
                           ✓ Nombre válido: <span className="underline lowercase">{validation.baseName}</span><span className="lowercase">{validation.detectedExtension && ` (Ext: ${validation.detectedExtension})`}</span>
@@ -265,7 +272,7 @@ export const DomainSearchBento: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSearching || !validation?.isValid}
-                  className="border-3 border-black bg-neo-yellow text-black font-display font-black text-xs uppercase px-5 py-3 shadow-[3px_3px_0px_0px_#000] hover:translate-y-0.5 active:translate-y-1 disabled:opacity-40 disabled:pointer-events-none transition-transform flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap h-[45px] sm:h-auto"
+                  className="border-3 border-black bg-neo-yellow text-black font-display font-black text-xs uppercase px-5 py-3 shadow-[3px_3px_0px_0px_#000] hover:translate-y-0.5 active:translate-y-1 disabled:opacity-40 disabled:pointer-events-none transition-transform flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap h-11.25 sm:h-auto"
                 >
                   Buscar disponibilidad <ArrowRight size={14} className="stroke-3" />
                 </button>
@@ -288,9 +295,9 @@ export const DomainSearchBento: React.FC = () => {
                     </h3>
                   </div>
 
-                  <DomainResultsTable 
-                    results={results} 
-                    onSelect={handleSelectResult} 
+                  <DomainResultsTable
+                    results={results}
+                    onSelect={handleSelectResult}
                     selectedResults={selectedResults}
                     baseName={validation?.baseName || ""}
                     searchedExtension={validation?.detectedExtension || undefined}
@@ -323,7 +330,7 @@ export const DomainSearchBento: React.FC = () => {
                           </span>
                           <div className="flex gap-1.5 flex-wrap">
                             {selectedResults.map((item, idx) => (
-                              <span 
+                              <span
                                 key={idx}
                                 className="font-mono text-[11px] font-black text-(--c-text) bg-white border border-black px-2 py-0.5 shadow-[1.5px_1.5px_0px_0px_#000]"
                               >
@@ -332,11 +339,11 @@ export const DomainSearchBento: React.FC = () => {
                             ))}
                           </div>
                         </div>
-                        
+
                         <p className="font-sans text-xs text-(--c-text-muted) leading-relaxed">
                           Has seleccionado registrar <strong>{selectedResults.length} dominio(s)</strong> por un costo total estimado de <strong className="text-neo-green dark:text-emerald-400 font-bold">${totalPrice} USD</strong> el primer año.
                         </p>
-                        
+
                         <div className="flex items-center gap-1.5 font-mono text-[9px] text-neo-pink font-bold">
                           <ShieldCheck size={12} className="stroke-[2.5]" /> El precio final quedará confirmado al registrarse según la promoción del momento.
                         </div>
@@ -367,10 +374,7 @@ export const DomainSearchBento: React.FC = () => {
         <DomainSolicitationModal
           isOpen={isSolicitationOpen}
           onClose={() => setIsSolicitationOpen(false)}
-          selectedDomains={selectedResults.map(r => ({
-            fqdn: `${validation?.baseName}${r.extension}`,
-            price: r.firstYearPrice
-          }))}
+          selectedDomains={domainsToSolicit}
         />
       )}
 

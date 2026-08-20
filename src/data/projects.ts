@@ -47,7 +47,7 @@ export const PROJECTS: Project[] = [
     stat: "Interactividad",
     metric: "60 FPS Animación",
     githubUrl: "https://github.com/WriteColor/florecitas",
-    liveUrl: "https://florcita.jeremerc.dev/",
+    liveUrl: "https://preview-flowers.jeremerc.site/",
     status: "Activo",
   },
   {
@@ -137,7 +137,7 @@ export const PROJECTS: Project[] = [
     stat: "Interactividad",
     metric: "100% Responsivo",
     githubUrl: "https://github.com/WriteColor/Bee-s-Birthday",
-    liveUrl: "https://bee-s-birthday.mydev.es/",
+    liveUrl: "https://preview-birthday.jeremerc.site/",
     status: "Activo",
   },
   {
@@ -167,8 +167,8 @@ export const PROJECTS: Project[] = [
     stat: "Gráficos 3D",
     metric: "60 FPS WebGL",
     githubUrl: "https://github.com/WriteColor/3D-Model-Viewer",
-    liveUrl: "https://3dviewer.write-color.cloud/",
-    status: "En Desarrollo",
+    liveUrl: "https://preview-3dviewer.jeremerc.site/",
+    status: "Discontinuado",
   },
   {
     id: "minecraft-webstore",
@@ -197,7 +197,7 @@ export const PROJECTS: Project[] = [
     stat: "Integración",
     metric: "RCON Delivery",
     githubUrl: "https://github.com/WriteColor/web-store",
-    liveUrl: "https://panel.tiendita.write-color.cloud/",
+    liveUrl: "https://preview-webstore.jeremerc.site/",
     status: "Discontinuado",
   },
   {

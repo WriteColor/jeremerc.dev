@@ -73,7 +73,7 @@ export const InteractiveTerminal: React.FC<InteractiveTerminalProps> = ({
   // Exact real files from the repository
   const FILES: Record<string, string> = {
     "package.json": `{
-  "name": "jeremerc.dev",
+  "name": "jeremerc.site",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -242,7 +242,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
           const isMobile = /Mobile|Android|iPhone/i.test(userAgent) ? "Dispositivo Móvil" : "Computadora de Escritorio";
           output = (
             <div className="text-(--c-text-muted)">
-              usuario: <span className="text-neo-cyan font-bold">guest@jeremerc.dev</span><br />
+              usuario: <span className="text-neo-cyan font-bold">guest@jeremerc.site</span><br />
               plataforma: {isMobile}<br />
               navegador: {userAgent.split(" ").slice(-2).join(" ")}
             </div>
@@ -376,7 +376,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
           output = (
             <div className="flex flex-col sm:flex-row gap-4 text-xs font-mono">
               <pre className="text-neo-pink leading-none hidden sm:block">
-{`   _                 
+                {`   _                 
   (_)___ _ __ ___    
   | / _ \\ '__/ _ \\   
   | \\  __/ | |  __/   
@@ -385,7 +385,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
 |__/                  `}
               </pre>
               <div className="text-(--c-text-muted)">
-                <span className="text-neo-cyan font-bold">guest@jeremerc.dev</span><br />
+                <span className="text-neo-cyan font-bold">guest@jeremerc.site</span><br />
                 -----------------------<br />
                 <span className="text-neo-yellow font-bold">OS:</span> Windows 11 IoT Enterprise LTSC<br />
                 <span className="text-neo-yellow font-bold">Kernel:</span> Next.js App Router (BaseUI)<br />
@@ -461,7 +461,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
       if (!inputVal) return;
 
       const parts = inputVal.trim().split(/\s+/);
-      
+
       // If we are autocompleting the main command
       if (parts.length === 1) {
         const inputLower = parts[0].toLowerCase();
@@ -477,7 +477,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
             },
           ]);
         }
-      } 
+      }
       // If we are autocompleting arguments
       else {
         const cmd = parts[0].toLowerCase();
@@ -497,7 +497,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
               },
             ]);
           }
-        } 
+        }
         else if (cmd === "skills") {
           const skillList = ["React", "Next.js", "Astro", "Vite", "TypeScript", "JavaScript", "Tailwind CSS", "Shadcn/UI", "Radix UI", "Base UI", "Framer Motion", "Three.js", "React Bits", "Node.js", "Laravel (PHP)", "Python", "C++", "Java (Swing)", "Cargo.js", "Supabase", "Neon DB", "PostgreSQL", "Docker", "Cloudflare Workers", "Git"];
           const matches = skillList.filter((s) => s.toLowerCase().startsWith(argPart));
@@ -531,11 +531,12 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
   };
 
   return (
-    <div 
+    <div
       className={`border-4 p-3 bg-zinc-950 font-mono text-[10px] sm:text-[11px] font-bold text-zinc-100 flex flex-col h-72 relative transition-all duration-300 ${getBorderColorClass()} ${shakeActive ? "terminal-shake-active" : ""}`}
       onClick={() => inputRef.current?.focus()}
     >
-      <style dangerouslySetInnerHTML={{__html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes terminal-shake {
           0%, 100% { transform: translateX(0); }
           20%, 60% { transform: translateX(-5px); }
@@ -553,16 +554,15 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
           <div className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${terminalState === 'warning' ? 'bg-amber-400 animate-pulse' : 'bg-neo-yellow'}`} />
           <div className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${terminalState === 'success' ? 'bg-emerald-400 animate-pulse' : 'bg-neo-cyan'}`} />
           <span className="text-[9px] text-zinc-500 ml-1 flex items-center gap-1">
-            <Terminal size={10} /> visitor@jeremerc.dev: ~
+            <Terminal size={10} /> guest@jeremerc.site: ~
           </span>
         </div>
         <div className="flex items-center gap-1.5 px-2">
           {terminalState !== "idle" && (
-            <span className={`text-[8px] uppercase tracking-wider px-1.5 py-0.5 border font-mono font-bold rounded ${
-              terminalState === "success" ? "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" :
+            <span className={`text-[8px] uppercase tracking-wider px-1.5 py-0.5 border font-mono font-bold rounded ${terminalState === "success" ? "text-emerald-400 border-emerald-500/30 bg-emerald-500/10" :
               terminalState === "warning" ? "text-amber-400 border-amber-500/30 bg-amber-500/10" :
-              "text-rose-400 border-rose-500/30 bg-rose-500/10"
-            }`}>
+                "text-rose-400 border-rose-500/30 bg-rose-500/10"
+              }`}>
               {terminalState}
             </span>
           )}
@@ -570,7 +570,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
       </div>
 
       {/* Terminal Output scroll container */}
-      <div 
+      <div
         ref={scrollContainerRef}
         className="flex-1 overflow-y-auto space-y-2 pr-1 select-text terminal-scrollbar"
       >
@@ -578,7 +578,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
           <div key={idx} className="space-y-0.5 animate-fadeIn">
             {entry.command !== "system_init" && (
               <div className="text-neo-pink">
-                <span className="text-zinc-400">guest@jeremerc.dev:~$</span> {entry.command}
+                <span className="text-zinc-400">guest@jeremerc.site:~$</span> {entry.command}
               </div>
             )}
             <div className="pl-2">{entry.output}</div>
@@ -589,7 +589,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
 
       {/* Input Row */}
       <div className="flex items-center gap-1 border-t border-zinc-900 pt-1.5 mt-2">
-        <span className="text-zinc-400 select-none">guest@jeremerc.dev:~$</span>
+        <span className="text-zinc-400 select-none">guest@jeremerc.site:~$</span>
         <input
           ref={inputRef}
           type="text"

@@ -32,7 +32,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(initialMessage || "");
-  
+
   useEffect(() => {
     if (initialMessage !== undefined) {
       setMessage(initialMessage);
@@ -108,7 +108,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
   const validate = () => {
     const tempErrors: { name?: string; email?: string; message?: string } = {};
     if (!name.trim()) tempErrors.name = "Obligatorio.";
-    
+
     if (!email.trim()) {
       tempErrors.email = "Obligatorio.";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
@@ -165,18 +165,18 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
   return (
     <div className="text-(--c-text) w-full">
       {status === "error" && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-3 p-3 border-4 border-black bg-neo-pink text-black font-display font-black text-[10px] uppercase flex items-center gap-1.5 shadow-[2px_2px_0px_0px_#000]"
         >
           <AlertCircle size={14} className="stroke-3" />
-          Fallo de envío SMTP. Intente más tarde o contácteme directo a contacto@jeremerc.dev.
+          Fallo de envío SMTP. Intente más tarde o contácteme directo a contact@jeremerc.site.
         </motion.div>
       )}
 
       {status === "success" ? (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className="flex flex-col items-center justify-center py-4 text-center border-4 border-(--c-border) bg-neo-green p-4 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] text-black"
@@ -200,14 +200,14 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
           </button>
         </motion.div>
       ) : (
-        <motion.form 
+        <motion.form
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          onSubmit={handleSubmit} 
+          onSubmit={handleSubmit}
           className="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-2 py-0.5"
         >
           {/* Left Column: Name & Email inputs */}
-          <motion.div 
+          <motion.div
             initial={{ x: -10, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.05 }}
@@ -251,7 +251,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
           </motion.div>
 
           {/* Right Column: Message input */}
-          <motion.div 
+          <motion.div
             initial={{ x: 10, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.1 }}
@@ -262,7 +262,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               disabled={status === "loading"}
-              className={`${inputBase} resize-none grow h-[84px] ${errors.message ? "border-neo-pink" : ""}`}
+              className={`${inputBase} resize-none grow h-21 ${errors.message ? "border-neo-pink" : ""}`}
               placeholder="Cuéntame sobre tu proyecto, objetivos y plazos..."
             />
             {errors.message && (
@@ -273,20 +273,20 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onClose, initialMessag
           </motion.div>
 
           {/* Turnstile Security Verification */}
-          <motion.div 
+          <motion.div
             initial={{ y: 5, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.15 }}
             className="col-span-1 sm:col-span-2 flex justify-center my-1"
           >
-            <div 
-              ref={turnstileRef} 
+            <div
+              ref={turnstileRef}
               className="border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] p-0.5 bg-(--c-surface) inline-block overflow-hidden max-w-full"
             ></div>
           </motion.div>
 
           {/* Bottom Action buttons row */}
-          <motion.div 
+          <motion.div
             initial={{ y: 5, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}

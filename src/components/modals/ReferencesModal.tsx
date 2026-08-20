@@ -67,14 +67,14 @@ export const ReferencesModal: React.FC<ReferencesModalProps> = ({ isOpen, onClos
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose} 
+          onClick={onClose}
           className="fixed inset-0 bg-(--c-overlay-bg) backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
         >
-          <motion.div 
+          <motion.div
             ref={modalRef}
             role="dialog"
             aria-modal="true"
@@ -86,69 +86,69 @@ export const ReferencesModal: React.FC<ReferencesModalProps> = ({ isOpen, onClos
             className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) text-(--c-text)"
             onClick={(e) => e.stopPropagation()}
           >
-        {/* Header Bar */}
-        <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
-          <div className="flex items-center gap-2">
-            <Award className="stroke-[2.5] text-neo-yellow" />
-            <h3 id="references-modal-title" className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
-              Referencias & Opiniones
-            </h3>
-          </div>
-          <button 
-            onClick={() => {
-              if (typeof window !== "undefined") {
-                window.dispatchEvent(new CustomEvent("play-click"));
-              }
-              onClose();
-            }}
-            aria-label="Cerrar modal"
-            className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
-          >
-            <X size={16} className="stroke-3 sm:w-[18px] sm:h-[18px]" />
-          </button>
-        </div>
-
-        {/* Subtitle */}
-        <p className="font-sans text-xs sm:text-sm font-semibold text-(--c-text-muted) mb-5">
-          Opiniones reales de clientes y líderes técnicos con los que he colaborado en proyectos freelance y desarrollos de software comercial.
-        </p>
-
-        {/* References Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          {REFERENCES_DB.map((ref, idx) => (
-            <div 
-              key={idx}
-              className="border-3 border-(--c-border) p-4 sm:p-5 bg-(--c-surface-hover) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex justify-between items-start mb-3">
-                  <div className="border border-(--c-border) bg-neo-cyan text-black px-1.5 py-0.5 font-mono text-[8px] font-black uppercase tracking-wider shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)]">
-                    {ref.project}
-                  </div>
-                  <Quote className="w-5 h-5 text-neo-pink opacity-50 stroke-[2.5]" />
-                </div>
-                
-                <p className="font-sans text-[11px] sm:text-xs font-semibold text-(--c-text) italic leading-relaxed">
-                  &quot;{ref.text}&quot;
-                </p>
+            {/* Header Bar */}
+            <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
+              <div className="flex items-center gap-2">
+                <Award className="stroke-[2.5] text-neo-yellow" />
+                <h3 id="references-modal-title" className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
+                  Referencias & Opiniones
+                </h3>
               </div>
-
-              <div className="border-t border-(--c-border)/10 pt-3 mt-4 flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="font-display font-black text-xs uppercase text-(--c-text)">
-                    {ref.author}
-                  </span>
-                  <span className="font-mono text-[9px] font-bold text-(--c-text-muted) uppercase">
-                    {ref.role}, {ref.company}
-                  </span>
-                </div>
-                <div className="w-6 h-6 border-2 border-(--c-border) bg-neo-green text-black flex items-center justify-center rounded-full shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)]">
-                  <Check size={12} className="stroke-3" />
-                </div>
-              </div>
+              <button
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("play-click"));
+                  }
+                  onClose();
+                }}
+                aria-label="Cerrar modal"
+                className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
+              >
+                <X size={16} className="stroke-3 sm:w-4.5 sm:h-4.5" />
+              </button>
             </div>
-          ))}
-        </div>
+
+            {/* Subtitle */}
+            <p className="font-sans text-xs sm:text-sm font-semibold text-(--c-text-muted) mb-5">
+              Opiniones reales de clientes y líderes técnicos con los que he colaborado en proyectos freelance y desarrollos de software comercial.
+            </p>
+
+            {/* References Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              {REFERENCES_DB.map((ref, idx) => (
+                <div
+                  key={idx}
+                  className="border-3 border-(--c-border) p-4 sm:p-5 bg-(--c-surface-hover) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="border border-(--c-border) bg-neo-cyan text-black px-1.5 py-0.5 font-mono text-[8px] font-black uppercase tracking-wider shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)]">
+                        {ref.project}
+                      </div>
+                      <Quote className="w-5 h-5 text-neo-pink opacity-50 stroke-[2.5]" />
+                    </div>
+
+                    <p className="font-sans text-[11px] sm:text-xs font-semibold text-(--c-text) italic leading-relaxed">
+                      &quot;{ref.text}&quot;
+                    </p>
+                  </div>
+
+                  <div className="border-t border-(--c-border)/10 pt-3 mt-4 flex items-center justify-between">
+                    <div className="flex flex-col">
+                      <span className="font-display font-black text-xs uppercase text-(--c-text)">
+                        {ref.author}
+                      </span>
+                      <span className="font-mono text-[9px] font-bold text-(--c-text-muted) uppercase">
+                        {ref.role}, {ref.company}
+                      </span>
+                    </div>
+                    <div className="w-6 h-6 border-2 border-(--c-border) bg-neo-green text-black flex items-center justify-center rounded-full shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)]">
+                      <Check size={12} className="stroke-3" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </motion.div>
       )}

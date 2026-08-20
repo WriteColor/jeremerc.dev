@@ -128,14 +128,14 @@ export const SpecsModal: React.FC<SpecsModalProps> = ({ isOpen, onClose }) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose} 
+          onClick={onClose}
           className="fixed inset-0 bg-(--c-overlay-bg) backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
         >
-          <motion.div 
+          <motion.div
             ref={modalRef}
             role="dialog"
             aria-modal="true"
@@ -147,122 +147,122 @@ export const SpecsModal: React.FC<SpecsModalProps> = ({ isOpen, onClose }) => {
             className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) text-(--c-text)"
             onClick={(e) => e.stopPropagation()}
           >
-        {/* Header Bar to avoid close button overlap */}
-        <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
-          <div className="flex items-center gap-2">
-            <Laptop className="stroke-[2.5] text-neo-yellow" />
-            <h3 id="specs-modal-title" className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
-              Especificaciones del Equipo
-            </h3>
-          </div>
-          <button 
-            onClick={() => {
-              if (typeof window !== "undefined") {
-                window.dispatchEvent(new CustomEvent("play-click"));
-              }
-              onClose();
-            }}
-            aria-label="Cerrar modal"
-            className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
-          >
-            <X size={16} className="stroke-3 sm:w-[18px] sm:h-[18px]" />
-          </button>
-        </div>
-
-        {/* Intro */}
-        <p className="font-sans text-xs sm:text-sm font-semibold text-(--c-text-muted) mb-5">
-          Este es el hardware principal utilizado para compilar este portafolio, diseñar interfaces y desarrollar aplicaciones 3D y SaaS en local.
-        </p>
-
-        {/* Accordions */}
-        <div className="space-y-3">
-          {specSections.map((sec, idx) => {
-            const isExpanded = expandedSection === sec.title;
-            return (
-              <div 
-                key={idx}
-                className="border-3 border-(--c-border) bg-(--c-surface-hover) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)]"
-              >
-                {/* Section Header Button */}
-                <button
-                  onClick={() => {
-                    toggleSection(sec.title);
-                    if (typeof window !== "undefined") {
-                      window.dispatchEvent(new CustomEvent("play-click"));
-                    }
-                  }}
-                  className="w-full text-left p-3 sm:p-4 flex items-center justify-between font-display font-black text-sm uppercase tracking-wider text-(--c-text) cursor-pointer"
-                >
-                  <div className="flex items-center gap-3">
-                    {sec.icon}
-                    <div className="flex flex-col">
-                      <span>{sec.title}</span>
-                      <span className="font-mono text-[9px] sm:text-[10px] text-(--c-text-muted) tracking-normal font-bold">
-                        {sec.shortInfo}
-                      </span>
-                    </div>
-                  </div>
-                  <span className="font-mono text-lg font-black text-neo-pink">
-                    {isExpanded ? "−" : "+"}
-                  </span>
-                </button>
-
-                {/* Section Body */}
-                <AnimatePresence initial={false}>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25, ease: "easeInOut" }}
-                      className="overflow-hidden border-t-2 border-(--c-border)/20"
-                    >
-                      <div className="p-3 sm:p-4 space-y-3 font-sans text-xs">
-                        
-                        {/* Table */}
-                        <div className="grid grid-cols-1 gap-1 border-b border-(--c-border)/10 pb-3">
-                          {sec.details.map((det, dIdx) => (
-                            <div key={dIdx} className="flex flex-col sm:flex-row justify-between sm:items-center py-1 border-b border-dashed border-(--c-border)/5">
-                              <span className="font-mono font-bold text-(--c-text-muted) text-[10px] sm:text-xs">
-                                {det.label}
-                              </span>
-                              <span className="font-semibold text-(--c-text) text-[10px] sm:text-xs sm:text-right">
-                                {det.value}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Extra notes */}
-                        {sec.docsInfo && (
-                          <div className="border-l-4 border-neo-yellow pl-3 py-1 bg-(--c-surface) font-medium text-[10px] sm:text-xs text-(--c-text-muted) italic">
-                            <span className="font-display font-black uppercase text-neo-yellow text-[9px] block not-italic">Información Técnica</span>
-                            &quot;{sec.docsInfo}&quot;
-                          </div>
-                        )}
-
-                        {/* Links */}
-                        {sec.officialLink && (
-                          <div className="flex justify-end pt-1">
-                            <a
-                              href={sec.officialLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="font-mono font-black text-[9px] sm:text-[10px] uppercase text-neo-cyan hover:underline flex items-center gap-0.5"
-                            >
-                              Ver en fabricante <ArrowUpRight size={10} />
-                            </a>
-                          </div>
-                        )}
-
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+            {/* Header Bar to avoid close button overlap */}
+            <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
+              <div className="flex items-center gap-2">
+                <Laptop className="stroke-[2.5] text-neo-yellow" />
+                <h3 id="specs-modal-title" className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
+                  Especificaciones del Equipo
+                </h3>
               </div>
-            );
-          })}
-        </div>
+              <button
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("play-click"));
+                  }
+                  onClose();
+                }}
+                aria-label="Cerrar modal"
+                className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
+              >
+                <X size={16} className="stroke-3 sm:w-4.5 sm:h-4.5" />
+              </button>
+            </div>
+
+            {/* Intro */}
+            <p className="font-sans text-xs sm:text-sm font-semibold text-(--c-text-muted) mb-5">
+              Este es el hardware principal utilizado para compilar este portafolio, diseñar interfaces y desarrollar aplicaciones 3D y SaaS en local.
+            </p>
+
+            {/* Accordions */}
+            <div className="space-y-3">
+              {specSections.map((sec, idx) => {
+                const isExpanded = expandedSection === sec.title;
+                return (
+                  <div
+                    key={idx}
+                    className="border-3 border-(--c-border) bg-(--c-surface-hover) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)]"
+                  >
+                    {/* Section Header Button */}
+                    <button
+                      onClick={() => {
+                        toggleSection(sec.title);
+                        if (typeof window !== "undefined") {
+                          window.dispatchEvent(new CustomEvent("play-click"));
+                        }
+                      }}
+                      className="w-full text-left p-3 sm:p-4 flex items-center justify-between font-display font-black text-sm uppercase tracking-wider text-(--c-text) cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        {sec.icon}
+                        <div className="flex flex-col">
+                          <span>{sec.title}</span>
+                          <span className="font-mono text-[9px] sm:text-[10px] text-(--c-text-muted) tracking-normal font-bold">
+                            {sec.shortInfo}
+                          </span>
+                        </div>
+                      </div>
+                      <span className="font-mono text-lg font-black text-neo-pink">
+                        {isExpanded ? "−" : "+"}
+                      </span>
+                    </button>
+
+                    {/* Section Body */}
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25, ease: "easeInOut" }}
+                          className="overflow-hidden border-t-2 border-(--c-border)/20"
+                        >
+                          <div className="p-3 sm:p-4 space-y-3 font-sans text-xs">
+
+                            {/* Table */}
+                            <div className="grid grid-cols-1 gap-1 border-b border-(--c-border)/10 pb-3">
+                              {sec.details.map((det, dIdx) => (
+                                <div key={dIdx} className="flex flex-col sm:flex-row justify-between sm:items-center py-1 border-b border-dashed border-(--c-border)/5">
+                                  <span className="font-mono font-bold text-(--c-text-muted) text-[10px] sm:text-xs">
+                                    {det.label}
+                                  </span>
+                                  <span className="font-semibold text-(--c-text) text-[10px] sm:text-xs sm:text-right">
+                                    {det.value}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Extra notes */}
+                            {sec.docsInfo && (
+                              <div className="border-l-4 border-neo-yellow pl-3 py-1 bg-(--c-surface) font-medium text-[10px] sm:text-xs text-(--c-text-muted) italic">
+                                <span className="font-display font-black uppercase text-neo-yellow text-[9px] block not-italic">Información Técnica</span>
+                                &quot;{sec.docsInfo}&quot;
+                              </div>
+                            )}
+
+                            {/* Links */}
+                            {sec.officialLink && (
+                              <div className="flex justify-end pt-1">
+                                <a
+                                  href={sec.officialLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="font-mono font-black text-[9px] sm:text-[10px] uppercase text-neo-cyan hover:underline flex items-center gap-0.5"
+                                >
+                                  Ver en fabricante <ArrowUpRight size={10} />
+                                </a>
+                              </div>
+                            )}
+
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
           </motion.div>
         </motion.div>
       )}

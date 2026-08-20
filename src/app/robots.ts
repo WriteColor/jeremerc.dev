@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/error-test'],
     },
-    sitemap: 'https://jeremerc.dev/sitemap.xml',
+    sitemap: 'https://jeremerc.site/sitemap.xml',
   };
 }

@@ -80,11 +80,10 @@ export default function ErrorTestPage() {
             <button
               key={code}
               onClick={() => setActiveError(code)}
-              className={`px-3 py-1 border-2 font-mono text-[10px] sm:text-xs font-bold uppercase transition-all duration-150 cursor-pointer ${
-                activeError === code
+              className={`px-3 py-1 border-2 font-mono text-[10px] sm:text-xs font-bold uppercase transition-all duration-150 cursor-pointer ${activeError === code
                   ? "bg-(--c-text) text-(--c-bg) border-(--c-border) shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)]"
                   : "bg-(--c-surface) text-(--c-text) border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),0.2)] hover:border-(--c-border)"
-              }`}
+                }`}
             >
               {code}
             </button>
@@ -94,7 +93,7 @@ export default function ErrorTestPage() {
 
       {/* Centered Content */}
       <div className="max-w-md w-full text-center space-y-6 sm:space-y-8 z-10 pt-20 sm:pt-0">
-        
+
         {/* Error icon */}
         <div className="inline-flex p-3 sm:p-4 border-4 border-black bg-neo-yellow text-black shadow-[4px_4px_0px_0px_rgba(var(--c-shadow),1)]">
           {current.icon}
@@ -124,7 +123,7 @@ export default function ErrorTestPage() {
         <div className="flex flex-col sm:flex-row justify-center gap-3">
           <Link
             href="/"
-            className="neo-btn bg-(--c-surface) text-(--c-text) border-(--c-border) shadow-[4px_4px_0px_0px_rgba(var(--c-shadow),1)] hover:shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] px-5 py-2.5 text-xs font-bold uppercase inline-flex items-center gap-2 cursor-pointer transition-all duration-200 hover:translate-x-[-2px] hover:translate-y-[-2px]"
+            className="neo-btn bg-(--c-surface) text-(--c-text) border-(--c-border) shadow-[4px_4px_0px_0px_rgba(var(--c-shadow),1)] hover:shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] px-5 py-2.5 text-xs font-bold uppercase inline-flex items-center gap-2 cursor-pointer transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5"
           >
             <MoveLeft size={16} /> Volver al Portafolio
           </Link>

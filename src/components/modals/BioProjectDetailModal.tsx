@@ -114,9 +114,9 @@ export const BioProjectDetailModal: React.FC<BioProjectDetailModalProps> = ({
                   onClose();
                 }}
                 aria-label="Cerrar modal"
-                className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
+                className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
               >
-                <X size={16} className="stroke-3 sm:w-[18px] sm:h-[18px]" />
+                <X size={16} className="stroke-3 sm:w-4.5 sm:h-4.5" />
               </button>
             </div>
 
@@ -409,7 +409,7 @@ export const BioProjectDetailModal: React.FC<BioProjectDetailModalProps> = ({
                           href={expandedCard.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 border-3 border-(--c-border) bg-(--c-surface) text-(--c-text) font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-px hover:translate-y-px active:translate-x-[2px] active:translate-y-[2px] inline-flex items-center justify-center gap-1.5 cursor-pointer"
+                          className="px-4 py-2 border-3 border-(--c-border) bg-(--c-surface) text-(--c-text) font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-px hover:translate-y-px active:translate-x-0.5 active:translate-y-0.5 inline-flex items-center justify-center gap-1.5 cursor-pointer"
                         >
                           Repositorio <GithubIcon className="h-4 w-4" />
                         </a>
@@ -419,7 +419,7 @@ export const BioProjectDetailModal: React.FC<BioProjectDetailModalProps> = ({
                           href={expandedCard.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 border-3 border-(--c-border) bg-neo-yellow text-black font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-px hover:translate-y-px active:translate-x-[2px] active:translate-y-[2px] inline-flex items-center justify-center gap-1.5 cursor-pointer"
+                          className="px-4 py-2 border-3 border-(--c-border) bg-neo-yellow text-black font-display font-black text-xs uppercase shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] hover:translate-x-px hover:translate-y-px active:translate-x-0.5 active:translate-y-0.5 inline-flex items-center justify-center gap-1.5 cursor-pointer"
                         >
                           Demo en Vivo <ExternalLink size={14} className="stroke-[2.5]" />
                         </a>

@@ -417,7 +417,7 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
     }
     return (
       <div className="flex gap-1 items-center">
-        {hearts} 
+        {hearts}
         <span className="font-mono text-xs font-bold ml-1 text-(--c-text-muted)">({score}/5)</span>
       </div>
     );
@@ -431,14 +431,14 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
     return (
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose} 
+            onClick={onClose}
             className="fixed inset-0 bg-(--c-overlay-bg) backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
           >
-            <motion.div 
+            <motion.div
               ref={containerRef}
               role="dialog"
               aria-modal="true"
@@ -450,79 +450,79 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
               className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) text-(--c-text)"
               onClick={(e) => e.stopPropagation()}
             >
-          {/* Header */}
-          <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
-            <div className="flex items-center gap-2">
-              <SkillIcon name="default" className="w-6 h-6 text-neo-yellow animate-bounce" />
-              <h3 id="skill-details-modal-title" className="font-display font-black text-lg sm:text-xl uppercase tracking-tight text-(--c-text)">
-                Catálogo de Stacks & Tecnologías
-              </h3>
-            </div>
-            <button 
-              onClick={() => {
-                if (typeof window !== "undefined") {
-                  window.dispatchEvent(new CustomEvent("play-click"));
-                }
-                onClose();
-              }}
-              aria-label="Cerrar modal"
-              className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
-            >
-              <X size={16} className="stroke-3" />
-            </button>
-          </div>
-
-          <p className="font-sans text-xs sm:text-sm font-semibold text-(--c-text-muted) leading-relaxed mb-6">
-            Un desglose clasificado de las herramientas, lenguajes y frameworks que utilizo para construir software. Selecciona cualquiera de ellas para ver su ficha técnica detallada.
-          </p>
-
-          <div className="space-y-6">
-            {/* Frontend Section */}
-            <div>
-              <span className="font-display font-black text-xs uppercase text-neo-cyan border-b-2 border-neo-cyan pb-1 block mb-3">
-                Capa Cliente (Frontend & UI/UX)
-              </span>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {frontSkills.map((tech) => (
-                  <button
-                    key={tech}
-                    onClick={() => navigateTo(tech)}
-                    className="p-2 border-2 border-(--c-border) bg-(--c-surface-hover) hover:bg-neo-cyan hover:text-black font-mono text-[10px] sm:text-xs font-black uppercase text-left transition-colors duration-150 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),0.15)] hover:shadow-[3px_3px_0px_0px_rgba(var(--c-shadow),1)] cursor-pointer"
-                  >
-                    {tech} →
-                  </button>
-                ))}
+              {/* Header */}
+              <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
+                <div className="flex items-center gap-2">
+                  <SkillIcon name="default" className="w-6 h-6 text-neo-yellow animate-bounce" />
+                  <h3 id="skill-details-modal-title" className="font-display font-black text-lg sm:text-xl uppercase tracking-tight text-(--c-text)">
+                    Catálogo de Stacks & Tecnologías
+                  </h3>
+                </div>
+                <button
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.dispatchEvent(new CustomEvent("play-click"));
+                    }
+                    onClose();
+                  }}
+                  aria-label="Cerrar modal"
+                  className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
+                >
+                  <X size={16} className="stroke-3" />
+                </button>
               </div>
-            </div>
 
-            {/* Backend Section */}
-            <div>
-              <span className="font-display font-black text-xs uppercase text-neo-pink border-b-2 border-neo-pink pb-1 block mb-3">
-                Capa Servidor & Herramientas (Backend & Core)
-              </span>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {backSkills.map((tech) => (
+              <p className="font-sans text-xs sm:text-sm font-semibold text-(--c-text-muted) leading-relaxed mb-6">
+                Un desglose clasificado de las herramientas, lenguajes y frameworks que utilizo para construir software. Selecciona cualquiera de ellas para ver su ficha técnica detallada.
+              </p>
+
+              <div className="space-y-6">
+                {/* Frontend Section */}
+                <div>
+                  <span className="font-display font-black text-xs uppercase text-neo-cyan border-b-2 border-neo-cyan pb-1 block mb-3">
+                    Capa Cliente (Frontend & UI/UX)
+                  </span>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {frontSkills.map((tech) => (
+                      <button
+                        key={tech}
+                        onClick={() => navigateTo(tech)}
+                        className="p-2 border-2 border-(--c-border) bg-(--c-surface-hover) hover:bg-neo-cyan hover:text-black font-mono text-[10px] sm:text-xs font-black uppercase text-left transition-colors duration-150 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),0.15)] hover:shadow-[3px_3px_0px_0px_rgba(var(--c-shadow),1)] cursor-pointer"
+                      >
+                        {tech} →
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Backend Section */}
+                <div>
+                  <span className="font-display font-black text-xs uppercase text-neo-pink border-b-2 border-neo-pink pb-1 block mb-3">
+                    Capa Servidor & Herramientas (Backend & Core)
+                  </span>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {backSkills.map((tech) => (
+                      <button
+                        key={tech}
+                        onClick={() => navigateTo(tech)}
+                        className="p-2 border-2 border-(--c-border) bg-(--c-surface-hover) hover:bg-neo-pink hover:text-black font-mono text-[10px] sm:text-xs font-black uppercase text-left transition-colors duration-150 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),0.15)] hover:shadow-[3px_3px_0px_0px_rgba(var(--c-shadow),1)] cursor-pointer"
+                      >
+                        {tech} →
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Hidden Option / Architecture map */}
+                <div className="pt-4 border-t border-(--c-border)/15">
                   <button
-                    key={tech}
-                    onClick={() => navigateTo(tech)}
-                    className="p-2 border-2 border-(--c-border) bg-(--c-surface-hover) hover:bg-neo-pink hover:text-black font-mono text-[10px] sm:text-xs font-black uppercase text-left transition-colors duration-150 shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),0.15)] hover:shadow-[3px_3px_0px_0px_rgba(var(--c-shadow),1)] cursor-pointer"
+                    onClick={() => navigateTo("architecture")}
+                    className="w-full text-center py-2.5 border-2 border-dashed border-(--c-border) hover:border-neo-yellow text-xs font-mono font-black text-(--c-text-muted) hover:text-(--c-text) bg-(--c-surface-hover) hover:bg-neo-yellow/10 cursor-pointer transition-all duration-200"
                   >
-                    {tech} →
+                    $ ./ejecutar planos_arquitectura.sh 🛠️
                   </button>
-                ))}
+                </div>
               </div>
-            </div>
-
-            {/* Hidden Option / Architecture map */}
-            <div className="pt-4 border-t border-(--c-border)/15">
-              <button
-                onClick={() => navigateTo("architecture")}
-                className="w-full text-center py-2.5 border-2 border-dashed border-(--c-border) hover:border-neo-yellow text-xs font-mono font-black text-(--c-text-muted) hover:text-(--c-text) bg-(--c-surface-hover) hover:bg-neo-yellow/10 cursor-pointer transition-all duration-200"
-              >
-                $ ./ejecutar planos_arquitectura.sh 🛠️
-              </button>
-            </div>
-          </div>
             </motion.div>
           </motion.div>
         )}
@@ -535,14 +535,14 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
     return (
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose} 
+            onClick={onClose}
             className="fixed inset-0 bg-(--c-overlay-bg) backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
           >
-            <motion.div 
+            <motion.div
               ref={containerRef}
               role="dialog"
               aria-modal="true"
@@ -554,90 +554,90 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
               className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) text-(--c-text)"
               onClick={(e) => e.stopPropagation()}
             >
-          {/* Header */}
-          <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={() => setActiveSkill("all")}
-                className="mr-1.5 p-1 border-2 border-(--c-border) shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) hover:bg-(--c-surface-hover) cursor-pointer"
-                title="Volver al catálogo"
-              >
-                <ArrowLeft size={14} className="stroke-3" />
-              </button>
-              <SkillIcon name="default" className="w-5 h-5 text-neo-yellow" />
-              <h3 id="skill-details-modal-title" className="font-display font-black text-base sm:text-lg uppercase tracking-tight text-(--c-text)">
-                Planos de Construcción del Portafolio
-              </h3>
-            </div>
-            <button 
-              onClick={() => {
-                if (typeof window !== "undefined") {
-                  window.dispatchEvent(new CustomEvent("play-click"));
-                }
-                onClose();
-              }}
-              aria-label="Cerrar modal"
-              className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
-            >
-              <X size={16} className="stroke-3" />
-            </button>
-          </div>
-
-          <p className="font-mono text-[10px] sm:text-xs text-(--c-text-muted) leading-relaxed mb-4">
-            Este portafolio es una Single Page Application (SPA) responsiva y de alto rendimiento optimizada para Next.js 16 (Turbopack) y estructurada bajo principios Neobrutalistas rígidos.
-          </p>
-
-          {/* Directory Tree Structure */}
-          <div className="border-2 border-(--c-border) bg-(--c-surface-hover) p-4 font-mono text-[9px] sm:text-xs mb-5 space-y-3 leading-relaxed">
-            <div className="font-black text-neo-cyan">📂 ESTRUCTURA DEL PROYECTO</div>
-            <div className="pl-2 space-y-1">
-              <div>📁 <span className="font-bold text-(--c-text)">src/app/</span></div>
-              <div className="pl-4 text-(--c-text-muted)">
-                <div>📄 <span className="text-(--c-text) font-semibold">page.tsx</span> — Dashboard Bento Grid principal (conecta estados de modales, HMR, paginación local y filtros).</div>
-                <div>📄 <span className="text-(--c-text) font-semibold">globals.css</span> — Motor CSS Tailwind con variables <span className="text-neo-pink">--c-bg (#121214)</span> y tokens BaseUI.</div>
-                <div>📄 <span className="text-(--c-text) font-semibold">layout.tsx</span> — RootLayout HTML y proveedor de fuentes web (Inter & Space Grotesk).</div>
+              {/* Header */}
+              <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setActiveSkill("all")}
+                    className="mr-1.5 p-1 border-2 border-(--c-border) shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) hover:bg-(--c-surface-hover) cursor-pointer"
+                    title="Volver al catálogo"
+                  >
+                    <ArrowLeft size={14} className="stroke-3" />
+                  </button>
+                  <SkillIcon name="default" className="w-5 h-5 text-neo-yellow" />
+                  <h3 id="skill-details-modal-title" className="font-display font-black text-base sm:text-lg uppercase tracking-tight text-(--c-text)">
+                    Planos de Construcción del Portafolio
+                  </h3>
+                </div>
+                <button
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.dispatchEvent(new CustomEvent("play-click"));
+                    }
+                    onClose();
+                  }}
+                  aria-label="Cerrar modal"
+                  className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
+                >
+                  <X size={16} className="stroke-3" />
+                </button>
               </div>
-              <div className="pt-1">📁 <span className="font-bold text-(--c-text)">src/components/</span></div>
-              <div className="pl-4 text-(--c-text-muted)">
-                <div>📄 <span className="text-(--c-text) font-semibold">FerrofluidBackground.tsx</span> — Wrapper de WebGL (<span className="text-neo-yellow">ogl</span>) en paralelo que sigue al ratón y al tema.</div>
-                <div>📄 <span className="text-(--c-text) font-semibold">InteractiveTerminal.tsx</span> — Consola CLI interactiva con soporte de neofetch y comandos dinámicos.</div>
-                <div>📄 <span className="text-(--c-text) font-semibold">SpecsModal.tsx / SkillDetailModal.tsx</span> — Componentes Radix UI accesibles y semánticos.</div>
-              </div>
-            </div>
-          </div>
 
-          {/* Technical Details Grid */}
-          <div className="space-y-4 font-sans text-xs">
-            <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
-              <span className="font-display font-black text-xs uppercase text-neo-pink block mb-1">Filosofía de Estilos</span>
-              <p className="text-(--c-text-muted) font-semibold leading-relaxed">
-                Uso riguroso de sombras desplazadas sin desenfoque (rigid drop shadows) y bordes gruesos de alto contraste. Toda la lógica de colores se gestiona mediante custom properties en CSS, haciendo que la transición claro/oscuro sea fluida y compatible sin destellos (flashless).
+              <p className="font-mono text-[10px] sm:text-xs text-(--c-text-muted) leading-relaxed mb-4">
+                Este portafolio es una Single Page Application (SPA) responsiva y de alto rendimiento optimizada para Next.js 16 (Turbopack) y estructurada bajo principios Neobrutalistas rígidos.
               </p>
-            </div>
 
-            <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
-              <span className="font-display font-black text-xs uppercase text-neo-cyan block mb-1">Tecnologías Base</span>
-              <div className="flex flex-wrap gap-1.5 mt-1.5">
-                {["Next.js 16", "React 19", "TypeScript", "Tailwind CSS", "OGL WebGL", "Framer Motion", "Radix UI"].map((t) => (
-                  <span key={t} className="px-2 py-0.5 border border-(--c-border)/20 bg-(--c-surface) font-mono text-[9px] font-bold text-(--c-text-muted) uppercase">
-                    {t}
-                  </span>
-                ))}
+              {/* Directory Tree Structure */}
+              <div className="border-2 border-(--c-border) bg-(--c-surface-hover) p-4 font-mono text-[9px] sm:text-xs mb-5 space-y-3 leading-relaxed">
+                <div className="font-black text-neo-cyan">📂 ESTRUCTURA DEL PROYECTO</div>
+                <div className="pl-2 space-y-1">
+                  <div>📁 <span className="font-bold text-(--c-text)">src/app/</span></div>
+                  <div className="pl-4 text-(--c-text-muted)">
+                    <div>📄 <span className="text-(--c-text) font-semibold">page.tsx</span> — Dashboard Bento Grid principal (conecta estados de modales, HMR, paginación local y filtros).</div>
+                    <div>📄 <span className="text-(--c-text) font-semibold">globals.css</span> — Motor CSS Tailwind con variables <span className="text-neo-pink">--c-bg (#121214)</span> y tokens BaseUI.</div>
+                    <div>📄 <span className="text-(--c-text) font-semibold">layout.tsx</span> — RootLayout HTML y proveedor de fuentes web (Inter & Space Grotesk).</div>
+                  </div>
+                  <div className="pt-1">📁 <span className="font-bold text-(--c-text)">src/components/</span></div>
+                  <div className="pl-4 text-(--c-text-muted)">
+                    <div>📄 <span className="text-(--c-text) font-semibold">FerrofluidBackground.tsx</span> — Wrapper de WebGL (<span className="text-neo-yellow">ogl</span>) en paralelo que sigue al ratón y al tema.</div>
+                    <div>📄 <span className="text-(--c-text) font-semibold">InteractiveTerminal.tsx</span> — Consola CLI interactiva con soporte de neofetch y comandos dinámicos.</div>
+                    <div>📄 <span className="text-(--c-text) font-semibold">SpecsModal.tsx / SkillDetailModal.tsx</span> — Componentes Radix UI accesibles y semánticos.</div>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            {/* Back Button */}
-            <button
-              onClick={() => navigateTo("all")}
-              className="w-full py-2 bg-neo-pink text-black border-2 border-black font-mono text-xs font-black uppercase shadow-[3px_3px_0px_0px_#000] hover:translate-x-px hover:translate-y-px hover:shadow-[2px_2px_0px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_0px_#000] cursor-pointer transition-all duration-100"
-            >
-              Volver al Catálogo
-            </button>
-          </div>
+              {/* Technical Details Grid */}
+              <div className="space-y-4 font-sans text-xs">
+                <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
+                  <span className="font-display font-black text-xs uppercase text-neo-pink block mb-1">Filosofía de Estilos</span>
+                  <p className="text-(--c-text-muted) font-semibold leading-relaxed">
+                    Uso riguroso de sombras desplazadas sin desenfoque (rigid drop shadows) y bordes gruesos de alto contraste. Toda la lógica de colores se gestiona mediante custom properties en CSS, haciendo que la transición claro/oscuro sea fluida y compatible sin destellos (flashless).
+                  </p>
+                </div>
+
+                <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
+                  <span className="font-display font-black text-xs uppercase text-neo-cyan block mb-1">Tecnologías Base</span>
+                  <div className="flex flex-wrap gap-1.5 mt-1.5">
+                    {["Next.js 16", "React 19", "TypeScript", "Tailwind CSS", "OGL WebGL", "Framer Motion", "Radix UI"].map((t) => (
+                      <span key={t} className="px-2 py-0.5 border border-(--c-border)/20 bg-(--c-surface) font-mono text-[9px] font-bold text-(--c-text-muted) uppercase">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Back Button */}
+                <button
+                  onClick={() => navigateTo("all")}
+                  className="w-full py-2 bg-neo-pink text-black border-2 border-black font-mono text-xs font-black uppercase shadow-[3px_3px_0px_0px_#000] hover:translate-x-px hover:translate-y-px hover:shadow-[2px_2px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_#000] cursor-pointer transition-all duration-100"
+                >
+                  Volver al Catálogo
+                </button>
+              </div>
             </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
     );
   }
 
@@ -658,14 +658,14 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose} 
+          onClick={onClose}
           className="fixed inset-0 bg-(--c-overlay-bg) backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
         >
-          <motion.div 
+          <motion.div
             ref={containerRef}
             role="dialog"
             aria-modal="true"
@@ -677,122 +677,122 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({ skillName, o
             className="neo-card p-5 sm:p-6 md:p-8 w-full max-w-xl max-h-[90vh] overflow-y-auto relative shadow-[10px_10px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) text-(--c-text)"
             onClick={(e) => e.stopPropagation()}
           >
-        {/* Header Bar */}
-        <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
-          <div className="flex items-center gap-2.5">
-            {hasHistory && (
-              <button 
-                onClick={() => navigateTo("all")}
-                className="mr-1.5 p-1 border-2 border-(--c-border) shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) hover:bg-(--c-surface-hover) cursor-pointer"
-                title="Volver al catálogo"
+            {/* Header Bar */}
+            <div className="flex items-center justify-between border-b-2 border-(--c-border) pb-4 mb-4">
+              <div className="flex items-center gap-2.5">
+                {hasHistory && (
+                  <button
+                    onClick={() => navigateTo("all")}
+                    className="mr-1.5 p-1 border-2 border-(--c-border) shadow-[1px_1px_0px_0px_rgba(var(--c-shadow),1)] bg-(--c-surface) hover:bg-(--c-surface-hover) cursor-pointer"
+                    title="Volver al catálogo"
+                  >
+                    <ArrowLeft size={14} className="stroke-3" />
+                  </button>
+                )}
+                <SkillIcon name={skill.name} className="w-8 h-8 shrink-0" />
+                <h3 id="skill-details-modal-title" className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
+                  Ficha: {skill.name}
+                </h3>
+              </div>
+              <button
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("play-click"));
+                  }
+                  onClose();
+                }}
+                aria-label="Cerrar modal"
+                className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
               >
-                <ArrowLeft size={14} className="stroke-3" />
+                <X size={16} className="stroke-3" />
               </button>
-            )}
-            <SkillIcon name={skill.name} className="w-8 h-8 shrink-0" />
-            <h3 id="skill-details-modal-title" className="font-display font-black text-xl sm:text-2xl uppercase tracking-tight text-(--c-text)">
-              Ficha: {skill.name}
-            </h3>
-          </div>
-          <button 
-            onClick={() => {
-              if (typeof window !== "undefined") {
-                window.dispatchEvent(new CustomEvent("play-click"));
-              }
-              onClose();
-            }}
-            aria-label="Cerrar modal"
-            className="p-1.5 border-2 border-(--c-border) shadow-[2px_2px_0px_0px_rgba(var(--c-shadow),1)] bg-neo-pink text-black hover:translate-x-px hover:translate-y-px active:translate-x-[2px] active:translate-y-[2px] cursor-pointer"
-          >
-            <X size={16} className="stroke-3" />
-          </button>
-        </div>
-
-        {/* Bio Description */}
-        <p className="font-sans text-xs sm:text-sm font-semibold text-(--c-text-muted) leading-relaxed mb-4">
-          {skill.description}
-        </p>
-
-        {/* Metadata widgets grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
-          <div className="border-2 border-(--c-border) p-2.5 bg-(--c-surface-hover) flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-neo-pink shrink-0" />
-            <div className="flex flex-col leading-none">
-              <span className="font-mono text-[8px] uppercase font-bold text-(--c-text-subtle)">Experiencia</span>
-              <span className="font-display font-black text-xs uppercase text-(--c-text) mt-0.5">{skill.years}</span>
             </div>
-          </div>
-          <div className="border-2 border-(--c-border) p-2.5 bg-(--c-surface-hover) flex items-center gap-2">
-            <Award className="w-5 h-5 text-neo-cyan shrink-0" />
-            <div className="flex flex-col leading-none">
-              <span className="font-mono text-[8px] uppercase font-bold text-(--c-text-subtle)">Nivel</span>
-              <span className="font-display font-black text-xs uppercase text-(--c-text) mt-0.5">{skill.level}</span>
-            </div>
-          </div>
-          <div className="border-2 border-(--c-border) p-2.5 bg-(--c-surface-hover) flex flex-col justify-center leading-none">
-            <span className="font-mono text-[8px] uppercase font-bold text-(--c-text-subtle) mb-1">Afinidad / Uso</span>
-            {renderHearts(skill.enjoyment)}
-          </div>
-        </div>
 
-        {/* Detailed Info panels */}
-        <div className="space-y-4 font-sans text-xs">
-          {/* Strengths & Features */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
-              <span className="font-display font-black text-xs uppercase text-neo-pink block mb-1.5">Fortalezas Clave</span>
-              <ul className="space-y-1">
-                {skill.strengths.map((str, idx) => (
-                  <li key={idx} className="flex gap-1.5 items-start font-semibold text-(--c-text-muted) text-[10px] sm:text-xs">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-neo-pink shrink-0 mt-0.5" />
-                    <span>{str}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
-              <span className="font-display font-black text-xs uppercase text-neo-cyan block mb-1.5">Características Favoritas</span>
-              <ul className="space-y-1">
-                {skill.favoriteFeatures.map((feat, idx) => (
-                  <li key={idx} className="flex gap-1.5 items-start font-semibold text-(--c-text-muted) text-[10px] sm:text-xs">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-neo-cyan shrink-0 mt-0.5" />
-                    <span>{feat}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+            {/* Bio Description */}
+            <p className="font-sans text-xs sm:text-sm font-semibold text-(--c-text-muted) leading-relaxed mb-4">
+              {skill.description}
+            </p>
 
-          {/* Project Types & Common Use Cases */}
-          <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
-            <span className="font-display font-black text-xs uppercase text-(--c-text) block mb-1.5">Tipos de Proyectos & Casos de Uso</span>
-            <div className="flex flex-wrap gap-1.5">
-              {[...skill.projectTypes, ...skill.useCases].map((item, idx) => (
-                <span 
-                  key={idx} 
-                  className="px-2 py-0.5 border border-(--c-border)/20 bg-(--c-surface) font-mono text-[9px] font-bold text-(--c-text-muted) uppercase tracking-tight"
+            {/* Metadata widgets grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+              <div className="border-2 border-(--c-border) p-2.5 bg-(--c-surface-hover) flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-neo-pink shrink-0" />
+                <div className="flex flex-col leading-none">
+                  <span className="font-mono text-[8px] uppercase font-bold text-(--c-text-subtle)">Experiencia</span>
+                  <span className="font-display font-black text-xs uppercase text-(--c-text) mt-0.5">{skill.years}</span>
+                </div>
+              </div>
+              <div className="border-2 border-(--c-border) p-2.5 bg-(--c-surface-hover) flex items-center gap-2">
+                <Award className="w-5 h-5 text-neo-cyan shrink-0" />
+                <div className="flex flex-col leading-none">
+                  <span className="font-mono text-[8px] uppercase font-bold text-(--c-text-subtle)">Nivel</span>
+                  <span className="font-display font-black text-xs uppercase text-(--c-text) mt-0.5">{skill.level}</span>
+                </div>
+              </div>
+              <div className="border-2 border-(--c-border) p-2.5 bg-(--c-surface-hover) flex flex-col justify-center leading-none">
+                <span className="font-mono text-[8px] uppercase font-bold text-(--c-text-subtle) mb-1">Afinidad / Uso</span>
+                {renderHearts(skill.enjoyment)}
+              </div>
+            </div>
+
+            {/* Detailed Info panels */}
+            <div className="space-y-4 font-sans text-xs">
+              {/* Strengths & Features */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
+                  <span className="font-display font-black text-xs uppercase text-neo-pink block mb-1.5">Fortalezas Clave</span>
+                  <ul className="space-y-1">
+                    {skill.strengths.map((str, idx) => (
+                      <li key={idx} className="flex gap-1.5 items-start font-semibold text-(--c-text-muted) text-[10px] sm:text-xs">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-neo-pink shrink-0 mt-0.5" />
+                        <span>{str}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
+                  <span className="font-display font-black text-xs uppercase text-neo-cyan block mb-1.5">Características Favoritas</span>
+                  <ul className="space-y-1">
+                    {skill.favoriteFeatures.map((feat, idx) => (
+                      <li key={idx} className="flex gap-1.5 items-start font-semibold text-(--c-text-muted) text-[10px] sm:text-xs">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-neo-cyan shrink-0 mt-0.5" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Project Types & Common Use Cases */}
+              <div className="border-2 border-(--c-border) p-3 bg-(--c-surface-hover)">
+                <span className="font-display font-black text-xs uppercase text-(--c-text) block mb-1.5">Tipos de Proyectos & Casos de Uso</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {[...skill.projectTypes, ...skill.useCases].map((item, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2 py-0.5 border border-(--c-border)/20 bg-(--c-surface) font-mono text-[9px] font-bold text-(--c-text-muted) uppercase tracking-tight"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Featured Project */}
+              <div className="border-4 border-(--c-border) p-3 bg-neo-yellow text-black flex justify-between items-center shadow-[2px_2px_0px_0px_#000]">
+                <div>
+                  <span className="font-mono text-[9px] uppercase font-bold text-black/60 block">Proyecto Destacado</span>
+                  <span className="font-display font-black text-sm uppercase block mt-0.5">{skill.featuredProject}</span>
+                </div>
+                <button
+                  onClick={() => onOpenProject?.(skill.featuredProject)}
+                  className="font-mono text-[9px] font-black uppercase text-black border-2 border-black bg-white px-2 py-0.5 shadow-[1px_1px_0px_0px_#000] cursor-pointer hover:-translate-y-0.5 active:translate-y-0 transition-transform"
                 >
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
+                  Ver Proyecto
+                </button>
+              </div>
 
-          {/* Featured Project */}
-          <div className="border-4 border-(--c-border) p-3 bg-neo-yellow text-black flex justify-between items-center shadow-[2px_2px_0px_0px_#000]">
-            <div>
-              <span className="font-mono text-[9px] uppercase font-bold text-black/60 block">Proyecto Destacado</span>
-              <span className="font-display font-black text-sm uppercase block mt-0.5">{skill.featuredProject}</span>
             </div>
-            <button 
-              onClick={() => onOpenProject?.(skill.featuredProject)}
-              className="font-mono text-[9px] font-black uppercase text-black border-2 border-black bg-white px-2 py-0.5 shadow-[1px_1px_0px_0px_#000] cursor-pointer hover:-translate-y-0.5 active:translate-y-0 transition-transform"
-            >
-              Ver Proyecto
-            </button>
-          </div>
-
-        </div>
           </motion.div>
         </motion.div>
       )}

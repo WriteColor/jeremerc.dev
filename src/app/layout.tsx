@@ -16,23 +16,23 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jeremerc.dev"),
+  metadataBase: new URL("https://jeremerc.site"),
   title: {
-    default: "Jeremerc.dev | Fullstack Developer, IA & Ciencia de Datos Freelancer",
-    template: "%s | Jeremerc.dev"
+    default: "Jeremerc.site | Fullstack Developer, IA & Ciencia de Datos Freelancer",
+    template: "%s | Jeremerc.site"
   },
   description: "Portafolio interactivo de Jeremyh Mercado (WriteColor). Especialización en desarrollo de software Full Stack (Next.js, Node.js, Laravel), integraciones de Inteligencia Artificial, Ciencia de Datos, WebGL y despliegues en la nube. Explora proyectos premium de alto rendimiento con diseño neobrutalista.",
   keywords: [
-    "Jeremerc", 
-    "Jeremyh Mercado", 
-    "WriteColor", 
-    "freelance developer", 
-    "desarrollo web premium", 
-    "neobrutalism UI", 
+    "Jeremerc",
+    "Jeremyh Mercado",
+    "WriteColor",
+    "freelance developer",
+    "desarrollo web premium",
+    "neobrutalism UI",
     "bento grid portfolio",
-    "React developer", 
-    "Next.js portfolio", 
-    "TypeScript engineer", 
+    "React developer",
+    "Next.js portfolio",
+    "TypeScript engineer",
     "diseño interactivo",
     "Inteligencia Artificial",
     "Ciencia de Datos",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     "Cloudflare Workers Edge",
     "SaaS architecture"
   ],
-  authors: [{ name: "Jeremyah Mercado", url: "https://jeremerc.dev" }],
+  authors: [{ name: "Jeremyah Mercado", url: "https://jeremerc.site" }],
   creator: "Jeremyh Mercado",
   publisher: "Jeremyah Mercado",
   robots: {
@@ -65,24 +65,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_LA",
-    url: "https://jeremerc.dev",
-    title: "Jeremerc.dev | Fullstack Developer, IA & Ciencia de Datos | Portafolio Interactivo",
+    url: "https://jeremerc.site",
+    title: "Jeremerc.site | Fullstack Developer, IA & Ciencia de Datos | Portafolio Interactivo",
     description: "Desarrollo de software y diseño interactivo premium. Explora proyectos freelancer en Next.js, APIs de Inteligencia Artificial, Ciencia de Datos, shaders WebGL y servidores Docker, con presupuestos adaptables y tiempos flexibles.",
-    siteName: "Jeremerc.dev",
+    siteName: "Jeremerc.site",
     images: [
       {
-        url: "https://jeremerc.dev/og-image.png",
+        url: "https://jeremerc.site/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Jeremerc.dev - Fullstack Developer & IA Engineer Portfolio Banner",
+        alt: "Jeremerc.site - Fullstack Developer & IA Engineer Portfolio Banner",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jeremerc.dev | Fullstack Developer, IA & Ciencia de Datos",
+    title: "Jeremerc.site | Fullstack Developer, IA & Ciencia de Datos",
     description: "Portafolio interactivo de proyectos de desarrollo web, IA, ciencia de datos y diseño neobrutalista premium con OGL 3D y BaseUI.",
-    images: ["https://jeremerc.dev/og-image.png"],
+    images: ["https://jeremerc.site/og-image.png"],
     creator: "@WriteColor",
   },
   icons: {
@@ -108,7 +108,8 @@ export default function RootLayout({
     >
       <head>
         {/* Inline script to set theme class before paint to avoid flash */}
-        <script dangerouslySetInnerHTML={{ __html: `
+        <script dangerouslySetInnerHTML={{
+          __html: `
           (function() {
             try {
               var t = localStorage.getItem('theme');
@@ -129,8 +130,8 @@ export default function RootLayout({
                 "@type": "Person",
                 "name": "Jeremyh Mercado",
                 "alternateName": "WriteColor",
-                "url": "https://jeremerc.dev",
-                "image": "https://jeremerc.dev/og-image.png",
+                "url": "https://jeremerc.site",
+                "image": "https://jeremerc.site/og-image.png",
                 "jobTitle": "Full Stack & AI Developer",
                 "knowsAbout": [
                   "Next.js", "React", "TypeScript", "JavaScript", "Tailwind CSS", "Node.js", "Laravel", "PHP",

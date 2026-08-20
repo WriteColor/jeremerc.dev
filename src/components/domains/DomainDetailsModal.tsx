@@ -70,7 +70,7 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
           throw new Error("No se pudieron cargar los detalles del dominio.");
         }
         const json = await res.json();
-        
+
         // 2. Cache successful result
         DomainCacheService.saveDomainInfo(domainName, json);
         setData(json);
@@ -198,11 +198,10 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
                       playClick();
                       setActiveTab("whois");
                     }}
-                    className={`flex-1 py-2 font-display font-black text-xs uppercase text-center cursor-pointer transition-all border-l-4 pl-2 ${
-                      activeTab === "whois"
+                    className={`flex-1 py-2 font-display font-black text-xs uppercase text-center cursor-pointer transition-all border-l-4 pl-2 ${activeTab === "whois"
                         ? "border-neo-yellow text-neo-yellow bg-transparent"
                         : "border-transparent text-(--c-text) bg-transparent hover:text-(--c-text-muted)"
-                    }`}
+                      }`}
                   >
                     Detalles WHOIS
                   </button>
@@ -211,18 +210,17 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
                       playClick();
                       setActiveTab("valuation");
                     }}
-                    className={`flex-1 py-2 font-display font-black text-xs uppercase text-center cursor-pointer transition-all border-l-4 pl-2 ${
-                      activeTab === "valuation"
+                    className={`flex-1 py-2 font-display font-black text-xs uppercase text-center cursor-pointer transition-all border-l-4 pl-2 ${activeTab === "valuation"
                         ? "border-neo-yellow text-neo-yellow bg-transparent"
                         : "border-transparent text-(--c-text) bg-transparent hover:text-(--c-text-muted)"
-                    }`}
+                      }`}
                   >
                     Valoración Estimada
                   </button>
                 </div>
 
                 {/* Tab Contents */}
-                <div className="min-h-[250px] text-left select-text">
+                <div className="min-h-62.5 text-left select-text">
                   <AnimatePresence mode="wait">
                     {activeTab === "whois" && (
                       <motion.div
@@ -238,13 +236,13 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
                             <div>Propiedad</div>
                             <div className="col-span-2">Información</div>
                           </div>
-                          
+
                           <div className="divide-y-2 divide-black/10">
                             <div className="grid grid-cols-3 p-2.5 items-start">
                               <div className="font-bold flex items-center gap-1.5"><Globe size={13} /> Registrador</div>
                               <div className="col-span-2 font-semibold text-(--c-text)">{data.whois.registrar || "Desconocido"}</div>
                             </div>
-                            
+
                             <div className="grid grid-cols-3 p-2.5 items-start">
                               <div className="font-bold flex items-center gap-1.5"><Calendar size={13} /> Creación</div>
                               <div className="col-span-2 font-semibold text-(--c-text)">{formatDate(data.whois.creation_date)}</div>
@@ -302,7 +300,7 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
                               {formatCurrency(data.valuation.estimate.low, data.valuation.estimate.currency)}
                             </span>
                           </div>
-                          
+
                           <div className="border-3 border-black p-3.5 bg-neo-cyan/15 text-center shadow-[2px_2px_0px_0px_#000]">
                             <span className="font-mono text-[9px] uppercase font-bold text-(--c-text-muted) block">Valor Medio</span>
                             <span className="font-display font-black text-xl sm:text-2xl text-neo-cyan dark:text-cyan-400 mt-1 block">
@@ -325,8 +323,8 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
                             <span className="text-(--c-text)">{Math.round(data.valuation.confidence * 100)}%</span>
                           </div>
                           <div className="border-2 border-black h-4 bg-black/10 overflow-hidden p-0.5">
-                            <div 
-                              className="h-full bg-neo-yellow border-r-2 border-black" 
+                            <div
+                              className="h-full bg-neo-yellow border-r-2 border-black"
                               style={{ width: `${data.valuation.confidence * 100}%` }}
                             />
                           </div>
@@ -337,7 +335,7 @@ export const DomainDetailsModal: React.FC<DomainDetailsModalProps> = ({ isOpen, 
                           <h4 className="font-display font-black text-xs uppercase flex items-center gap-1.5">
                             <BarChart3 size={14} /> Factores de Valoración Clave
                           </h4>
-                          
+
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
                             <div className="flex justify-between items-center border-b border-black/10 pb-1">
                               <span className="text-(--c-text-muted)">Longitud:</span>

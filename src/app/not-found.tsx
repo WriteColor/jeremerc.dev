@@ -13,7 +13,7 @@ export default function NotFound() {
         <ShapeGridBackground />
       </div>
       <div className="max-w-md w-full text-center space-y-6 sm:space-y-8 z-10">
-        
+
         {/* Error icon */}
         <div className="inline-flex p-3 sm:p-4 border-4 border-black bg-neo-pink text-black shadow-[4px_4px_0px_0px_rgba(var(--c-shadow),1)]">
           <AlertOctagon size={32} className="stroke-[2.5]" />
@@ -43,7 +43,7 @@ export default function NotFound() {
         <div>
           <Link
             href="/"
-            className="neo-btn bg-(--c-surface) text-(--c-text) border-(--c-border) shadow-[4px_4px_0px_0px_rgba(var(--c-shadow),1)] hover:shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] px-5 py-2.5 text-xs font-bold uppercase inline-flex items-center gap-2 cursor-pointer transition-all duration-200 hover:translate-x-[-2px] hover:translate-y-[-2px]"
+            className="neo-btn bg-(--c-surface) text-(--c-text) border-(--c-border) shadow-[4px_4px_0px_0px_rgba(var(--c-shadow),1)] hover:shadow-[6px_6px_0px_0px_rgba(var(--c-shadow),1)] px-5 py-2.5 text-xs font-bold uppercase inline-flex items-center gap-2 cursor-pointer transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5"
           >
             <MoveLeft size={16} /> Volver al Inicio
           </Link>

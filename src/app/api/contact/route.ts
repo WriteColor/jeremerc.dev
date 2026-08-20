@@ -40,8 +40,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Resend API Key no configurada en el servidor." }, { status: 500 });
     }
 
-    const contactEmail = process.env.CONTACT_EMAIL || "contacto@jeremerc.dev";
-    const senderEmail = process.env.SENDER_EMAIL || "no-reply@jeremerc.dev";
+    const contactEmail = process.env.CONTACT_EMAIL || "contact@jeremerc.site";
+    const senderEmail = process.env.SENDER_EMAIL || "no-reply@jeremerc.site";
 
     const sendEmailViaResend = async (payload: {
       from: string;
@@ -79,7 +79,7 @@ export async function POST(request: Request) {
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
               <tr>
                 <td width="55" valign="middle">
-                  <img src="https://jeremerc.dev/avatar.png" width="45" height="45" style="border: 2.5px solid #000000; box-shadow: 2px 2px 0px 0px #000000; display: block;" />
+                  <img src="https://jeremerc.site/avatar.webp" width="45" height="45" style="border: 2.5px solid #000000; box-shadow: 2px 2px 0px 0px #000000; display: block;" />
                 </td>
                 <td valign="middle" style="padding-left: 12px;">
                   <h1 style="margin: 0; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; color: #000000; line-height: 1.1;">
@@ -131,7 +131,7 @@ export async function POST(request: Request) {
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
               <tr>
                 <td width="55" valign="middle">
-                  <img src="https://jeremerc.dev/avatar.png" width="45" height="45" style="border: 2.5px solid #000000; box-shadow: 2px 2px 0px 0px #000000; display: block;" />
+                  <img src="https://jeremerc.site/avatar.webp" width="45" height="45" style="border: 2.5px solid #000000; box-shadow: 2px 2px 0px 0px #000000; display: block;" />
                 </td>
                 <td valign="middle" style="padding-left: 12px;">
                   <h1 style="margin: 0; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; color: #ffffff; line-height: 1.1;">
@@ -165,9 +165,9 @@ export async function POST(request: Request) {
       </div>
     `;
 
-    // Send email copy to owner (contacto@jeremerc.dev)
+    // Send email copy to owner (contact@jeremerc.site)
     await sendEmailViaResend({
-      from: `JereMerc.dev Portfolio <${senderEmail}>`,
+      from: `JereMerc.site Portfolio <${senderEmail}>`,
       to: contactEmail,
       reply_to: email,
       subject: `Nueva Consulta de ${name}`,
@@ -176,9 +176,9 @@ export async function POST(request: Request) {
 
     // Send confirmation to the client
     await sendEmailViaResend({
-      from: `JereMerc.dev Portfolio <${senderEmail}>`,
+      from: `JereMerc.site Portfolio <${senderEmail}>`,
       to: email,
-      subject: "He recibido tu mensaje - JereMerc.dev",
+      subject: "He recibido tu mensaje - JereMerc.site",
       html: userMailHtml,
     });
 

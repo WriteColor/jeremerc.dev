@@ -54,7 +54,7 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
 
   return (
     <div className="w-full overflow-x-auto border-3 border-black shadow-[4px_4px_0px_0px_#000] bg-(--c-surface) my-4">
-      <table className="w-full text-left border-collapse min-w-[500px]">
+      <table className="w-full text-left border-collapse min-w-125">
         <thead>
           <tr className="border-b-3 border-black bg-(--c-surface-hover)">
             <th className="p-3 font-display font-black text-[10px] sm:text-xs uppercase tracking-wider text-(--c-text) border-r-2 border-black w-24">Extensión</th>
@@ -70,11 +70,10 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
             const isBestValue = res.isBestValue && res.isAvailable === true;
 
             return (
-              <tr 
+              <tr
                 key={idx}
-                className={`border-b-2 border-black/10 hover:bg-(--c-surface-hover)/40 transition-colors ${
-                  isSelected ? "bg-neo-cyan/10" : ""
-                }`}
+                className={`border-b-2 border-black/10 hover:bg-(--c-surface-hover)/40 transition-colors ${isSelected ? "bg-neo-cyan/10" : ""
+                  }`}
               >
                 {/* Extension */}
                 <td className="p-3 font-mono font-bold text-xs text-(--c-text) border-r-2 border-black/10 whitespace-nowrap">
@@ -131,7 +130,7 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
                       </button>
                     </div>
                   ) : (
-                    <span 
+                    <span
                       className="inline-flex items-center gap-1 px-1.5 py-0.5 border border-black bg-neo-yellow text-black font-display font-black text-[8px] sm:text-[9px] uppercase shadow-[1px_1px_0px_0px_#000] cursor-help"
                       title="Inconclusivo: Consultas directas al puerto 43 (WHOIS) bloqueadas en esta red local/servidor. Para producción o desarrollo local restringido, añade WHOISJSON_API_KEY en tu .env"
                     >
@@ -164,11 +163,10 @@ export const DomainResultsTable: React.FC<DomainResultsTableProps> = ({
                         }
                         onSelect(res);
                       }}
-                      className={`font-display font-black text-[9px] sm:text-[10px] uppercase border-2 border-black px-2.5 py-1 shadow-[2px_2px_0px_0px_#000] cursor-pointer hover:-translate-y-0.5 active:translate-y-0 transition-transform ${
-                        isSelected 
-                          ? "bg-neo-cyan text-black" 
+                      className={`font-display font-black text-[9px] sm:text-[10px] uppercase border-2 border-black px-2.5 py-1 shadow-[2px_2px_0px_0px_#000] cursor-pointer hover:-translate-y-0.5 active:translate-y-0 transition-transform ${isSelected
+                          ? "bg-neo-cyan text-black"
                           : "bg-white text-black hover:bg-gray-50"
-                      }`}
+                        }`}
                     >
                       {isSelected ? "Elegido ✓" : "Elegir +"}
                     </button>
