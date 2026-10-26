@@ -79,7 +79,7 @@ export async function POST(request: Request) {
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
               <tr>
                 <td width="55" valign="middle">
-                  <img src="https://jeremerc.dev/avatar.png" width="45" height="45" style="border: 2.5px solid #000000; box-shadow: 2px 2px 0px 0px #000000; display: block;" />
+                  <img src="https://jeremerc.site/avatar.png" width="45" height="45" style="border: 2.5px solid #000000; box-shadow: 2px 2px 0px 0px #000000; display: block;" />
                 </td>
                 <td valign="middle" style="padding-left: 12px;">
                   <h1 style="margin: 0; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; color: #000000; line-height: 1.1;">
@@ -131,7 +131,7 @@ export async function POST(request: Request) {
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
               <tr>
                 <td width="55" valign="middle">
-                  <img src="https://jeremerc.dev/avatar.png" width="45" height="45" style="border: 2.5px solid #000000; box-shadow: 2px 2px 0px 0px #000000; display: block;" />
+                  <img src="https://jeremerc.site/avatar.png" width="45" height="45" style="border: 2.5px solid #000000; box-shadow: 2px 2px 0px 0px #000000; display: block;" />
                 </td>
                 <td valign="middle" style="padding-left: 12px;">
                   <h1 style="margin: 0; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; color: #ffffff; line-height: 1.1;">
